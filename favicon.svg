@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#080808"/>
-  <rect x="0" y="0" width="2" height="32" fill="#f5c400"/>
-  <path d="M5 4 L5 9 M5 4 L10 4" stroke="#f5c400" stroke-width="1.2" fill="none" stroke-linecap="square"/>
-  <path d="M27 4 L27 9 M27 4 L22 4" stroke="#f5c400" stroke-width="1.2" fill="none" stroke-linecap="square"/>
-  <path d="M5 28 L5 23 M5 28 L10 28" stroke="#f5c400" stroke-width="1.2" fill="none" stroke-linecap="square"/>
-  <path d="M27 28 L27 23 M27 28 L22 28" stroke="#f5c400" stroke-width="1.2" fill="none" stroke-linecap="square"/>
-  <text x="16" y="22" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="14" fill="#f2ede0" text-anchor="middle" letter-spacing="0.5">MB</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs><clipPath id="c"><rect x="0" y="21" width="64" height="22"/></clipPath></defs>
+  <circle cx="32" cy="32" r="32" fill="#f5c400"/>
+  <g fill="none" stroke="#080808" stroke-width="4.6" clip-path="url(#c)">
+    <path d="M14 44V20.5L21.75 34L29.5 20.5V44" stroke-miterlimit="10"/>
+    <path d="M39 21V43"/>
+    <path d="M39 23.3H44.2A4.35 4.35 0 0 1 44.2 32H39"/>
+    <path d="M39 32H45A4.35 4.35 0 0 1 45 40.7H39"/>
+  </g>
 </svg>

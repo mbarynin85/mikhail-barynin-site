@@ -7,7 +7,18 @@
 <meta name="description" content="Documentary filmmaker. Films built on observation, trust, and real experience.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="apple-touch-icon" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#080808">
+<link rel="canonical" href="https://mikhailbarynin.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mikhail Barynin">
+<meta property="og:title" content="Mikhail Barynin — Documentary Filmmaker">
+<meta property="og:description" content="Documentary filmmaker. Films built on observation, trust, and real experience.">
+<meta property="og:url" content="https://mikhailbarynin.com/">
+<meta property="og:image" content="https://mikhailbarynin.com/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
@@ -15,7 +26,7 @@
 :root {
   --black:#080808;--off-black:#0f0f0f;--dark:#141414;--gray:#222;
   --mid:#555;--silver:#888;--light:#bbb;--off-white:#e8e4d8;--white:#f2ede0;
-  --red:#e8001a;--yellow:#f5c400;--tape:#ede9d8;
+  --red:#e8001a;--yellow:#f5c400;--tape:#ede9d8;--pin:#ff2e46;
   --mono:'Courier Prime',monospace;--display:'Montserrat',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -27,6 +38,8 @@ body{background:var(--black);color:var(--off-white);font-family:var(--display);f
 #cur-r{position:fixed;width:28px;height:28px;border:1px solid rgba(245,196,0,.6);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .2s;}
 #cur-watch{position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--yellow);text-transform:uppercase;opacity:0;transition:opacity .2s;white-space:nowrap;}
 #cur-read{position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--yellow);text-transform:uppercase;opacity:0;transition:opacity .2s;white-space:nowrap;}
+#cur,#cur-r{opacity:0;}
+body.has-mouse #cur,body.has-mouse #cur-r{opacity:1;}
 @media(max-width:768px){#cur,#cur-r,#cur-watch,#cur-read{display:none;}body{cursor:auto;}}
 
 /* NAV */
@@ -35,10 +48,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 .nav-links{display:flex;gap:44px;list-style:none;}
 .nav-links a{font-family:var(--mono);font-size:13px;letter-spacing:.22em;color:var(--white);text-decoration:none;text-transform:uppercase;mix-blend-mode:difference;transition:color .2s;}
 .nav-links a:hover{color:var(--yellow);}
-@media(max-width:600px){nav{padding:16px 20px;}.nav-links{gap:20px;}.nav-links a{font-size:10px;}}
+@media(max-width:600px){nav{padding:4px 20px;}.nav-links{gap:14px;}.nav-links a{font-size:10px;display:inline-block;padding:17px 2px;}.nav-logo{display:inline-block;padding:15px 0;}}
 
 /* HERO */
-.hero{position:relative;height:100vh;overflow:hidden;display:flex;align-items:flex-end;padding:0 48px 64px;}
+.hero{position:relative;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:flex-end;padding:0 48px 64px;}
 .hero-video-wrap{position:absolute;inset:0;z-index:0;background:var(--black);}
 .hero-video-wrap video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;object-fit:cover;opacity:.7;}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(8,8,8,.15) 0%,rgba(8,8,8,.05) 35%,rgba(8,8,8,.55) 70%,rgba(8,8,8,.97) 100%);}
@@ -50,12 +63,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 .hero .fc.tr{top:80px;right:48px;border-top:1px solid rgba(242,237,224,.35);border-right:1px solid rgba(242,237,224,.35);}
 .hero .fc.bl{bottom:44px;left:48px;border-bottom:1px solid rgba(242,237,224,.35);border-left:1px solid rgba(242,237,224,.35);}
 .hero .fc.br{bottom:44px;right:48px;border-bottom:1px solid rgba(242,237,224,.35);border-right:1px solid rgba(242,237,224,.35);}
-.hero-frame-idx{position:absolute;top:82px;right:80px;z-index:3;font-family:var(--mono);font-size:8px;color:rgba(242,237,224,.3);letter-spacing:.15em;}
+.hero-frame-idx{position:absolute;top:82px;right:80px;z-index:3;font-family:var(--mono);font-size:9px;color:rgba(242,237,224,.45);letter-spacing:.15em;font-variant-numeric:tabular-nums;}
 .hero-content{position:relative;z-index:4;width:100%;}
 /* Name — small, secondary */
 .hero-name{font-family:var(--mono);font-size:clamp(11px,1.4vw,14px);font-weight:400;letter-spacing:.3em;color:var(--silver);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
 .hero-name::before{content:'';width:20px;height:1px;background:var(--silver);flex-shrink:0;}
-.hero-name .line2{display:inline;}
 /* Tagline — big, dominant */
 .hero-tagline{font-family:var(--display);font-size:clamp(28px,5vw,72px);font-weight:700;line-height:1.05;letter-spacing:-.01em;color:var(--white);margin-bottom:0;}
 .hero-tagline .dim{color:rgba(232,228,216,.45);font-weight:300;}
@@ -68,7 +80,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 
 /* SEC HEAD */
 .sec-head{padding:80px 48px 36px;display:flex;align-items:baseline;gap:20px;position:relative;}
-.sec-head::before{content:'';position:absolute;left:48px;top:80px;width:2px;height:100%;background:var(--red);opacity:.6;}
+.sec-head::before{content:'';position:absolute;left:48px;top:80px;width:2px;height:calc(100% - 80px);background:var(--red);opacity:.6;}
 .sec-title{font-family:var(--display);font-size:clamp(44px,9vw,130px);font-weight:900;line-height:1;letter-spacing:-.01em;color:var(--white);text-transform:uppercase;padding-left:20px;}
 @media(max-width:600px){.sec-head{padding:60px 20px 28px;}.sec-head::before{left:20px;}}
 
@@ -106,24 +118,25 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 .tl-arrow:hover{border-color:var(--yellow);background:rgba(245,196,0,.08);}
 .tl-arrow svg{width:18px;height:18px;}
 .tl-arrow-label{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:rgba(245,196,0,.4);text-transform:uppercase;}
-@media(max-width:600px){.tl-arrows{padding:14px 20px 36px;}.tl-arrow{cursor:pointer;width:30px;height:30px;}}
+@media(max-width:600px){.tl-arrows{padding:14px 20px 36px;}.tl-arrow{cursor:pointer;width:44px;height:44px;}}
 
 /* TIMELINE */
-.timeline{display:flex;gap:3px;overflow-x:auto;overflow-y:hidden;padding:0 48px 24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent;cursor:grab;}
-.timeline:active{cursor:grabbing;}
+.timeline{display:flex;gap:3px;overflow-x:auto;overflow-y:hidden;padding:0 48px 24px;scroll-behavior:auto;overscroll-behavior-x:contain;touch-action:pan-x pan-y pinch-zoom;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+.timeline.dragging{cursor:grabbing;}
+.timeline img{-webkit-user-drag:none;user-drag:none;pointer-events:none;}
 .timeline::-webkit-scrollbar{height:3px;}
 .timeline::-webkit-scrollbar-track{background:transparent;}
 .timeline::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px;}
 @media(max-width:600px){.timeline{padding:0 20px 20px;cursor:auto;}}
 
 /* FILM CARD */
-.film-card{flex:0 0 300px;position:relative;cursor:none;overflow:hidden;background:var(--dark);scroll-snap-align:start;transition:flex-basis .3s;}
-.film-card:hover{flex-basis:320px;}
-@media(max-width:768px){.film-card{flex:0 0 260px;cursor:pointer;}.film-card:hover{flex-basis:260px;}}
+.film-card{flex:0 0 300px;position:relative;cursor:none;overflow:hidden;background:var(--dark);-webkit-tap-highlight-color:transparent;}
+@media(max-width:768px){.film-card{flex:0 0 260px;cursor:pointer;}}
 @media(max-width:480px){.film-card{flex:0 0 220px;}}
+@media(max-width:768px){.film-desc{font-size:12px;}}
 
 /* IMPRISONED DIVIDER — flat, no nested flex */
-.imprisoned-divider{flex:0 0 32px;scroll-snap-align:start;display:flex;align-items:stretch;}
+.imprisoned-divider{flex:0 0 32px;display:flex;align-items:stretch;}
 .imprisoned-divider-inner{background:var(--gray);border-left:2px solid var(--red);width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px 0;}
 .imprisoned-divider-label{font-family:var(--mono);font-size:7.5px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);white-space:nowrap;}
 .imprisoned-divider-sub{font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--mid);text-transform:uppercase;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);white-space:nowrap;}
@@ -132,7 +145,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 .film-card.imprisoned::before{display:none;}
 
 .film-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--yellow);z-index:5;transform:scaleX(0);transform-origin:left;transition:transform .35s ease;}
-.imprisoned-cards .film-card::before{display:none;}
 .film-card:hover::before{transform:scaleX(1);}
 .film-card .card-leak{position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at 100% 0%,rgba(245,196,0,.22) 0%,rgba(232,0,26,.10) 30%,transparent 65%);opacity:0;transition:opacity .4s ease;}
 .film-card:hover .card-leak{opacity:1;}
@@ -143,8 +155,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 .film-card .fc.br{bottom:6px;right:6px;border-bottom:1px solid rgba(242,237,224,.5);border-right:1px solid rgba(242,237,224,.5);}
 .film-card:hover .fc{opacity:1;}
 .film-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;}
-.film-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82) saturate(.75);transition:transform .65s ease,filter .4s ease;}
-.film-card:hover .film-thumb img{transform:scale(1.05);filter:brightness(.95) saturate(.95);}
+.film-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82) saturate(.75);transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .4s ease;will-change:transform;}
+.film-card:hover .film-thumb img{transform:scale(1.08);filter:brightness(.95) saturate(.95);}
 .film-thumb-grad{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(8,8,8,.85) 0%,transparent 55%);}
 .film-grain-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:0;transition:opacity .35s ease;}
 .film-card:hover .film-grain-canvas{opacity:1;}
@@ -153,25 +165,52 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 .film-card:hover .play-btn{opacity:1;transform:translate(-50%,-50%) scale(1);}
 .film-code-badge{position:absolute;bottom:6px;right:8px;z-index:2;font-family:var(--mono);font-size:7px;color:rgba(242,237,224,.25);letter-spacing:.1em;pointer-events:none;}
 .film-info{padding:14px 14px 18px;position:relative;}
-.tape-label{display:inline-block;background:var(--tape);color:#111;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:5px 14px 4px;margin-bottom:8px;transform:rotate(-.4deg);box-shadow:1px 1px 0 rgba(0,0,0,.35),2px 2px 5px rgba(0,0,0,.3);position:relative;background-image:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 6px);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tape-label{display:inline-block;background:var(--tape);color:#111;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;padding:5px 14px 4px;margin-bottom:8px;transform:rotate(-.4deg);box-shadow:1px 1px 0 rgba(0,0,0,.35),2px 2px 5px rgba(0,0,0,.3);position:relative;background-image:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 6px);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .tape-label::before,.tape-label::after{content:'';position:absolute;top:0;bottom:0;width:5px;background:inherit;background-image:inherit;}
 .tape-label::before{left:-4px;clip-path:polygon(0 20%,100% 0,100% 100%,0 80%);}
 .tape-label::after{right:-4px;clip-path:polygon(0 0,100% 20%,100% 80%,0 100%);}
-.film-desc{font-family:var(--display);font-size:10px;font-weight:300;color:var(--silver);line-height:1.65;letter-spacing:.02em;}
+.film-card:focus-visible,.flagship-play:focus-visible,.tl-arrow:focus-visible,.modal-close:focus-visible,.press-item:focus-visible,.c-icon:focus-visible,.nav-links a:focus-visible,.nav-logo:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;}
+.film-card:focus-visible{outline-offset:-2px;}
+.film-card:focus-visible .play-btn{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.film-desc{font-family:var(--display);font-size:11px;font-weight:300;color:var(--silver);line-height:1.65;letter-spacing:.02em;}
 
-/* VIDEO MODAL */
-.modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+/* FILM MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.94);display:flex;opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;overscroll-behavior:contain;padding:56px 32px 32px;}
 .modal-overlay.open{opacity:1;pointer-events:all;}
-.modal-inner{position:relative;width:90vw;max-width:1100px;}
+.film-sheet{position:relative;width:min(1280px,100%);margin:auto;}
+.film-sheet-grid{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(300px,1fr);gap:36px;align-items:start;}
+.film-player{position:relative;}
 .modal-ratio{position:relative;padding-bottom:56.25%;}
 .modal-ratio iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-.modal-frame-tl,.modal-frame-br{position:absolute;width:28px;height:28px;z-index:1;}
+.modal-frame-tl,.modal-frame-br{position:absolute;width:28px;height:28px;z-index:1;pointer-events:none;}
 .modal-frame-tl{top:-10px;left:-10px;border-top:1px solid rgba(245,196,0,.5);border-left:1px solid rgba(245,196,0,.5);}
 .modal-frame-br{bottom:-10px;right:-10px;border-bottom:1px solid rgba(245,196,0,.5);border-right:1px solid rgba(245,196,0,.5);}
-.modal-close{position:absolute;top:-40px;right:0;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--silver);background:none;border:none;cursor:none;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.modal-close{position:absolute;top:-44px;right:0;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--silver);background:none;border:none;cursor:none;text-transform:uppercase;display:flex;align-items:center;gap:8px;padding:8px 0 8px 12px;}
 .modal-close:hover{color:var(--white);}
-.modal-title{position:absolute;bottom:-36px;left:0;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--yellow);text-transform:uppercase;}
-@media(max-width:600px){.modal-close{cursor:pointer;}}
+.film-panel{max-height:calc(100vh - 130px);overflow-y:auto;padding-right:10px;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent;}
+.film-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px;font-family:var(--mono);font-size:10px;letter-spacing:.25em;color:var(--yellow);text-transform:uppercase;}
+.film-meta::before{content:'';width:22px;height:1px;background:var(--yellow);}
+.film-meta .sep{color:var(--mid);}
+.film-meta .ep{color:var(--red);}
+.film-title{font-family:var(--display);font-size:clamp(22px,2.6vw,38px);font-weight:900;line-height:1.05;letter-spacing:-.01em;text-transform:uppercase;color:var(--white);margin:0 0 16px;}
+.film-tagline{font-size:14px;font-style:italic;font-weight:300;line-height:1.6;color:rgba(232,228,216,.85);padding-left:14px;border-left:2px solid var(--yellow);margin:0 0 18px;}
+.film-text p{font-size:13.5px;font-weight:300;line-height:1.8;letter-spacing:.01em;color:var(--light);margin:0 0 14px;}
+.film-nav{display:flex;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid #222;}
+.film-nav button{flex:1;min-width:0;background:none;border:1px solid rgba(245,196,0,.25);padding:12px 14px;text-align:left;color:var(--white);cursor:none;transition:border-color .2s,background .2s;}
+.film-nav button:last-child{text-align:right;}
+.film-nav button:hover{border-color:var(--yellow);background:rgba(245,196,0,.06);}
+.film-nav small{display:block;margin-bottom:5px;font-family:var(--mono);font-size:8px;letter-spacing:.22em;color:var(--yellow);text-transform:uppercase;}
+.film-nav span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.film-meta-line{margin:-2px 0 8px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--yellow);opacity:.85;text-transform:uppercase;}
+@media(max-width:900px){
+  .modal-overlay{padding:0 0 32px;}
+  .film-sheet{margin:0 auto;}
+  .film-sheet-grid{grid-template-columns:minmax(0,1fr);gap:22px;}
+  .film-player{width:100%;margin:56px auto 0;max-width:calc((100vh - 70px) * 16 / 9);}
+  .film-panel{max-height:none;overflow:visible;padding:0 20px;}
+  .modal-close{position:fixed;top:6px;right:6px;z-index:5;background:rgba(8,8,8,.85);padding:14px 16px;cursor:pointer;}
+  .film-nav button{cursor:pointer;}
+}
 
 /* ABOUT */
 .about-section{position:relative;min-height:90vh;overflow:hidden;display:flex;align-items:flex-end;}
@@ -198,6 +237,56 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 @media(max-width:960px){.about-bg-grad{background:linear-gradient(to bottom,rgba(8,8,8,.5) 0%,rgba(8,8,8,.95) 60%);}.about-ghost-name{display:none;}.about-content{max-width:100%;}}
 @media(max-width:600px){.about-section{min-height:auto;}.about-content{padding:50px 20px;}}
 
+/* LOCATIONS MAP */
+.map-wrap{padding:0 48px 80px;}
+.map-scroll{position:relative;}
+.map-stage{position:relative;width:100%;max-width:1400px;margin:0 auto;aspect-ratio:1000/451;background:var(--black);}
+.map-img{position:absolute;inset:0;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none;}
+.map-caption{position:absolute;left:4px;bottom:6px;z-index:2;font-family:var(--mono);font-size:9px;letter-spacing:.22em;color:rgba(245,196,0,.55);text-transform:uppercase;pointer-events:none;}
+.map-marker{position:absolute;z-index:3;width:32px;height:32px;padding:0;border:0;background:none;cursor:none;opacity:0;transform:translate(-50%,-50%) scale(.4);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i) * 70ms);-webkit-tap-highlight-color:transparent;}
+.map-wrap.visible .map-marker{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.map-marker::before,.map-marker::after{content:'';position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;}
+.map-marker::before{background:var(--pin);box-shadow:0 0 0 2px rgba(8,8,8,.85),0 0 16px rgba(255,46,70,.85);transition:background .2s,transform .2s;}
+.map-marker::after{border:1px solid var(--pin);animation:mapPulse 2.6s ease-out infinite;animation-delay:calc(var(--i) * -.37s);}
+@keyframes mapPulse{0%{transform:scale(1);opacity:.7;}100%{transform:scale(3.6);opacity:0;}}
+.map-marker:hover::before,.map-marker.is-open::before,.map-marker:focus-visible::before{background:var(--white);transform:scale(1.4);}
+.map-marker:focus-visible{outline:none;}
+.map-marker:focus-visible::after{border-color:var(--white);}
+.map-count{position:absolute;left:calc(50% + 8px);top:calc(50% - 17px);font-family:var(--mono);font-size:10px;font-weight:700;color:var(--white);pointer-events:none;text-shadow:0 0 4px #000,0 0 8px #000;}
+.map-hint{max-width:1400px;margin:18px auto 0;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:rgba(245,196,0,.45);text-transform:uppercase;text-align:center;}
+.map-hint .h-touch{display:none;}
+@media(hover:none){.map-hint .h-hover{display:none;}.map-hint .h-touch{display:inline;}}
+.map-pop{position:absolute;z-index:3000;left:0;top:0;background:#0a0a0a;border:1px solid rgba(245,196,0,.4);padding:12px 12px 14px;box-shadow:0 18px 50px rgba(0,0,0,.75);visibility:hidden;opacity:0;transform:translateY(6px);transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s;}
+.map-pop.open{visibility:visible;opacity:1;transform:none;transition:opacity .18s ease,transform .18s ease,visibility 0s;}
+.map-pop-title{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-family:var(--mono);font-size:9px;letter-spacing:.25em;color:var(--yellow);text-transform:uppercase;}
+.map-pop-title::before{content:'';width:18px;height:1px;background:var(--yellow);}
+.map-pop.label-only{padding:10px 14px;}
+.map-pop.label-only .map-pop-title{margin-bottom:0;}
+.map-pop-close{display:none;margin-left:auto;background:none;border:0;color:var(--silver);font-family:var(--mono);font-size:12px;padding:12px;cursor:pointer;}
+.map-pop-grid{display:grid;gap:8px;grid-template-columns:repeat(var(--cols),var(--cw));}
+.map-film{display:block;width:100%;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:none;}
+.map-film-th{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;background:var(--dark);}
+.map-film-th img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82) saturate(.8);transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .3s;}
+.map-film:hover .map-film-th img,.map-film:focus-visible .map-film-th img{transform:scale(1.07);filter:brightness(1) saturate(1);}
+.map-film-th::after{content:'';position:absolute;top:50%;left:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border:1px solid rgba(242,237,224,.7);border-radius:50%;background:rgba(8,8,8,.35) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 14'%3E%3Cpath d='M2 1.5L11 7L2 12.5Z' fill='%23f2ede0'/%3E%3C/svg%3E") 55% 50%/10px no-repeat;opacity:0;transform:scale(.7);transition:opacity .25s,transform .25s;}
+.map-film:hover .map-film-th::after,.map-film:focus-visible .map-film-th::after{opacity:1;transform:scale(1);}
+.map-film:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;}
+.map-film-title{display:block;margin-top:6px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--off-white);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media(prefers-reduced-motion:reduce){.map-marker::after{animation:none;}}
+@media(max-width:700px){
+  .map-wrap{padding:0 0 60px;}
+  .map-scroll{overflow-x:auto;overscroll-behavior-x:contain;touch-action:pan-x pan-y pinch-zoom;padding:0 20px;scrollbar-width:none;}
+  .map-scroll::-webkit-scrollbar{display:none;}
+  .map-stage{width:780px;max-width:none;margin:0;}
+  .map-marker{cursor:pointer;}
+  .map-hint{padding:0 20px;}
+  .map-pop{position:fixed !important;left:0 !important;right:0 !important;top:auto !important;bottom:0;width:auto !important;max-height:75vh;overflow-y:auto;border-width:1px 0 0;padding:16px 16px 28px;transform:translateY(100%);}
+  .map-pop.open{transform:none;}
+  .map-pop-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)) !important;}
+  .map-pop-close{display:block;}
+  .map-film{cursor:pointer;}
+}
+
 /* QUOTE BLOCK */
 .quote-block{position:relative;overflow:hidden;border-top:1px solid #1a1a1a;}
 .quote-bg{position:absolute;inset:0;z-index:0;}
@@ -211,9 +300,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 
 /* PRESS */
 .press-section{padding:0 48px 80px;}
-.press-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;}
-@media(max-width:960px){.press-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:600px){.press-section{padding:0 20px 60px;}.press-grid{grid-template-columns:repeat(2,1fr);}}
+.press-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;}
+@media(max-width:960px){.press-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media(max-width:600px){.press-section{padding:0 20px 60px;}.press-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.press-film{font-size:12px;}}
 .press-item{display:block;text-decoration:none;padding:20px 18px 20px;background:var(--off-black);border:1px solid transparent;transition:border-color .25s,background .25s;position:relative;overflow:visible;cursor:none;}
 .press-item:hover{background:var(--dark);border-color:#2a2a2a;}
 .press-item::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
@@ -240,17 +329,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 .c-icon svg[fill="none"]{stroke:currentColor;stroke-width:1.5;}
 .c-icon svg[fill="currentColor"]{fill:currentColor;stroke:none;}
 .c-icon-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.22em;text-transform:uppercase;}
-@media(max-width:600px){.contact-section{padding:48px 20px 36px;}.c-icon{cursor:pointer;}}
+@media(max-width:600px){.contact-section{padding:48px 20px 36px;}.c-icon{cursor:pointer;padding:8px 6px;}}
 
 /* FOOTER */
 footer{padding:20px 48px;border-top:1px solid #161616;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
-.footer-copy{font-family:var(--mono);font-size:8px;color:#2e2e2e;letter-spacing:.15em;text-transform:uppercase;}
-.footer-kd{font-family:var(--mono);font-size:8px;color:#222;letter-spacing:.1em;}
+.footer-copy{font-family:var(--mono);font-size:9px;color:#777;letter-spacing:.15em;text-transform:uppercase;}
+.footer-kd{font-family:var(--mono);font-size:9px;color:#5c5c5c;letter-spacing:.1em;}
 @media(max-width:600px){footer{padding:16px 20px;}}
 
 /* GRAIN */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9500;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");opacity:.7;mix-blend-mode:overlay;}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9499;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)' opacity='0.03'/%3E%3C/svg%3E");opacity:.5;mix-blend-mode:soft-light;}
+
+@media(max-width:768px),(hover:none){body::before,body::after{display:none;}}
 
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease;}
@@ -278,16 +369,14 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9499;
 <!-- HERO -->
 <section class="hero">
   <div class="hero-video-wrap">
-    <video autoplay muted loop playsinline>
-      <source src="img/Promo_new.mp4" type="video/mp4">
-    </video>
+    <video id="heroVideo" muted loop playsinline preload="metadata" poster="img/hero-poster.jpg" aria-hidden="true"></video>
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-leak"></div>
   <div class="hero-edge-line"></div>
   <div class="fc tl"></div><div class="fc tr"></div>
   <div class="fc bl"></div><div class="fc br"></div>
-  <div class="hero-frame-idx">◼ 001A &nbsp;+0</div>
+  <div class="hero-frame-idx" aria-hidden="true">◼ <span id="heroTc">00:00:00:00</span></div>
   <div class="hero-content">
     <h1 class="hero-name">Mikhail <span class="line2">Barynin</span></h1>
     <p class="hero-tagline">Documentary filmmaker<br><span class="dim">focused on human stories.</span><br>Working across diverse environments.<br><span class="dim">Built on trust, and real experience.</span></p>
@@ -312,7 +401,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9499;
     <div class="flagship-leak"></div>
     <div class="fc tl"></div><div class="fc tr"></div>
     <div class="fc bl"></div><div class="fc br"></div>
-    <div class="flagship-code">KD ◼ 1R-2994 ◼ EXP-35</div>
+    <div class="flagship-code" aria-hidden="true">KD ◼ 1R-2994 ◼ EXP-35</div>
     <div class="flagship-content">
       <span class="flagship-badge">Featured film</span>
       <h3 class="flagship-title">24<br>Snow</h3>
@@ -336,6 +425,21 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9499;
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.5"><polyline points="9,8 13,12 9,16"/><line x1="13" y1="12" x2="3" y2="12"/><line x1="21" y1="5" x2="21" y2="19" stroke-width="1" opacity=".5"/></svg>
       </button>
     </div>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section id="locations">
+  <div class="sec-head reveal"><h2 class="sec-title">Geography</h2></div>
+  <div class="map-wrap reveal">
+    <div class="map-scroll" id="mapScroll">
+      <div class="map-stage" id="mapStage">
+        <img class="map-img" src="img/world-map.svg" alt="" aria-hidden="true" draggable="false" loading="lazy">
+        <div class="map-caption" aria-hidden="true">◼ Shot on location</div>
+        <div id="mapMarkers"></div>
+      </div>
+    </div>
+    <p class="map-hint"><span class="h-hover">Hover a point to see the films shot there</span><span class="h-touch">Tap a point to see the films · swipe to explore</span></p>
   </div>
 </section>
 
@@ -493,47 +597,204 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9499;
 
 <!-- FOOTER -->
 <footer>
-  <span class="footer-copy">© 2025 Mikhail Barynin</span>
+  <span class="footer-copy">© <span id="year">2026</span> Mikhail Barynin</span>
   <span class="footer-kd">KD&nbsp;◼&nbsp;MB-FILM-35&nbsp;◼&nbsp;PARIS&nbsp;◼&nbsp;ECN-2</span>
 </footer>
 
-<!-- VIDEO MODAL -->
-<div class="modal-overlay" id="modal">
-  <div class="modal-inner">
+<!-- FILM MODAL -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="film-sheet">
     <button class="modal-close" id="modalClose">✕ &nbsp;Close</button>
-    <div class="modal-ratio">
-      <iframe id="modalFrame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <div class="film-sheet-grid">
+      <div class="film-player">
+        <div class="modal-ratio">
+          <iframe id="modalFrame" title="Film player" src="" allow="autoplay; fullscreen; picture-in-picture"></iframe>
+        </div>
+        <div class="modal-frame-tl"></div>
+        <div class="modal-frame-br"></div>
+      </div>
+      <div class="film-panel" id="filmPanel">
+        <div class="film-meta" id="filmMeta"></div>
+        <h2 class="film-title" id="modalTitle"></h2>
+        <p class="film-tagline" id="filmTagline" hidden></p>
+        <div class="film-text" id="filmText"></div>
+        <div class="film-nav">
+          <button type="button" id="filmPrev"><small>← Previous</small><span></span></button>
+          <button type="button" id="filmNext"><small>Next →</small><span></span></button>
+        </div>
+      </div>
     </div>
-    <div class="modal-frame-tl"></div>
-    <div class="modal-frame-br"></div>
-    <div class="modal-title" id="modalTitle"></div>
   </div>
 </div>
 
 <script>
 const FILMS_START = [
-  { img:'img/Tuva.Independent-People.png', title:'Tuva. Independent People', desc:'People living outside the system choose freedom over modern civilization.', vimeo:'1198803083' },
-  { img:'img/GANDHI.jpg', title:"Gandhi's Footsteps", desc:"A journey across India to meet people who still live by Mahatma Gandhi's ideals.", vimeo:'1198803080' },
-  { img:'img/Dragon-of-Afghanistan.jpg', title:'Dragon of Afghanistan', desc:'An Afghan Bruce Lee lookalike becomes a national icon in turbulent times.', vimeo:'1198803100' },
+  { img:'img/Tuva.Independent-People.jpg', title:'Tuva. Independent People', desc:'People living outside the system choose freedom over modern civilization.', vimeo:'1232958943' },
+  { img:'img/GANDHI.jpg', title:"Gandhi's Footsteps", desc:"A journey across India to meet people who still live by Mahatma Gandhi's ideals.", vimeo:'1232959412' },
+  { img:'img/Dragon-of-Afghanistan.jpg', title:'Dragon of Afghanistan', desc:'An Afghan Bruce Lee lookalike becomes a national icon in turbulent times.', vimeo:'1232959808' },
 ];
 const FILMS_REST = [
-  { img:'img/Reaping-Divine-Justice.jpg', title:'Reaping Divine Justice', desc:'Land conflict in South Africa raises fears of violence between black and white communities.', vimeo:'1198815558' },
-  { img:'img/My-Friend-from-War.jpg', title:'My Friend from War', desc:'A young Syrian soldier recalls life before and after war changed everything.', vimeo:'1198807651' },
-  { img:'img/Breaking-Bad-Wolf.jpg', title:'Breaking Bad Wolf', desc:'A US police officer exposes corruption and becomes a target of the FBI.', vimeo:'1198811463' },
-  { img:'img/Determined.jpg', title:'Western Sahara: Determined', desc:'Sahrawi women risk their lives clearing landmines to reclaim their homeland.', vimeo:'1198808578' },
-  { img:'img/World-war-zero.jpg', title:'World War Zero', desc:'Scientists reconstruct identities of soldiers from the Crimean War.', vimeo:'1198803111' },
-  { img:'img/Find-My-General.jpg', title:'Find My General', desc:"Archaeologists search for the lost remains of Napoleon's general Gudin.", vimeo:'1198808976' },
-  { img:'img/Trans-Sport.jpg', title:'Trans Sport', desc:'The debate over transgender athletes divides the world of competitive sports.', vimeo:'1198815289' },
-  { img:'img/The-Beast-of-Zone-3.jpg', title:'The Beast of Zone 3', desc:'Life unfolds around one of the most dangerous landfills in Guatemala City.', vimeo:'1198805828' },
-  { img:'img/I-Want-My-Sex-Back .jpeg', title:'I Want My Sex Back', desc:'A transgender man reverses transition in search of identity and self-acceptance.', vimeo:'1198809327' },
-  { img:'img/Spyfall.jpeg', title:'Spyfall', desc:'A forgotten spy story resurfaces through a mysterious film from the Cold War era.', vimeo:'1198805778' },
+  { img:'img/Reaping-Divine-Justice.jpg', title:'Reaping Divine Justice', desc:'Land conflict in South Africa raises fears of violence between black and white communities.', vimeo:'1232958838' },
+  { img:'img/My-Friend-from-War.jpg', title:'My Friend from War', desc:'A young Syrian soldier recalls life before and after war changed everything.', vimeo:'1232965147' },
+  { img:'img/Breaking-Bad-Wolf.jpg', title:'Breaking Bad Wolf', desc:'A US police officer exposes corruption and becomes a target of the FBI.', vimeo:'1232956654' },
+  { img:'img/Determined.jpg', title:'Western Sahara: Determined', desc:'Sahrawi women risk their lives clearing landmines to reclaim their homeland.', vimeo:'1232966874' },
+  { img:'img/World-war-zero.jpg', title:'World War Zero', desc:'Scientists reconstruct identities of soldiers from the Crimean War.', vimeo:'1232964394' },
+  { img:'img/Find-My-General.jpg', title:'Find My General', desc:"Archaeologists search for the lost remains of Napoleon's general Gudin.", vimeo:'1232967402' },
+  { img:'img/Trans-Sport.jpg', title:'Trans Sport', desc:'The debate over transgender athletes divides the world of competitive sports.', vimeo:'1232958802' },
+  { img:'img/The-Beast-of-Zone-3.jpg', title:'The Beast of Zone 3', desc:'Life unfolds around one of the most dangerous landfills in Guatemala City.', vimeo:'1232964933' },
+  { img:'img/I-Want-My-Sex-Back.jpg', title:'I Want My Sex Back', desc:'A transgender man reverses transition in search of identity and self-acceptance.', vimeo:'1232967713' },
+  { img:'img/Spyfall.jpeg', title:'Spyfall', desc:'A forgotten spy story resurfaces through a mysterious film from the Cold War era.', vimeo:'1232964586' },
 ];
 const IMPRISONED = [
-  { img:'img/The-Man-in-a-Tan-Jacket.jpg', title:'The Man in a Tan Jacket', desc:"40 years in prison for a crime he says he didn't commit.", vimeo:'1198811989', ep:'Ep. 1' },
-  { img:'img/The-Man-with-a-Cigarette.jpg', title:'The Man with a Cigarette', desc:'21 years on death row for a murder he continues to deny.', vimeo:'1198812600', ep:'Ep. 2' },
-  { img:'img/The-Man-at-the-Party.jpg', title:'The Man at the Party', desc:'A teenager wrongfully imprisoned after a party shooting.', vimeo:'1198813970', ep:'Ep. 3' },
+  { img:'img/The-Man-in-a-Tan-Jacket.jpg', title:'The Man in a Tan Jacket', desc:"40 years in prison for a crime he says he didn't commit.", vimeo:'1232956660', ep:'Ep. 1' },
+  { img:'img/The-Man-with-a-Cigarette.jpg', title:'The Man with a Cigarette', desc:'21 years on death row for a murder he continues to deny.', vimeo:'1232956659', ep:'Ep. 2' },
+  { img:'img/The-Man-at-the-Party.jpg', title:'The Man at the Party', desc:'A teenager wrongfully imprisoned after a party shooting.', vimeo:'1232956661', ep:'Ep. 3' },
 ];
 const CODES = ['KD 3456 ◇08','BH-1866','KS-1870','1R-2994','EXP-35','ECN-2','500T','5219'];
+
+const FILM_INFO = {
+ "24 Snow": {
+  "country": "Arctic Siberia",
+  "year": 2016,
+  "text": [
+   "The Arctic part of Yakutia has an intolerable climate. This is permafrost: for most of the year the temperature stays below zero and the ground stays frozen. In winter it drops to −65 °C. There is no telephone or electricity, and the lack of roads makes travel difficult. Living here means a daily struggle with the environment and with yourself. Hundreds of kilometers from the nearest settlement, you can count only on yourself. These harsh lands attract people who seek freedom and independence.",
+   "The film’s hero, Sergei, is a horse-breeder. For most of the year he lives in the mountains, looking after the horses. Feeling like an outsider in his own home, he has almost lost touch with his family and is missing his children growing up. Every year he spends more and more time away from the village. He sees his family only a few times a year: on Horse-breeders’ Day and when he brings meat home. The harsh conditions of the North force him to make a very hard choice, and show him for who he really is."
+  ]
+ },
+ "Breaking Bad Wolf": {
+  "country": "USA",
+  "year": 2018,
+  "tagline": "Why American cop and whistleblower Mark Dougan turned to Russia for sanctuary.",
+  "text": [
+   "While flying close to a small airstrip just over the US border with Canada, the passenger aboard a small Cessna seemed to have a heart attack. After an emergency landing, he miraculously recovered, jumped out of the plane, threw some money at the pilot and ran away. A few days later, he resurfaced in Russia.",
+   "It may sound like a spy novel plot, but it’s just one episode in the true story of real-life American cop-turned-whistleblower Mark Dougan. After exposing endemic corruption in the Palm Beach County Sheriff’s Office, he had to flee the United States and found refuge in Russia. Discover his incredible story."
+  ]
+ },
+ "Reaping Divine Justice": {
+  "country": "South Africa",
+  "year": 2019,
+  "text": [
+   "Every year, on July 18, Mandela Day commemorates the legacy of South Africa’s first Black president. Nelson Mandela brought an end to the segregationist policies of the country’s apartheid system. Yet racial disparities in income, jobs and land ownership remain.",
+   "White South Africans, who make up just 8% of the population, still own 72% of all rural land. In 2019, the ruling African National Congress wanted to redress historical injustices through land reform. Its plans, however, sparked heated debate and a wave of violence against white-owned farms."
+  ]
+ },
+ "Dragon of Afghanistan": {
+  "country": "Afghanistan",
+  "year": 2017,
+  "text": [
+   "As a teenager, Abbas Alizada was often told that he looked remarkably like Bruce Lee. He decided to work on himself to strengthen the resemblance. In the film, Abbas shares his tips and tricks for copying the film star’s moves and demonstrates his mastery of the nunchaku. Fans call him “the Afghan Bruce Lee.”",
+   "He gives out prizes on national television and has been honored by the Afghan Olympic Committee for his contribution to sports. His celebrity status, however, comes at a price. In a country where religion remains a powerful force, some consider his emulation of Bruce Lee contrary to Islamic teachings."
+  ]
+ },
+ "The Man with a Cigarette": {
+  "country": "USA",
+  "year": 2019,
+  "text": [
+   "Otis, Kenny and Jerome were destined to spend most of their lives behind bars. But they all knew they were serving sentences for crimes they hadn’t committed."
+  ]
+ },
+ "The Man in a Tan Jacket": {
+  "country": "USA",
+  "year": 2019,
+  "text": [
+   "Otis, Kenny and Jerome were destined to spend most of their lives behind bars. But they all knew they were serving sentences for crimes they hadn’t committed."
+  ]
+ },
+ "The Man at the Party": {
+  "country": "USA",
+  "year": 2019,
+  "text": [
+   "Otis, Kenny and Jerome were destined to spend most of their lives behind bars. But they all knew they were serving sentences for crimes they hadn’t committed."
+  ]
+ },
+ "My Friend from War": {
+  "country": "Syria",
+  "year": 2021,
+  "text": [
+   "Rami was drafted into the Syrian army ten years ago. He remembers those peaceful days and the fun of preparing for military service. These young soldiers never knew the atrocities of real combat, and when the war broke out it hit them hard. The war changed everything. They weren’t prepared to face terrorists or to lose people in the war. Rami lost almost all of his friends and witnessed terrible things on the front lines.",
+   "Searching for support, Rami found his own way to power through. He made a new friend, Willy. Willy can’t die on the front line, because he is simply a ball.",
+   "“I have a trust issue, I think. Because, you know, I usually trusted my friends, but when they passed away, I was like, I’m not gonna trust anyone. I feel they betrayed me when they’ve gone. So I don’t want a new betrayal. Why [do] I trust Willy? Because he stayed till now with me. Because Willy became part of me and I became part of him,” says Rami.",
+   "In the documentary, Rami describes how talking to Willy helped him survive the war, and why he believes that everyone in the world has their own Willy."
+  ]
+ },
+ "Gandhi's Footsteps": {
+  "country": "India",
+  "year": 2019,
+  "text": [
+   "Mahatma Gandhi is credited with being the Father of the Nation in post-colonial India. Since 2007, October 2 has been celebrated as the International Day of Non-Violence. Even though one and a half centuries have passed, his philosophy lives on: people still follow his teachings to this day.",
+   "Watch the documentary to learn more about this legendary figure’s lasting impact."
+  ]
+ },
+ "Find My General": {
+  "country": "France / Russia",
+  "year": 2019,
+  "text": [
+   "Charles Gudin de la Sablonnière was Napoleon Bonaparte’s school friend and an acclaimed revolutionary general. His death at the beginning of the calamitous 1812 Russia campaign broke the Emperor’s heart. Gudin’s grave was then lost until, incredibly, a Franco-Russian team of archaeologists found it in Smolensk, western Russia, in the summer of 2019.",
+   "The documentary explores the personality of this remarkable Napoleonic general and the team that found his remains in Russia."
+  ]
+ },
+ "World War Zero": {
+  "country": "Crimea",
+  "year": 2020,
+  "text": [
+   "How an international crew recovers the remains of fallen Crimean War soldiers."
+  ]
+ },
+ "Spyfall": {
+  "country": "Syria / Russia",
+  "year": 2021,
+  "text": [
+   "An old film provides a glimpse of the forgotten spy war in Syria in the 1960s. As tension grew in the Arab world, the country was full of Western and Soviet intelligence agencies tearing it apart. Elusive Eli Cohen was the most hunted Israeli spy of the time. He was thought responsible for missions that could shape the fate of the whole region.",
+   "Sixty years later, his identity has been unveiled by a mysterious film discovered in a Moscow apartment. Who made the film, and how did it get to Russia?"
+  ]
+ },
+ "Tuva. Independent People": {
+  "country": "Tuva",
+  "year": 2011,
+  "text": [
+   "These places have a tough climate, impenetrable forests and no civilization. No one would wish to live here. No one except these people. Others would be frightened by the lack of roads, but these people appreciate the freedom of movement. The vacuum of information preserves the tranquility of their souls.",
+   "They do not have ID cards, salaries or pensions. Formally, they do not exist at all. But in reality, they live here. They live happily and independently of the state, and they are able to enjoy the authentic beauty of nature in the Republic of Tuva every day."
+  ]
+ },
+ "Western Sahara: Determined": {
+  "country": "Algeria / Western Sahara",
+  "year": 2017,
+  "tagline": "Sahrawi women risk their lives to clear ancestral lands of mines.",
+  "text": [
+   "Western Sahara is one of the most heavily mined territories in the world following decades of conflict with its neighbors. Despite a 1991 ceasefire, most Sahrawis still live in refugee camps in Algeria because it is too dangerous to live there. Now, some brave young women have taken it upon themselves to clear their ancestral lands of landmines so their people can return."
+  ]
+ },
+ "The Beast of Zone 3": {
+  "country": "Guatemala",
+  "year": 2016,
+  "text": [
+   "This is the most dangerous district in Guatemala City, the biggest capital in Central America. It is known as Zone 3 or Basurero, meaning “dump.” It’s home to an enormous landfill site, known locally as “The Mine.”",
+   "The huge pit, into which tons of garbage are dumped every day, has its own graveyard where tombs seem about to collapse at any moment."
+  ]
+ },
+ "Trans Sport": {
+  "country": "USA",
+  "year": 2020,
+  "text": [
+   "Transgender women participating in female competitions are creating a backlash in the sports community. Canadian cyclist Rachel McKinnon became an icon of “trans sport” after becoming the first transgender woman to win a world title. At least three trans women were poised to participate in the Tokyo Olympic Games in 2021. Meanwhile, some of their rivals opposed their inclusion, claiming that trans athletes might have physiological advantages.",
+   "Athletes on both sides of the fence speak out in this documentary."
+  ]
+ },
+ "I Want My Sex Back": {
+  "country": "USA",
+  "year": 2019,
+  "text": [
+   "Billy, Rene and Walt were born and raised as men, but they felt uncomfortable with their birth sex. After years of confusion, they each underwent surgery to change into what they thought were their true selves. However, the sex change brought no relief to what they had believed was gender dysphoria. While Billy and Walt decided to go back to being men, Rene remained a transgender woman.",
+   "“I Want My Sex Back” tells their stories of change and disappointment."
+  ]
+ }
+};
+
+function metaLine(title){
+  const i = FILM_INFO[title];
+  if(!i) return '';
+  return `<div class="film-meta-line">${i.country}${i.year ? ' · ' + i.year : ''}</div>`;
+}
 
 function makeCard(f, i) {
   const card = document.createElement('div');
@@ -544,67 +805,302 @@ function makeCard(f, i) {
       <div class="film-thumb-grad"></div>
       <canvas class="film-grain-canvas"></canvas>
       <div class="play-btn"><svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M1 1.5L11 7L1 12.5V1.5Z" stroke="white" stroke-width="1" stroke-linejoin="round"/></svg></div>
-      <div class="film-code-badge">${CODES[i % CODES.length]}</div>
+      <div class="film-code-badge" aria-hidden="true">${CODES[i % CODES.length]}</div>
       <div class="card-leak"></div>
     </div>
     <div class="film-info">
       <div class="tape-label">${f.title.toUpperCase()}</div>
+      ${metaLine(f.title)}
       <p class="film-desc">${f.desc}</p>
     </div>
     <div class="fc tl"></div><div class="fc tr"></div>
     <div class="fc bl"></div><div class="fc br"></div>
   `;
+  card.setAttribute('role','button');
+  card.tabIndex = 0;
+  card.setAttribute('aria-label', 'Watch ' + f.title);
   card.addEventListener('click', () => openModal(f.vimeo, f.title));
+  card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); card.click(); } });
   return card;
 }
 
 const timeline = document.getElementById('timeline');
-FILMS_START.forEach((f, i) => timeline.appendChild(makeCard(f, i)));
 
-// IMPRISONED — flat: divider label + 3 plain cards
-const divider = document.createElement('div');
-divider.className = 'imprisoned-divider';
-divider.innerHTML = `<div class="imprisoned-divider-inner"><span class="imprisoned-divider-label">◼ Imprisoned</span><span class="imprisoned-divider-sub">Mini Series · 3 Episodes</span></div>`;
-timeline.appendChild(divider);
+// CAROUSEL ORDER — titles must match the entries above
+const ORDER = [
+  'Breaking Bad Wolf',
+  'Reaping Divine Justice',
+  'Dragon of Afghanistan',
+  'The Man with a Cigarette',
+  'The Man in a Tan Jacket',
+  'The Man at the Party',
+  'My Friend from War',
+  "Gandhi's Footsteps",
+  'Find My General',
+  'World War Zero',
+  'Spyfall',
+  'Tuva. Independent People',
+  'Western Sahara: Determined',
+  'The Beast of Zone 3',
+  'Trans Sport',
+  'I Want My Sex Back'
+];
+const FILM_BY_TITLE = {};
+[...FILMS_START, ...FILMS_REST, ...IMPRISONED].forEach(f => FILM_BY_TITLE[f.title] = f);
 
-IMPRISONED.forEach((f, i) => {
-  const card = makeCard(f, i + 10);
-  card.classList.add('imprisoned');
-  const b = document.createElement('div');
-  b.style.cssText = 'position:absolute;top:8px;left:8px;z-index:5;font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:#e8001a;text-transform:uppercase;';
-  b.textContent = f.ep;
-  card.appendChild(b);
+let dividerAdded = false;
+ORDER.forEach((title, i) => {
+  const f = FILM_BY_TITLE[title];
+  if (!f) { console.warn('Film not found for carousel:', title); return; }
+  if (f.ep && !dividerAdded) {
+    const divider = document.createElement('div');
+    divider.className = 'imprisoned-divider';
+    divider.innerHTML = `<div class="imprisoned-divider-inner"><span class="imprisoned-divider-label">◼ Imprisoned</span><span class="imprisoned-divider-sub">Mini Series · 3 Episodes</span></div>`;
+    timeline.appendChild(divider);
+    dividerAdded = true;
+  }
+  const card = makeCard(f, i);
+  if (f.ep) {
+    card.classList.add('imprisoned');
+    const b = document.createElement('div');
+    b.style.cssText = 'position:absolute;top:8px;left:8px;z-index:5;font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:#e8001a;text-transform:uppercase;';
+    b.textContent = f.ep;
+    card.appendChild(b);
+  }
   timeline.appendChild(card);
 });
 
-FILMS_REST.forEach((f, i) => timeline.appendChild(makeCard(f, i + 3)));
-
 // FLAGSHIP
-document.getElementById('flagshipPlay').addEventListener('click', () => openModal('1198811074','24 Snow'));
-document.getElementById('flagship24').addEventListener('click', e => { if(!e.target.closest('button')) openModal('1198811074','24 Snow'); });
+document.getElementById('flagshipPlay').addEventListener('click', () => openModal('1233130230','24 Snow'));
+document.getElementById('flagship24').addEventListener('click', e => { if(!e.target.closest('button')) openModal('1233130230','24 Snow'); });
 
 // ARROW SCROLL
 const SCROLL_AMT = 660;
-document.getElementById('tlRight').addEventListener('click', () => timeline.scrollBy({left: SCROLL_AMT, behavior:'smooth'}));
-document.getElementById('tlLeft').addEventListener('click',  () => timeline.scrollBy({left: -SCROLL_AMT, behavior:'smooth'}));
+document.getElementById('tlRight').addEventListener('click', () => tlGoTo((tlAnim?tlTarget:tl.scrollLeft)+SCROLL_AMT));
+document.getElementById('tlLeft').addEventListener('click',  () => tlGoTo((tlAnim?tlTarget:tl.scrollLeft)-SCROLL_AMT));
 
-// MODAL
+// HERO VIDEO — lighter file on phones; skipped for reduced-motion / data-saver (poster stays)
+(function(){
+  const v=document.getElementById('heroVideo');
+  if(!v) return;
+  const saver=navigator.connection&&navigator.connection.saveData;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||saver) return;
+  v.src=matchMedia('(max-width:768px)').matches?'img/Promo_mobile.mp4':'img/Promo_hd.mp4';
+  const p=v.play(); if(p&&p.catch) p.catch(()=>{});
+  // live timecode HH:MM:SS:FF (25 fps) that follows the video
+  const tc=document.getElementById('heroTc');
+  if(!tc) return;
+  const FPS=25, pad=n=>String(n).padStart(2,'0');
+  let last='';
+  const show=t=>{
+    const f=Math.floor(t*FPS), s=Math.floor(f/FPS);
+    const txt=pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60)+':'+pad(f%FPS);
+    if(txt!==last){tc.textContent=txt;last=txt;}
+  };
+  if('requestVideoFrameCallback' in v){
+    const loop=(now,meta)=>{show(meta.mediaTime);v.requestVideoFrameCallback(loop);};
+    v.requestVideoFrameCallback(loop);
+  } else {
+    const loop=()=>{show(v.currentTime);requestAnimationFrame(loop);};
+    loop();
+  }
+})();
+document.getElementById('year').textContent=new Date().getFullYear();
+
+// FILM MODAL — player + details + previous / next
 const modal=document.getElementById('modal'),mFrame=document.getElementById('modalFrame'),mTitle=document.getElementById('modalTitle'),mClose=document.getElementById('modalClose');
-function openModal(id,title){mFrame.src=`https://player.vimeo.com/video/${id}?autoplay=1&color=f5c400&title=0&byline=0&portrait=0`;mTitle.textContent=title.toUpperCase();modal.classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(){modal.classList.remove('open');mFrame.src='';document.body.style.overflow='';}
+const mMeta=document.getElementById('filmMeta'),mTag=document.getElementById('filmTagline'),mText=document.getElementById('filmText'),mPanel=document.getElementById('filmPanel');
+const mPrev=document.getElementById('filmPrev'),mNext=document.getElementById('filmNext');
+const FILM_SEQ=['24 Snow',...ORDER];
+const vimeoOf=t=>t==='24 Snow'?'1233130230':(FILM_BY_TITLE[t]||{}).vimeo;
+let lastFocus=null,curFilm=-1;
+function playerSrc(id){return `https://player.vimeo.com/video/${id}?autoplay=1&color=f5c400&title=0&byline=0&portrait=0`;}
+function showFilm(i){
+  const n=FILM_SEQ.length;
+  curFilm=(i+n)%n;
+  const title=FILM_SEQ[curFilm], info=FILM_INFO[title]||{}, f=FILM_BY_TITLE[title];
+  mFrame.src=playerSrc(vimeoOf(title));
+  mTitle.textContent=title;
+  mMeta.textContent='';
+  [info.country, info.year].filter(Boolean).forEach((v,k)=>{
+    if(k){const sep=document.createElement('span');sep.className='sep';sep.textContent='◼';mMeta.appendChild(sep);}
+    mMeta.append(String(v));
+  });
+  if(f&&f.ep){
+    const sep=document.createElement('span');sep.className='sep';sep.textContent='◼';
+    const ep=document.createElement('span');ep.className='ep';ep.textContent='Mini-series · '+f.ep;
+    mMeta.append(sep,ep);
+  }
+  mTag.hidden=!info.tagline;mTag.textContent=info.tagline||'';
+  mText.textContent='';
+  (info.text||[]).forEach(t=>{const p=document.createElement('p');p.textContent=t;mText.appendChild(p);});
+  mPrev.querySelector('span').textContent=FILM_SEQ[(curFilm-1+n)%n];
+  mNext.querySelector('span').textContent=FILM_SEQ[(curFilm+1)%n];
+  mPanel.scrollTop=0;
+}
+function openModal(id,title){
+  lastFocus=document.activeElement;
+  const i=FILM_SEQ.indexOf(title);
+  if(i>=0) showFilm(i);
+  else {mFrame.src=playerSrc(id);mTitle.textContent=title;mMeta.textContent='';mTag.hidden=true;mText.textContent='';}
+  modal.classList.add('open');document.body.style.overflow='hidden';mClose.focus({preventScroll:true});
+}
+function closeModal(){modal.classList.remove('open');mFrame.src='';document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});}
 mClose.addEventListener('click',closeModal);
+mPrev.addEventListener('click',()=>showFilm(curFilm-1));
+mNext.addEventListener('click',()=>showFilm(curFilm+1));
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+document.addEventListener('keydown',e=>{
+  if(!modal.classList.contains('open')) return;
+  if(e.key==='Escape') closeModal();
+  else if(e.key==='ArrowLeft') showFilm(curFilm-1);
+  else if(e.key==='ArrowRight') showFilm(curFilm+1);
+});
 
 // SCRAMBLE
 const SC='0123456789ABCDEF◼▪◻KD+-';
 function scramble(el,text,ms=550){let f=0,tot=Math.ceil(ms/28);const iv=setInterval(()=>{f++;const p=f/tot;el.textContent=[...text].map((c,i)=>c===' '?' ':i<text.length*p?c:SC[Math.floor(Math.random()*SC.length)]).join('');if(f>=tot){clearInterval(iv);el.textContent=text;}},28);}
 document.querySelectorAll('.sc').forEach(a=>{const o=a.dataset.text;a.addEventListener('mouseenter',()=>scramble(a,o));a.addEventListener('mouseleave',()=>{a.textContent=o;});});
 
+// LOCATIONS MAP
+(function(){
+  const stage=document.getElementById('mapStage');
+  if(!stage) return;
+  const layer=document.getElementById('mapMarkers');
+  const scroller=document.getElementById('mapScroll');
+  const FILMS=Object.assign({'24 Snow':{img:'img/24-snow.jpg',title:'24 Snow',vimeo:'1233130230'}},FILM_BY_TITLE);
+  const PTS=[
+    {name:'Arctic Siberia',x:75.67,y:8.25,films:['24 Snow']},
+    {name:'USA',x:25.76,y:24.65,films:['Breaking Bad Wolf','The Man with a Cigarette','The Man in a Tan Jacket','The Man at the Party','Trans Sport','I Want My Sex Back']},
+    {name:'South Africa',x:56.53,y:78.72,films:['Reaping Divine Justice']},
+    {name:'Afghanistan',x:67.18,y:27.96,films:['Dragon of Afghanistan']},
+    {name:'Syria',x:59.68,y:27.43,films:['My Friend from War','Spyfall']},
+    {name:'India',x:71.11,y:37.23,films:["Gandhi's Footsteps"]},
+    {name:'France',x:50.61,y:19.21,films:['Find My General']},
+    {name:'Russia',x:57.03,y:14.1,films:['Find My General','Spyfall']},
+    {name:'Crimea',x:58.13,y:20.36,films:['World War Zero']},
+    {name:'Tuva',x:71.3,y:16.02,films:['Tuva. Independent People']},
+    {name:'Algeria / Western Sahara',x:47.5,y:34.07,films:['Western Sahara: Determined']},
+    {name:'Guatemala',x:25.31,y:43.1,films:['The Beast of Zone 3']},
+    // places without films yet — shown as plain labels
+    {name:'South Korea',x:82.13,y:26.55,films:[]},
+    {name:'Japan',x:85.3,y:26.84,films:[]},
+    {name:'Russian Far East',x:81.12,y:17.1,films:[]},
+    {name:'Kenya',x:60.51,y:55.45,films:[]},
+    {name:'Mali',x:49.05,y:41.23,films:[]}
+  ];
+  const mobileMQ=matchMedia('(max-width:700px)');
+  const hoverMQ=matchMedia('(hover:hover)');
+  const pop=document.createElement('div');
+  pop.className='map-pop';
+  pop.setAttribute('role','dialog');
+  pop.setAttribute('aria-label','Films shot at this location');
+  document.body.appendChild(pop);
+
+  let current=null, mode=null, closeTimer=null;
+  const markers=[];
+
+  function closePop(){
+    clearTimeout(closeTimer);
+    pop.classList.remove('open');
+    if(current){current.el.classList.remove('is-open');current.el.setAttribute('aria-expanded','false');}
+    current=null;mode=null;
+  }
+  function scheduleClose(){
+    clearTimeout(closeTimer);
+    if(mode==='hover') closeTimer=setTimeout(closePop,220);
+  }
+  function fill(pt){
+    pop.textContent='';
+    const title=document.createElement('div');
+    title.className='map-pop-title';
+    title.append(pt.name);
+    const x=document.createElement('button');
+    x.className='map-pop-close';x.type='button';x.setAttribute('aria-label','Close');x.textContent='✕';
+    x.addEventListener('click',closePop);
+    title.appendChild(x);
+    pop.appendChild(title);
+    pop.classList.toggle('label-only',!pt.films.length);
+    const n=pt.films.length;
+    if(!n) return;
+    const grid=document.createElement('div');
+    grid.className='map-pop-grid';
+    grid.style.setProperty('--cols',n===1?1:n===2?2:3);
+    grid.style.setProperty('--cw',(n===1?240:n===2?172:150)+'px');
+    pt.films.forEach(t=>{
+      const f=FILMS[t]; if(!f) return;
+      const b=document.createElement('button');
+      b.className='map-film';b.type='button';b.setAttribute('aria-label','Watch '+f.title);
+      const th=document.createElement('span');th.className='map-film-th';
+      const im=document.createElement('img');im.src=f.img;im.alt='';im.loading='lazy';
+      th.appendChild(im);
+      const tt=document.createElement('span');tt.className='map-film-title';tt.textContent=f.title;
+      b.append(th,tt);
+      b.addEventListener('click',()=>{closePop();openModal(f.vimeo,f.title);});
+      // same big-ring + WATCH cursor as the film cards
+      b.addEventListener('mouseenter',()=>{curR.style.width='64px';curR.style.height='64px';curR.style.borderColor='rgba(245,196,0,.8)';curWatch.style.opacity='1';cur.style.width='4px';cur.style.height='4px';});
+      b.addEventListener('mouseleave',()=>{curR.style.width='28px';curR.style.height='28px';curR.style.borderColor='rgba(245,196,0,.6)';curWatch.style.opacity='0';cur.style.width='6px';cur.style.height='6px';});
+      grid.appendChild(b);
+    });
+    pop.appendChild(grid);
+  }
+  function place(m){
+    if(mobileMQ.matches) return; // bottom sheet, positioned by CSS
+    const r=m.el.getBoundingClientRect();
+    const cx=r.left+r.width/2+scrollX, cy=r.top+r.height/2+scrollY;
+    const w=pop.offsetWidth,h=pop.offsetHeight,vw=document.documentElement.clientWidth;
+    const left=Math.min(Math.max(cx-w/2,scrollX+12),scrollX+vw-w-12);
+    const above=r.top-h-20>=72;
+    pop.style.left=left+'px';
+    pop.style.top=(above?cy-h-20:cy+20)+'px';
+  }
+  function openPop(m,how){
+    clearTimeout(closeTimer);
+    if(current&&current!==m){current.el.classList.remove('is-open');current.el.setAttribute('aria-expanded','false');}
+    current=m;mode=how;
+    fill(m.pt);
+    pop.style.left='0px';pop.style.top='0px';
+    place(m);
+    m.el.classList.add('is-open');m.el.setAttribute('aria-expanded','true');
+    pop.classList.add('open');
+  }
+
+  PTS.forEach((pt,i)=>{
+    const el=document.createElement('button');
+    el.type='button';el.className='map-marker';
+    el.style.left=pt.x+'%';el.style.top=pt.y+'%';el.style.setProperty('--i',i);
+    const nf=pt.films.length;
+    el.setAttribute('aria-label',nf?pt.name+', '+nf+(nf===1?' film':' films'):pt.name);
+    el.setAttribute('aria-haspopup','dialog');el.setAttribute('aria-expanded','false');
+    if(nf>1){const c=document.createElement('span');c.className='map-count';c.textContent=nf;el.appendChild(c);}
+    const m={el,pt};markers.push(m);
+    el.addEventListener('mouseenter',()=>{if(hoverMQ.matches&&mode!=='click')openPop(m,'hover');else if(hoverMQ.matches&&current===m)clearTimeout(closeTimer);});
+    el.addEventListener('mouseleave',scheduleClose);
+    el.addEventListener('click',e=>{
+      e.stopPropagation();
+      if(current===m){ if(mode==='hover'){mode='click';} else closePop(); return; }
+      openPop(m,'click');
+      if(e.detail===0){const f=pop.querySelector('.map-film');if(f)f.focus();} // opened with the keyboard
+    });
+    layer.appendChild(el);
+  });
+
+  pop.addEventListener('mouseenter',()=>clearTimeout(closeTimer));
+  pop.addEventListener('mouseleave',scheduleClose);
+  document.addEventListener('click',e=>{if(current&&!pop.contains(e.target)&&!e.target.closest('.map-marker'))closePop();});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&current){const el=current.el;closePop();if(pop.contains(document.activeElement)||document.activeElement===document.body)el.focus({preventScroll:true});}
+  });
+  window.addEventListener('resize',closePop);
+  // phones: start the swipeable map centred on Europe / Asia, where most of the films are
+  if(scroller) scroller.scrollLeft=(scroller.scrollWidth-scroller.clientWidth)*0.6;
+})();
+
 // CURSOR
 const cur=document.getElementById('cur'),curR=document.getElementById('cur-r'),curWatch=document.getElementById('cur-watch'),curRead=document.getElementById('cur-read');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+let mouseSeen=false;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(!mouseSeen){mouseSeen=true;rx=mx;ry=my;document.body.classList.add('has-mouse');}});
 (function tick(){
   cur.style.left=mx+'px'; cur.style.top=my+'px';
   rx+=(mx-rx)*.14; ry+=(my-ry)*.14;
@@ -660,13 +1156,88 @@ document.querySelectorAll('a,button').forEach(el=>{
   });
 });
 
-// DRAG SCROLL
+// CAROUSEL SCROLL — one smooth engine for drag (mouse), wheel and arrows; touch stays native
 const tl=document.getElementById('timeline');
-let isDown=false,startX,sl;
-tl.addEventListener('mousedown',e=>{isDown=true;startX=e.pageX-tl.offsetLeft;sl=tl.scrollLeft;});
-tl.addEventListener('mouseleave',()=>isDown=false);
-tl.addEventListener('mouseup',()=>isDown=false);
-tl.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();tl.scrollLeft=sl-(e.pageX-tl.offsetLeft-startX)*1.5;});
+let tlTarget=tl.scrollLeft,tlAnim=false;
+const tlMax=()=>tl.scrollWidth-tl.clientWidth;
+const tlClamp=v=>Math.max(0,Math.min(tlMax(),v));
+function tlStep(){
+  const d=tlTarget-tl.scrollLeft;
+  if(Math.abs(d)<0.5){tl.scrollLeft=tlTarget;tlAnim=false;return;}
+  tl.scrollLeft+=d*0.14;
+  requestAnimationFrame(tlStep);
+}
+function tlGoTo(v){tlTarget=tlClamp(v);if(!tlAnim){tlAnim=true;requestAnimationFrame(tlStep);}}
+// keep target in sync when scroll comes from elsewhere (touch, scrollbar, keyboard)
+tl.addEventListener('scroll',()=>{if(!tlAnim&&!tlDrag)tlTarget=tl.scrollLeft;},{passive:true});
+
+// mouse drag with inertia
+let tlDrag=false,tlMoved=0,tlStartX=0,tlStartSL=0,tlLastX=0,tlLastT=0,tlVel=0;
+tl.addEventListener('mousedown',e=>{
+  if(e.button!==0)return;
+  tlDrag=true;tlAnim=false;tlMoved=0;tlVel=0;
+  tlStartX=tlLastX=e.clientX;tlStartSL=tl.scrollLeft;tlLastT=performance.now();
+  e.preventDefault(); // no text selection / native image drag
+});
+window.addEventListener('mousemove',e=>{
+  if(!tlDrag)return;
+  const dx=e.clientX-tlStartX;
+  tlMoved=Math.max(tlMoved,Math.abs(dx));
+  if(tlMoved>5)tl.classList.add('dragging');
+  tl.scrollLeft=tlStartSL-dx;
+  const now=performance.now(),dt=now-tlLastT;
+  if(dt>0){tlVel=0.8*tlVel+0.2*((tlLastX-e.clientX)/dt);tlLastX=e.clientX;tlLastT=now;}
+});
+window.addEventListener('mouseup',()=>{
+  if(!tlDrag)return;
+  tlDrag=false;tl.classList.remove('dragging');
+  if(tlMoved>5){tlTarget=tl.scrollLeft;tlGoTo(tl.scrollLeft+tlVel*260);} // glide out
+});
+// a drag must never count as a click on a film
+tl.addEventListener('click',e=>{if(tlMoved>5){e.stopPropagation();e.preventDefault();tlMoved=0;}},true);
+
+// mouse wheel over the row scrolls it sideways; at either end the page scrolls as usual
+tl.addEventListener('wheel',e=>{
+  if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return; // native horizontal trackpad swipe
+  let dy=e.deltaY;
+  if(e.deltaMode===1)dy*=32;else if(e.deltaMode===2)dy*=tl.clientWidth;
+  const base=tlAnim?tlTarget:tl.scrollLeft;
+  if((dy<0&&base<=0)||(dy>0&&base>=tlMax()-1))return;
+  e.preventDefault();
+  tlGoTo(base+dy);
+},{passive:false});
+
+// SCROLL HINT — once, when the film row first comes into view: nudge forward and back
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)) return;
+  const DIST=Math.min(150,Math.max(0,tlMax()-1)), OUT=750, PAUSE=180, BACK=850;
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  let cancelled=false;
+  const cancel=()=>{cancelled=true;};
+  ['wheel','mousedown','touchstart','keydown'].forEach(ev=>tl.addEventListener(ev,cancel,{passive:true,once:true}));
+  function play(){
+    if(cancelled||tl.scrollLeft>5||DIST<20) return;
+    const t0=performance.now();
+    (function frame(now){
+      if(cancelled) return;
+      const t=now-t0;
+      let x;
+      if(t<OUT) x=DIST*ease(t/OUT);
+      else if(t<OUT+PAUSE) x=DIST;
+      else if(t<OUT+PAUSE+BACK) x=DIST*(1-ease((t-OUT-PAUSE)/BACK));
+      else { tl.scrollLeft=0; return; }
+      tl.scrollLeft=x;
+      requestAnimationFrame(frame);
+    })(t0);
+  }
+  const io=new IntersectionObserver(entries=>{
+    if(entries.some(e=>e.isIntersecting)){
+      io.disconnect();
+      setTimeout(play,450);
+    }
+  },{threshold:0.6});
+  io.observe(tl);
+})();
 
 // REVEAL
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.06});
@@ -692,7 +1263,7 @@ function drawGrain(canvas) {
 }
 
 function grainLoop() {
-  activeCanvases.forEach(c => {
+  if (!tlDrag) activeCanvases.forEach(c => {
     if (c.width > 0 && c.height > 0) drawGrain(c);
   });
   requestAnimationFrame(grainLoop);
