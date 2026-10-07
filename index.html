@@ -253,12 +253,12 @@ nav.hide{transform:translateY(-110%);}
 .map-img{position:absolute;inset:0;z-index:1;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none;}
 /* projector glow behind the map: irregular flicker + slow pulse, same yellow as the map outlines */
 .map-glow{position:absolute;inset:-12% -6%;z-index:0;pointer-events:none;}
-.map-glow::before,.map-glow::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 58% 64% at 50% 48%,rgba(245,196,0,.18) 0%,rgba(245,196,0,.09) 42%,rgba(245,196,0,0) 76%);}
+.map-glow::before,.map-glow::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 58% 64% at 50% 48%,rgba(245,196,0,.15) 0%,rgba(245,196,0,.075) 42%,rgba(245,196,0,0) 76%);}
 .map-glow::before{opacity:.9;}
 .map-glow::after{opacity:.5;}
-.map-wrap.visible .map-glow::before{animation:projFlicker 3.7s steps(1,end) infinite;}
+.map-wrap.visible .map-glow::before{animation:projFlicker 6.4s ease-in-out infinite;}
 .map-wrap.visible .map-glow::after{animation:projPulse 5.2s ease-in-out infinite;}
-@keyframes projFlicker{0%{opacity:.85;}6%{opacity:1;}11%{opacity:.78;}17%{opacity:.95;}23%{opacity:.82;}31%{opacity:1;}38%{opacity:.88;}46%{opacity:.76;}53%{opacity:.97;}61%{opacity:.84;}69%{opacity:1;}77%{opacity:.8;}86%{opacity:.93;}93%{opacity:.8;}100%{opacity:.85;}}
+@keyframes projFlicker{0%{opacity:.62;}4%{opacity:1;}16%{opacity:.66;}24%{opacity:.6;}27%{opacity:.88;}40%{opacity:.64;}52%{opacity:.6;}55%{opacity:.78;}68%{opacity:.64;}78%{opacity:.6;}81%{opacity:1;}96%{opacity:.66;}100%{opacity:.62;}}
 @keyframes projPulse{0%,100%{opacity:.3;}50%{opacity:.8;}}
 @media(prefers-reduced-motion:reduce){.map-wrap.visible .map-glow::before,.map-wrap.visible .map-glow::after{animation:none;}}
 .map-caption{position:absolute;left:4px;bottom:6px;z-index:2;font-family:var(--mono);font-size:9px;letter-spacing:.22em;color:rgba(245,196,0,.55);text-transform:uppercase;pointer-events:none;}
