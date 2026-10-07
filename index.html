@@ -43,10 +43,13 @@ body.has-mouse #cur,body.has-mouse #cur-r{opacity:1;}
 @media(max-width:768px){#cur,#cur-r,#cur-watch,#cur-read{display:none;}body{cursor:auto;}}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;}
-.nav-logo{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.28em;color:var(--white);text-decoration:none;text-transform:uppercase;mix-blend-mode:difference;}
+nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;transition:transform .4s cubic-bezier(.2,.7,.2,1);}
+nav::before{content:'';position:absolute;left:0;right:0;top:0;bottom:-26px;z-index:-1;pointer-events:none;background:linear-gradient(to bottom,rgba(8,8,8,.94) 0%,rgba(8,8,8,.72) 55%,rgba(8,8,8,0) 100%);opacity:0;transition:opacity .35s ease;}
+nav.scrolled::before{opacity:1;}
+nav.hide{transform:translateY(-110%);}
+.nav-logo{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.28em;color:var(--white);text-decoration:none;text-transform:uppercase;text-shadow:0 1px 10px rgba(0,0,0,.45);}
 .nav-links{display:flex;gap:44px;list-style:none;}
-.nav-links a{font-family:var(--mono);font-size:13px;letter-spacing:.22em;color:var(--white);text-decoration:none;text-transform:uppercase;mix-blend-mode:difference;transition:color .2s;}
+.nav-links a{font-family:var(--mono);font-size:13px;letter-spacing:.22em;color:var(--white);text-decoration:none;text-transform:uppercase;text-shadow:0 1px 10px rgba(0,0,0,.45);transition:color .2s;}
 .nav-links a:hover{color:var(--yellow);}
 @media(max-width:600px){nav{padding:4px 20px;}.nav-links{gap:14px;}.nav-links a{font-size:10px;display:inline-block;padding:17px 2px;}.nav-logo{display:inline-block;padding:15px 0;}}
 
@@ -56,7 +59,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 .hero-video-wrap video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;object-fit:cover;opacity:.7;}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(8,8,8,.15) 0%,rgba(8,8,8,.05) 35%,rgba(8,8,8,.55) 70%,rgba(8,8,8,.97) 100%);}
 .hero-leak{position:absolute;top:0;right:0;z-index:2;width:340px;height:220px;background:radial-gradient(ellipse at 100% 0%,rgba(245,196,0,.18) 0%,rgba(232,0,26,.08) 40%,transparent 70%);pointer-events:none;}
-.hero-edge-line{position:absolute;top:0;left:0;bottom:0;width:3px;z-index:3;background:linear-gradient(to bottom,transparent 0%,var(--yellow) 20%,var(--yellow) 80%,transparent 100%);opacity:.7;}
 /* Frame corners — pushed below nav (80px from top) so they don't overlap MB or menu */
 .hero .fc{position:absolute;width:22px;height:22px;z-index:3;}
 .hero .fc.tl{top:80px;left:48px;border-top:1px solid rgba(242,237,224,.35);border-left:1px solid rgba(242,237,224,.35);}
@@ -71,6 +73,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 /* Tagline — big, dominant */
 .hero-tagline{font-family:var(--display);font-size:clamp(28px,5vw,72px);font-weight:700;line-height:1.05;letter-spacing:-.01em;color:var(--white);margin-bottom:0;}
 .hero-tagline .dim{color:rgba(232,228,216,.45);font-weight:300;}
+/* phones: lighter dimming so the video stays visible; a soft text shadow keeps the tagline readable */
+@media(max-width:768px){
+  .hero-video-wrap video{opacity:.95;}
+  .hero-overlay{background:linear-gradient(to bottom,rgba(8,8,8,.10) 0%,rgba(8,8,8,0) 30%,rgba(8,8,8,.08) 55%,rgba(8,8,8,.42) 78%,rgba(8,8,8,.78) 100%);}
+  .hero-tagline,.hero-name{text-shadow:0 1px 16px rgba(0,0,0,.7),0 0 3px rgba(0,0,0,.5);}
+  .hero-tagline .dim{color:rgba(232,228,216,.6);}
+}
 @media(max-width:600px){.hero{padding:0 20px 40px;}.hero .fc.tr,.hero .fc.bl{display:none;}.hero-tagline{font-size:clamp(24px,7vw,40px);}}
 
 /* FESTIVALS — blends into films section */
@@ -215,7 +224,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:400;display:flex;justify-content
 /* ABOUT */
 .about-section{position:relative;min-height:90vh;overflow:hidden;display:flex;align-items:flex-end;}
 .about-bg{position:absolute;inset:0;z-index:0;}
-.about-bg img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:brightness(.5) saturate(.5) contrast(1.05);}
+.about-bg img{width:100%;object-fit:cover;object-position:center top;display:block;filter:brightness(.5) saturate(.5) contrast(1.05);}
 .about-bg-grad{position:absolute;inset:0;z-index:1;background:linear-gradient(to right,rgba(8,8,8,.97) 0%,rgba(8,8,8,.75) 45%,rgba(8,8,8,.15) 75%,transparent 100%),linear-gradient(to top,rgba(8,8,8,.8) 0%,transparent 50%);}
 .about-bg-leak{position:absolute;top:0;right:0;width:45%;height:50%;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 100% 0%,rgba(245,196,0,.12) 0%,rgba(232,0,26,.06) 40%,transparent 70%);}
 .about-ghost-name{position:absolute;right:-0.02em;bottom:-0.1em;z-index:2;font-family:var(--display);font-size:clamp(80px,18vw,260px);font-weight:900;line-height:.85;text-transform:uppercase;color:transparent;-webkit-text-stroke:1px rgba(242,237,224,.08);letter-spacing:-.02em;pointer-events:none;user-select:none;text-align:right;}
@@ -343,17 +352,82 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9499;
 
 @media(max-width:768px),(hover:none){body::before,body::after{display:none;}}
 
+/* SCROLL PROGRESS — glowing yellow line on the left edge, same look as the hero edge line */
+#filmProgress{position:fixed;left:0;top:0;bottom:0;width:3px;z-index:450;pointer-events:none;background:linear-gradient(to bottom,transparent 0%,rgba(245,196,0,.10) 15%,rgba(245,196,0,.10) 85%,transparent 100%);}
+#filmProgressFill{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(245,196,0,0) 0%,var(--yellow) 14%,var(--yellow) 100%);opacity:.85;box-shadow:0 0 10px 1px rgba(245,196,0,.55);clip-path:inset(0 0 100% 0);will-change:clip-path;}
+#filmProgressHead{position:absolute;left:0;top:-36px;width:3px;height:36px;background:linear-gradient(to bottom,rgba(245,196,0,0),#fff3b0);box-shadow:0 0 14px 3px rgba(245,196,0,.85),0 0 32px 8px rgba(245,196,0,.35);will-change:transform;}
+html.intro-pending #filmProgress{display:none;}
+
+/* ABOUT PARALLAX */
+.about-bg img{position:absolute;left:0;top:-48px;height:calc(100% + 96px);will-change:transform;}
+@media(max-width:600px){.about-bg img{top:-32px;height:calc(100% + 64px);}}
+
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
+
+/* FLAGSHIP SNOW */
+.flagship-snow{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;}
+
+/* INTRO — film leader countdown (first visit only) */
+#intro{display:none;position:fixed;inset:0;z-index:9990;background:var(--black);flex-direction:column;align-items:center;justify-content:center;opacity:1;transition:opacity .5s ease;}
+html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s forwards;}
+#intro.out{opacity:0;pointer-events:none;}
+@keyframes introFailsafe{to{opacity:0;visibility:hidden;pointer-events:none;}}
+.leader{position:relative;width:min(62vmin,420px);aspect-ratio:1;display:flex;align-items:center;justify-content:center;animation:leaderFlicker .9s steps(1) infinite;}
+.leader-ring{position:absolute;inset:0;border:1px solid rgba(245,196,0,.75);border-radius:50%;}
+.leader-ring.r2{inset:9%;border-color:rgba(245,196,0,.35);}
+.leader-cross{position:absolute;background:rgba(245,196,0,.35);}
+.leader-cross.h{left:-14%;right:-14%;top:50%;height:1px;}
+.leader-cross.v{top:-14%;bottom:-14%;left:50%;width:1px;}
+.leader-sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(245,196,0,.32) 0deg,rgba(245,196,0,0) 100deg,rgba(245,196,0,0) 360deg);animation:leaderSweep .7s linear infinite;}
+.leader-sweep::after{content:'';position:absolute;left:50%;top:0;width:1px;height:50%;background:var(--yellow);opacity:.9;}
+.leader-num{position:relative;font-family:var(--display);font-weight:900;font-size:min(30vmin,200px);line-height:1;color:var(--white);animation:leaderPop .7s ease-out;}
+@keyframes leaderSweep{to{transform:rotate(360deg);}}
+@keyframes leaderPop{0%{transform:scale(1.25);opacity:0;}25%{transform:scale(1);opacity:1;}100%{transform:scale(.97);opacity:1;}}
+@keyframes leaderFlicker{0%{opacity:1;}30%{opacity:.93;}35%{opacity:1;}72%{opacity:.96;}75%{opacity:1;}}
+.intro-cap{position:absolute;font-family:var(--mono);font-size:10px;letter-spacing:.25em;color:rgba(245,196,0,.6);text-transform:uppercase;}
+.intro-cap.tl{top:28px;left:32px;}
+.intro-cap.tr{top:28px;right:32px;}
+.intro-cap.bl{bottom:28px;left:32px;}
+.intro-skip{position:absolute;bottom:18px;right:24px;font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--white);background:none;border:1px solid rgba(242,237,224,.35);padding:12px 20px;cursor:none;transition:border-color .2s,color .2s;}
+.intro-skip:hover,.intro-skip:focus-visible{border-color:var(--yellow);color:var(--yellow);outline:none;}
+@media(max-width:768px){.intro-skip{cursor:pointer;}.intro-cap.tl,.intro-cap.tr{top:20px;}.intro-cap.tl,.intro-cap.bl{left:20px;}.intro-cap.tr{right:20px;}.intro-cap.bl{bottom:30px;}}
+@media(prefers-reduced-motion:reduce){#intro{display:none !important;}}
 </style>
+<script>
+// decide before first paint whether this visit gets the intro (first visit only; ?intro forces it)
+(function(){try{
+  var force=location.search.indexOf('intro')>-1;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var seen=localStorage.getItem('mb_intro_seen');
+  if(!reduce&&(force||(!seen&&!location.hash&&!navigator.webdriver))) document.documentElement.classList.add('intro-pending');
+}catch(e){}})();
+</script>
 </head>
 <body>
+
+<!-- INTRO -->
+<div id="intro" role="dialog" aria-label="Intro">
+  <div class="intro-cap tl" aria-hidden="true">◼ Reel 01</div>
+  <div class="intro-cap tr" aria-hidden="true">35 mm ◼ 24 fps</div>
+  <div class="intro-cap bl" aria-hidden="true">Mikhail Barynin</div>
+  <div class="leader" aria-hidden="true">
+    <div class="leader-sweep"></div>
+    <div class="leader-ring"></div><div class="leader-ring r2"></div>
+    <div class="leader-cross h"></div><div class="leader-cross v"></div>
+    <div class="leader-num" id="leaderNum">3</div>
+  </div>
+  <button type="button" class="intro-skip" id="introSkip">Skip ▸▸</button>
+</div>
 
 <div id="cur"></div>
 <div id="cur-r"></div>
 <div id="cur-watch">WATCH</div>
 <div id="cur-read">READ</div>
+
+<!-- SCROLL PROGRESS -->
+<div id="filmProgress" aria-hidden="true"><div id="filmProgressFill"></div><div id="filmProgressHead"></div></div>
 
 <!-- NAV -->
 <nav>
@@ -373,7 +447,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9499;
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-leak"></div>
-  <div class="hero-edge-line"></div>
   <div class="fc tl"></div><div class="fc tr"></div>
   <div class="fc bl"></div><div class="fc br"></div>
   <div class="hero-frame-idx" aria-hidden="true">◼ <span id="heroTc">00:00:00:00</span></div>
@@ -399,6 +472,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9499;
     <div class="flagship-inner"><img src="img/24-snow.jpg" alt="24 Snow"></div>
     <div class="flagship-grad"></div>
     <div class="flagship-leak"></div>
+    <canvas class="flagship-snow" id="snowCanvas" aria-hidden="true"></canvas>
     <div class="fc tl"></div><div class="fc tr"></div>
     <div class="fc bl"></div><div class="fc br"></div>
     <div class="flagship-code" aria-hidden="true">KD ◼ 1R-2994 ◼ EXP-35</div>
@@ -907,6 +981,102 @@ document.getElementById('tlLeft').addEventListener('click',  () => tlGoTo((tlAni
 })();
 document.getElementById('year').textContent=new Date().getFullYear();
 
+// INTRO — film leader 3-2-1, first visit only
+(function(){
+  const root=document.documentElement, el=document.getElementById('intro');
+  if(!el) return;
+  if(!root.classList.contains('intro-pending')){ el.remove(); return; }
+  const num=document.getElementById('leaderNum'), skip=document.getElementById('introSkip');
+  try{ localStorage.setItem('mb_intro_seen','1'); }catch(e){}
+  document.body.style.overflow='hidden';
+  const timers=[];
+  let done=false;
+  function finish(){
+    if(done) return; done=true;
+    timers.forEach(clearTimeout);
+    el.classList.add('out');
+    setTimeout(()=>{
+      el.remove();
+      root.classList.remove('intro-pending');
+      document.body.style.overflow='';
+      const v=document.getElementById('heroVideo');
+      if(v&&v.readyState>0){ try{ v.currentTime=0; }catch(e){} }   // hero starts from the first frame
+    },520);
+  }
+  ['3','2','1'].forEach((n,i)=>{
+    timers.push(setTimeout(()=>{
+      num.textContent=n;
+      num.style.animation='none'; void num.offsetWidth; num.style.animation='';   // replay the pop
+    },i*700));
+  });
+  timers.push(setTimeout(finish,2100));
+  skip.addEventListener('click',finish);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') finish(); });
+  skip.focus({preventScroll:true});
+})();
+
+// SNOW on the featured film — falls gently, drifts away from the cursor
+(function(){
+  const cv=document.getElementById('snowCanvas');
+  if(!cv||matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const host=document.getElementById('flagship24'), ctx=cv.getContext('2d');
+  let W=0,H=0,flakes=[],raf=0,inView=false,last=0;
+  const mouse={x:0,y:0,vx:0,vy:0,on:false};
+  const spawn=(anywhere)=>{
+    const r=0.7+Math.pow(Math.random(),2)*2.6;
+    return {x:Math.random()*W,y:anywhere?Math.random()*H:-10,r,vx:0,vy:0,
+            fall:0.22+r*0.26+Math.random()*0.2,ph:Math.random()*6.283,sw:0.4+Math.random()*0.8,
+            a:Math.min(0.9,0.35+r*0.2)};
+  };
+  function size(){
+    const rect=host.getBoundingClientRect(), dpr=Math.min(window.devicePixelRatio||1,2);
+    W=rect.width;H=rect.height;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(120,Math.max(36,W/14))*(W<700?0.6:1));
+    while(flakes.length<n) flakes.push(spawn(true));
+    flakes.length=n;
+  }
+  function frame(now){
+    raf=0;
+    if(!inView||document.hidden) return;
+    const dt=Math.min((now-last)/16.7||1,3);last=now;
+    ctx.clearRect(0,0,W,H);
+    for(const f of flakes){
+      f.x+=Math.sin(now*0.0006*f.sw+f.ph)*0.22*(0.4+f.r*0.3)*dt;
+      if(mouse.on){
+        const dx=f.x-mouse.x,dy=f.y-mouse.y,d2=dx*dx+dy*dy,R=110;
+        if(d2<R*R){
+          const d=Math.sqrt(d2)||1,k=1-d/R;
+          f.vx+=(dx/d)*k*0.07+mouse.vx*k*0.035;
+          f.vy+=(dy/d)*k*0.03+mouse.vy*k*0.015;
+        }
+      }
+      f.vx*=0.95; f.vy+=(0-f.vy)*0.04;
+      f.x+=f.vx*dt; f.y+=(f.fall+f.vy)*dt;
+      if(f.y>H+10){Object.assign(f,spawn(false));}
+      if(f.x<-12)f.x=W+12; else if(f.x>W+12)f.x=-12;
+      ctx.globalAlpha=f.a;
+      ctx.fillStyle='#f2f6fb';
+      ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,6.283);ctx.fill();
+    }
+    mouse.vx*=0.85;mouse.vy*=0.85;
+    raf=requestAnimationFrame(frame);
+  }
+  function start(){ if(!raf&&inView&&!document.hidden){ last=performance.now(); raf=requestAnimationFrame(frame); } }
+  host.addEventListener('mousemove',e=>{
+    const r=host.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    if(mouse.on){mouse.vx=x-mouse.x;mouse.vy=y-mouse.y;}
+    mouse.x=x;mouse.y=y;mouse.on=true;
+  });
+  host.addEventListener('mouseleave',()=>{mouse.on=false;});
+  new IntersectionObserver(es=>{inView=es.some(e=>e.isIntersecting);if(inView)start();},{threshold:0}).observe(host);
+  document.addEventListener('visibilitychange',start);
+  let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(size,150);});
+  size();
+})();
+
+
 // FILM MODAL — player + details + previous / next
 const modal=document.getElementById('modal'),mFrame=document.getElementById('modalFrame'),mTitle=document.getElementById('modalTitle'),mClose=document.getElementById('modalClose');
 const mMeta=document.getElementById('filmMeta'),mTag=document.getElementById('filmTagline'),mText=document.getElementById('filmText'),mPanel=document.getElementById('filmPanel');
@@ -1237,6 +1407,47 @@ tl.addEventListener('wheel',e=>{
     }
   },{threshold:0.6});
   io.observe(tl);
+})();
+
+// SCROLL EFFECTS — nav auto-hide + backdrop, film-strip progress, About parallax (one throttled handler)
+(function(){
+  const nav=document.querySelector('nav'), fill=document.getElementById('filmProgressFill'), head=document.getElementById('filmProgressHead');
+  const aboutSec=document.querySelector('.about-section'), aboutImg=document.querySelector('.about-bg img');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let lastY=window.scrollY, ticking=false;
+  function update(){
+    ticking=false;
+    const y=window.scrollY, vh=window.innerHeight;
+    // nav: soft backdrop once scrolled; hide on the way down, return on the way up
+    if(nav){
+      nav.classList.toggle('scrolled',y>60);
+      const d=y-lastY;
+      if(y<120||d<-6) nav.classList.remove('hide');
+      else if(d>6&&y>240&&!nav.contains(document.activeElement)) nav.classList.add('hide');
+    }
+    lastY=y;
+    // glowing progress line on the left edge
+    if(fill){
+      const max=document.documentElement.scrollHeight-vh;
+      const p=max>0?Math.min(1,Math.max(0,y/max)):0;
+      fill.style.clipPath='inset(0 0 '+((1-p)*100).toFixed(2)+'% 0)';
+      if(head){ head.style.transform='translate3d(0,'+(p*vh).toFixed(1)+'px,0)'; head.style.opacity=p<0.005?0:1; }
+    }
+    // About parallax: photo drifts slower than the section
+    if(aboutSec&&aboutImg&&!reduce){
+      const r=aboutSec.getBoundingClientRect();
+      if(r.bottom>-100&&r.top<vh+100){
+        const amp=window.innerWidth<=600?32:48;
+        const t=Math.max(-1,Math.min(1,((r.top+r.height/2)-vh/2)/(vh/2+r.height/2)));
+        aboutImg.style.transform='translate3d(0,'+(-t*amp).toFixed(1)+'px,0)';
+      }
+    }
+  }
+  const onScroll=()=>{ if(!ticking){ ticking=true; requestAnimationFrame(update); } };
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+  nav&&nav.addEventListener('focusin',()=>nav.classList.remove('hide'));
+  update();
 })();
 
 // REVEAL
