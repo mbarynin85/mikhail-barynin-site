@@ -334,6 +334,8 @@ nav.hide{transform:translateY(-110%);}
 /* the centre line (the "cursor" of the ribbon): from the top edge down across the poster of the film in the middle, above the frame */
 .rib-cursor{position:absolute;left:50%;top:0;width:1px;height:calc(44px + var(--ch) + 30px);background:var(--yellow);opacity:.9;box-shadow:0 0 6px rgba(245,196,0,.5);pointer-events:none;z-index:5;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%);}
 .rib-ruler{position:relative;width:min(300px,64%);height:34px;margin:2px auto 0;cursor:none;touch-action:none;}
+/* like an adjustment layer in an editing program: a thin red bar over the three Imprisoned episodes, as one block (it stretches with the ribbon) */
+.rib-adj{position:absolute;left:0;top:30px;width:0;height:8px;z-index:3;pointer-events:none;visibility:hidden;will-change:transform,width;background:linear-gradient(var(--red),var(--red)) 0 0/100% 2px no-repeat,linear-gradient(var(--red),var(--red)) 0 0/2px 8px no-repeat,linear-gradient(var(--red),var(--red)) 100% 0/2px 8px no-repeat;}
 .rib-ticks{position:absolute;inset:9px 0;background:repeating-linear-gradient(to right,var(--yellow) 0 1px,transparent 1px 10px);opacity:.5;-webkit-mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent);}
 .rib-mark{position:absolute;top:0;bottom:0;width:24px;margin-left:-12px;border:1px solid var(--yellow);border-radius:5px;background:var(--black);}
 .rib-mark::after{content:'';position:absolute;left:50%;top:5px;bottom:5px;width:1px;background:var(--yellow);}
@@ -1473,6 +1475,9 @@ tl.addEventListener('wheel',e=>{
     row.appendChild(b);
   });
   const tiles=Array.from(row.children);
+  // the adjustment-layer bars: one over the Imprisoned episodes in each copy of the row
+  const epIdx=films.map((f,i)=>f.ep?i:-1).filter(i=>i>=0);
+  const bars=epIdx.length?[0,1,2].map(c=>{ const el=document.createElement('span'); el.className='rib-adj'; el.setAttribute('aria-hidden','true'); field.appendChild(el); return {el,a:c*N+epIdx[0],z:c*N+epIdx[epIdx.length-1],on:false}; }):[];
 
   let u=0,uT=0,vel=0,P=0,half=0,cx=[],sigma=0,speed=0,prevU=0,running=false,dragging=false,lastTs=0,lastPct=-1,hovering=false,onScreen=false,centerIdx=-1,placed=false,lastWheel=-1e9;
   const STRETCH_FROM=520;                                    // px per second: below this speed the ribbon does not stretch
@@ -1512,6 +1517,22 @@ tl.addEventListener('wheel',e=>{
       if(opaque[i]!==op){opaque[i]=op;el.style.opacity=op;}
     }
     const idx=bi%N; if(idx!==centerIdx) setCenter(idx);
+    // each bar spans from the left edge of its first episode to the right edge of its last, as they are drawn right now (stretch included)
+    const tw=tiles[0].offsetWidth;
+    for(const g of bars){
+      let L=1e9,R=-1e9,vis=false,op=0;
+      for(let i=g.a;i<=g.z;i++){
+        const rel=cx[i]+tx-half, d=Math.abs(rel)*(1+sigma)/half;
+        if(d<=1.6) vis=true;
+        const f=Math.min(1,Math.max(0,(d-0.3)/0.75)), c=half+rel*(1+sigma), hw=tw*(1-f*0.08)/2;
+        if(c-hw<L) L=c-hw; if(c+hw>R) R=c+hw; op=Math.max(op,1-f*0.5);
+      }
+      if(!vis){ if(g.on){ g.el.style.visibility='hidden'; g.on=false; } continue; }
+      if(!g.on){ g.el.style.visibility='visible'; g.on=true; }
+      g.el.style.transform='translate3d('+L.toFixed(1)+'px,0,0)';
+      g.el.style.width=(R-L).toFixed(1)+'px';
+      g.el.style.opacity=op.toFixed(2);
+    }
   }
   function tick(ts){
     const dt=Math.min(0.05,Math.max(0.001,(ts-lastTs)/1000)); lastTs=ts;
