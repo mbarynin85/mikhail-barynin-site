@@ -324,6 +324,10 @@ nav.hide{transform:translateY(-110%);}
 .rib-tile.is-center .rib-poster img{filter:brightness(1) saturate(1);}
 .rib-poster::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 82% at 50% 50%,rgba(8,8,8,0) 40%,rgba(8,8,8,.22) 64%,rgba(8,8,8,.58) 86%,rgba(8,8,8,.86) 100%);}
 .rib-tile.imp .rib-poster{box-shadow:inset 0 2px 0 var(--red);}
+.rib-poster::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:0 0 0 1px var(--yellow);opacity:0;transition:opacity .18s ease;}
+.rib-tile.is-hover .rib-poster{overflow:visible;}
+.rib-tile.is-hover .rib-poster::before{opacity:1;inset:-5px;box-shadow:inset 0 0 0 1px var(--yellow);}
+@media(hover:none){.rib-tile.is-center .rib-poster::before{opacity:1;inset:-5px;box-shadow:inset 0 0 0 1px var(--yellow);}.rib-tile.is-center .rib-poster{overflow:visible;}}
 .rib-ep{position:absolute;top:8px;left:8px;font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;}
 .rib-label{display:block;padding:14px 2px 0;}
 .rib-title{display:inline-block;max-width:100%;background:var(--tape);color:#111;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;padding:5px 12px 4px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:top;box-shadow:1px 1px 0 rgba(0,0,0,.35),2px 2px 5px rgba(0,0,0,.3);}
@@ -1471,18 +1475,37 @@ tl.addEventListener('wheel',e=>{
   });
   const tiles=Array.from(row.children);
 
-  let u=0,uT=0,vel=0,P=0,half=0,cx=[],sigma=0,speed=0,prevU=0,running=false,dragging=false,lastTs=0,lastPct=-1,hovering=false,onScreen=false,capIdx=-1,placed=false,lastWheel=-1e9;
+  let u=0,uT=0,vel=0,P=0,half=0,cx=[],sigma=0,speed=0,prevU=0,running=false,dragging=false,lastTs=0,lastPct=-1,hovering=false,onScreen=false,centerIdx=-1,placed=false,lastWheel=-1e9;
   const STRETCH_FROM=520;                                    // px per second: below this speed the ribbon does not stretch
   const DRIFT=small?14:8;                                   // px per second; it stops while a hand or the pointer is on the ribbon
   const opaque=[];
   const wrapTo=v=>P?((v%P)+P)%P:v;
   const ease=(dt,tau)=>1-Math.exp(-dt/tau);
 
-  function setCaption(i){
-    capIdx=i; const f=films[i];
-    eDesc.textContent=f.desc;
+  let shownIdx=-1, hoverIdx=-1, hoverEl=null, px=null;      // px: the pointer's x inside the field while a mouse is over it
+  const vc=[], sw=[];                                       // where each film really is on screen: centre x and half-width
+  function showDesc(i){
+    if(i===shownIdx) return; shownIdx=i;
+    eDesc.textContent=films[i].desc;
     cap.classList.remove('swap'); void cap.offsetWidth; cap.classList.add('swap');
+  }
+  function setCenter(i){
+    centerIdx=i;
     tiles.forEach((t,k)=>t.classList.toggle('is-center',k%N===i));
+    if(hoverIdx<0) showDesc(i);
+  }
+  // the film under the cursor gets the yellow frame, and the description below is about that film; no film under it: the one in the middle
+  function updateHover(){
+    let hit=-1,bestD=1e9;
+    if(px!==null) for(let i=0;i<tiles.length;i++){
+      if(sw[i]>0){ const d=Math.abs(px-vc[i]); if(d<=sw[i]&&d<bestD){bestD=d;hit=i;} }
+    }
+    const el=hit<0?null:tiles[hit];
+    if(el===hoverEl) return;
+    if(hoverEl) hoverEl.classList.remove('is-hover');
+    hoverEl=el; if(el) el.classList.add('is-hover');
+    hoverIdx=el?hit%N:-1;
+    showDesc(hoverIdx>=0?hoverIdx:centerIdx);
   }
   function paint(){
     const shift=wrapTo(u)-u; if(shift){u+=shift;uT+=shift;prevU+=shift;}
@@ -1495,14 +1518,16 @@ tl.addEventListener('wheel',e=>{
       const rel=cx[i]+tx-half, ar=Math.abs(rel);
       if(ar<best){best=ar;bi=i;}
       const d=ar*(1+sigma)/half, el=tiles[i];
-      if(d>1.6){ if(opaque[i]!=='h'){el.style.visibility='hidden';opaque[i]='h';} continue; }
+      if(d>1.6){ if(opaque[i]!=='h'){el.style.visibility='hidden';opaque[i]='h';} sw[i]=-1; continue; }
       if(opaque[i]==='h'){el.style.visibility='';opaque[i]='';}
       const f=Math.min(1,Math.max(0,(d-0.3)/0.75));          // 0 at the middle, 1 at the edges
+      vc[i]=half+rel*(1+sigma); sw[i]=el.offsetWidth*(1-f*0.08)/2;
       el.style.transform='translate3d('+(rel*sigma).toFixed(2)+'px,0,0) scale('+(1-f*0.08).toFixed(3)+')';
       const op=(1-f*0.5).toFixed(2);
       if(opaque[i]!==op){opaque[i]=op;el.style.opacity=op;}
     }
-    const idx=bi%N; if(idx!==capIdx) setCaption(idx);
+    const idx=bi%N; if(idx!==centerIdx) setCenter(idx);
+    if(px!==null) updateHover();
   }
   function tick(ts){
     const dt=Math.min(0.05,Math.max(0.001,(ts-lastTs)/1000)); lastTs=ts;
@@ -1546,6 +1571,7 @@ tl.addEventListener('wheel',e=>{
   let down=false,moved=false,sx=0,u0=0;
   field.addEventListener('pointerdown',e=>{ if(e.pointerType==='mouse'&&e.button!==0) return; down=true; moved=false; sx=e.clientX; uT=u; u0=u; vel=0; speed=0; sigma=0; });
   field.addEventListener('pointermove',e=>{
+    if(e.pointerType==='mouse'){ px=e.clientX-field.getBoundingClientRect().left; updateHover(); }
     if(!down) return;
     const dx=e.clientX-sx;
     if(!moved&&Math.abs(dx)<5) return;
@@ -1555,7 +1581,7 @@ tl.addEventListener('wheel',e=>{
   const up=()=>{ if(!down) return; down=false; dragging=false; field.classList.remove('drag'); if(!moved||calm) vel=0; go(); };
   field.addEventListener('pointerup',up); field.addEventListener('pointercancel',up);
   field.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse') hovering=true; });
-  field.addEventListener('pointerleave',()=>{ hovering=false; go(); });
+  field.addEventListener('pointerleave',()=>{ hovering=false; px=null; updateHover(); go(); });
   field.addEventListener('click',e=>{ if(moved){ e.stopPropagation(); e.preventDefault(); moved=false; } },true);
   // trackpad sideways swipe, or Shift + wheel; the ordinary up-and-down wheel stays with the page
   field.addEventListener('wheel',e=>{
@@ -1569,15 +1595,15 @@ tl.addEventListener('wheel',e=>{
   ruler.addEventListener('pointerdown',e=>{ ruler.setPointerCapture(e.pointerId); seek(e); ruler.onpointermove=seek; });
   ruler.addEventListener('pointerup',()=>{ ruler.onpointermove=null; });
   ruler.addEventListener('keydown',e=>{
-    if(e.key==='ArrowRight'){ e.preventDefault(); goTo(capIdx+1); }
-    if(e.key==='ArrowLeft'){ e.preventDefault(); goTo(capIdx-1); }
+    if(e.key==='ArrowRight'){ e.preventDefault(); goTo(centerIdx+1); }
+    if(e.key==='ArrowLeft'){ e.preventDefault(); goTo(centerIdx-1); }
   });
 
   // click: a film off the middle is brought to the middle first; the one in the middle opens its card
   row.addEventListener('click',e=>{
     const t=e.target.closest('.rib-tile'); if(!t) return;
     const i=Number(t.dataset.i);
-    if(i!==capIdx) goTo(i); else openModal(films[i].vimeo,films[i].title);
+    if(i!==centerIdx) goTo(i); else openModal(films[i].vimeo,films[i].title);
   });
   row.addEventListener('focusin',e=>{ const t=e.target.closest('.rib-tile'); if(t) goTo(Number(t.dataset.i)); });
   field.addEventListener('scroll',()=>{ field.scrollLeft=0; });
