@@ -118,71 +118,6 @@ nav.hide{transform:translateY(-110%);}
 .flagship-code{position:absolute;bottom:14px;right:20px;z-index:3;font-family:var(--mono);font-size:8px;color:rgba(242,237,224,.2);letter-spacing:.12em;}
 @media(max-width:600px){.flagship-play{cursor:pointer;}}
 
-/* TIMELINE WRAPPER */
-.timeline-wrap{position:relative;padding:0 0 0;margin-top:4px;}
-
-/* SCROLL ARROWS — below timeline */
-.tl-arrows{display:flex;align-items:center;justify-content:center;gap:12px;padding:18px 48px 48px;}
-.tl-arrow{width:36px;height:36px;border:1px solid rgba(245,196,0,.35);display:flex;align-items:center;justify-content:center;cursor:none;transition:border-color .2s,background .2s;background:transparent;flex-shrink:0;}
-.tl-arrow:hover{border-color:var(--yellow);background:rgba(245,196,0,.08);}
-.tl-arrow svg{width:18px;height:18px;}
-.tl-arrow-label{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:rgba(245,196,0,.4);text-transform:uppercase;}
-@media(max-width:600px){.tl-arrows{padding:14px 20px 36px;}.tl-arrow{cursor:pointer;width:44px;height:44px;}}
-
-/* TIMELINE */
-.timeline{display:flex;gap:3px;overflow-x:auto;overflow-y:hidden;padding:0 48px 24px;scroll-behavior:auto;overscroll-behavior-x:contain;touch-action:pan-x pan-y pinch-zoom;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
-.timeline.dragging{cursor:grabbing;}
-.timeline img{-webkit-user-drag:none;user-drag:none;pointer-events:none;}
-.timeline::-webkit-scrollbar{height:3px;}
-.timeline::-webkit-scrollbar-track{background:transparent;}
-.timeline::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px;}
-@media(max-width:600px){.timeline{padding:0 20px 20px;cursor:auto;}}
-
-/* FILM CARD */
-.film-card{flex:0 0 300px;position:relative;cursor:none;overflow:hidden;background:var(--dark);-webkit-tap-highlight-color:transparent;}
-@media(max-width:768px){.film-card{flex:0 0 260px;cursor:pointer;}}
-@media(max-width:480px){.film-card{flex:0 0 220px;}}
-@media(max-width:768px){.film-desc{font-size:12px;}}
-
-/* IMPRISONED DIVIDER — flat, no nested flex */
-.imprisoned-divider{flex:0 0 32px;display:flex;align-items:stretch;}
-.imprisoned-divider-inner{background:var(--gray);border-left:2px solid var(--red);width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px 0;}
-.imprisoned-divider-label{font-family:var(--mono);font-size:7.5px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);white-space:nowrap;}
-.imprisoned-divider-sub{font-family:var(--mono);font-size:7px;letter-spacing:.15em;color:var(--mid);text-transform:uppercase;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);white-space:nowrap;}
-/* Imprisoned cards — just normal cards with red top border */
-.film-card.imprisoned{border-top:2px solid var(--red);}
-.film-card.imprisoned::before{display:none;}
-
-.film-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--yellow);z-index:5;transform:scaleX(0);transform-origin:left;transition:transform .35s ease;}
-.film-card:hover::before{transform:scaleX(1);}
-.film-card .card-leak{position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at 100% 0%,rgba(245,196,0,.22) 0%,rgba(232,0,26,.10) 30%,transparent 65%);opacity:0;transition:opacity .4s ease;}
-.film-card:hover .card-leak{opacity:1;}
-.film-card .fc{position:absolute;width:12px;height:12px;z-index:4;opacity:0;transition:opacity .3s;}
-.film-card .fc.tl{top:6px;left:6px;border-top:1px solid rgba(242,237,224,.5);border-left:1px solid rgba(242,237,224,.5);}
-.film-card .fc.tr{top:6px;right:6px;border-top:1px solid rgba(242,237,224,.5);border-right:1px solid rgba(242,237,224,.5);}
-.film-card .fc.bl{bottom:6px;left:6px;border-bottom:1px solid rgba(242,237,224,.5);border-left:1px solid rgba(242,237,224,.5);}
-.film-card .fc.br{bottom:6px;right:6px;border-bottom:1px solid rgba(242,237,224,.5);border-right:1px solid rgba(242,237,224,.5);}
-.film-card:hover .fc{opacity:1;}
-.film-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;}
-.film-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82) saturate(.75);transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .4s ease;will-change:transform;}
-.film-card:hover .film-thumb img{transform:scale(1.08);filter:brightness(.95) saturate(.95);}
-.film-thumb-grad{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(8,8,8,.85) 0%,transparent 55%);}
-.film-grain-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:0;transition:opacity .35s ease;}
-.film-card:hover .film-grain-canvas{opacity:1;}
-.play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.7);width:44px;height:44px;border:1px solid rgba(242,237,224,.6);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;z-index:2;transition:opacity .3s,transform .3s;}
-.play-btn svg{margin-left:3px;}
-.film-card:hover .play-btn{opacity:1;transform:translate(-50%,-50%) scale(1);}
-.film-code-badge{position:absolute;bottom:6px;right:8px;z-index:2;font-family:var(--mono);font-size:7px;color:rgba(242,237,224,.25);letter-spacing:.1em;pointer-events:none;}
-.film-info{padding:14px 14px 18px;position:relative;}
-.tape-label{display:inline-block;background:var(--tape);color:#111;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;padding:5px 14px 4px;margin-bottom:8px;transform:rotate(-.4deg);box-shadow:1px 1px 0 rgba(0,0,0,.35),2px 2px 5px rgba(0,0,0,.3);position:relative;background-image:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 6px);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.tape-label::before,.tape-label::after{content:'';position:absolute;top:0;bottom:0;width:5px;background:inherit;background-image:inherit;}
-.tape-label::before{left:-4px;clip-path:polygon(0 20%,100% 0,100% 100%,0 80%);}
-.tape-label::after{right:-4px;clip-path:polygon(0 0,100% 20%,100% 80%,0 100%);}
-.film-card:focus-visible,.flagship-play:focus-visible,.tl-arrow:focus-visible,.modal-close:focus-visible,.press-item:focus-visible,.c-icon:focus-visible,.nav-links a:focus-visible,.nav-logo:focus-visible{outline:2px solid var(--yellow);outline-offset:2px;}
-.film-card:focus-visible{outline-offset:-2px;}
-.film-card:focus-visible .play-btn{opacity:1;transform:translate(-50%,-50%) scale(1);}
-.film-desc{font-family:var(--display);font-size:11px;font-weight:300;color:var(--silver);line-height:1.65;letter-spacing:.02em;}
-
 /* FILM MODAL */
 .modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.94);display:flex;opacity:0;pointer-events:none;transition:opacity .3s;overflow-y:auto;overscroll-behavior:contain;padding:56px 32px 32px;}
 .modal-overlay.open{opacity:1;pointer-events:all;}
@@ -210,7 +145,6 @@ nav.hide{transform:translateY(-110%);}
 .film-nav button:hover{border-color:var(--yellow);background:rgba(245,196,0,.06);}
 .film-nav small{display:block;margin-bottom:5px;font-family:var(--mono);font-size:8px;letter-spacing:.22em;color:var(--yellow);text-transform:uppercase;}
 .film-nav span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.film-meta-line{margin:-2px 0 8px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--yellow);opacity:.85;text-transform:uppercase;}
 @media(max-width:900px){
   .modal-overlay{padding:0 0 32px;}
   .film-sheet{margin:0 auto;}
@@ -247,7 +181,7 @@ nav.hide{transform:translateY(-110%);}
 @media(max-width:600px){.about-section{min-height:auto;}.about-content{padding:50px 20px;}}
 
 /* LOCATIONS MAP */
-.map-wrap{padding:0 48px 80px;}
+.map-wrap{padding:0 48px 80px;overflow-x:clip;}
 .map-scroll{position:relative;}
 .map-stage{position:relative;width:100%;max-width:1400px;margin:0 auto;aspect-ratio:1000/451;background:var(--black);}
 .map-img{position:absolute;inset:0;z-index:1;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none;}
@@ -311,7 +245,7 @@ nav.hide{transform:translateY(-110%);}
   .map-film{cursor:pointer;}
 }
 
-/* FILM RIBBON (prototype, add ?ribbon to the address): endless single row of posters, titles under each film */
+/* FILM RIBBON: endless single row of posters, titles under each film */
 .rib-section{position:relative;overflow:hidden;background:var(--black);padding:34px 0 8px;}
 .rib-section[hidden]{display:none;}
 .rib{--cw:clamp(230px,29vw,400px);--ch:calc(var(--cw) * 9 / 16);--gap:18px;position:relative;}
@@ -537,22 +471,8 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
     </div>
   </div>
 
-  <!-- HORIZONTAL TIMELINE -->
-  <div class="timeline-wrap">
-    <div class="timeline" id="timeline"></div>
-    <div class="tl-arrows">
-      <button class="tl-arrow" id="tlLeft" aria-label="Scroll left">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.5"><polyline points="15,8 11,12 15,16"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="3" y1="5" x2="3" y2="19" stroke-width="1" opacity=".5"/></svg>
-      </button>
-      <span class="tl-arrow-label">scroll</span>
-      <button class="tl-arrow" id="tlRight" aria-label="Scroll right">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.5"><polyline points="9,8 13,12 9,16"/><line x1="13" y1="12" x2="3" y2="12"/><line x1="21" y1="5" x2="21" y2="19" stroke-width="1" opacity=".5"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- FILM RIBBON (prototype: open the page with ?ribbon) -->
-  <div class="rib-section" id="ribSection" hidden>
+  <!-- FILM RIBBON -->
+  <div class="rib-section" id="ribSection">
     <div class="rib" id="filmRib">
       <div class="rib-field" id="ribField"><div class="rib-row" id="ribRow"></div><span class="rib-cursor" aria-hidden="true"></span></div>
       <div class="rib-ruler" id="ribRuler" role="slider" tabindex="0" aria-label="Scrub through the films" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="rib-ticks" aria-hidden="true"></span><span class="rib-mark" aria-hidden="true"></span></div>
@@ -786,8 +706,6 @@ const IMPRISONED = [
   { img:'img/The-Man-with-a-Cigarette.jpg', title:'The Man with a Cigarette', desc:'21 years on death row for a murder he continues to deny.', vimeo:'1232956659', ep:'Ep. 2' },
   { img:'img/The-Man-at-the-Party.jpg', title:'The Man at the Party', desc:'A teenager wrongfully imprisoned after a party shooting.', vimeo:'1232956661', ep:'Ep. 3' },
 ];
-const CODES = ['KD 3456 ◇08','BH-1866','KS-1870','1R-2994','EXP-35','ECN-2','500T','5219'];
-
 const FILM_INFO = {
  "24 Snow": {
   "country": "Arctic Siberia",
@@ -926,43 +844,7 @@ const FILM_INFO = {
  }
 };
 
-function metaLine(title){
-  const i = FILM_INFO[title];
-  if(!i) return '';
-  return `<div class="film-meta-line">${i.country}${i.year ? ' · ' + i.year : ''}</div>`;
-}
-
-function makeCard(f, i) {
-  const card = document.createElement('div');
-  card.className = 'film-card';
-  card.innerHTML = `
-    <div class="film-thumb">
-      <img src="${f.img}" alt="${f.title}" loading="lazy">
-      <div class="film-thumb-grad"></div>
-      <canvas class="film-grain-canvas"></canvas>
-      <div class="play-btn"><svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M1 1.5L11 7L1 12.5V1.5Z" stroke="white" stroke-width="1" stroke-linejoin="round"/></svg></div>
-      <div class="film-code-badge" aria-hidden="true">${CODES[i % CODES.length]}</div>
-      <div class="card-leak"></div>
-    </div>
-    <div class="film-info">
-      <div class="tape-label">${f.title.toUpperCase()}</div>
-      ${metaLine(f.title)}
-      <p class="film-desc">${f.desc}</p>
-    </div>
-    <div class="fc tl"></div><div class="fc tr"></div>
-    <div class="fc bl"></div><div class="fc br"></div>
-  `;
-  card.setAttribute('role','button');
-  card.tabIndex = 0;
-  card.setAttribute('aria-label', 'Watch ' + f.title);
-  card.addEventListener('click', () => openModal(f.vimeo, f.title));
-  card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); card.click(); } });
-  return card;
-}
-
-const timeline = document.getElementById('timeline');
-
-// CAROUSEL ORDER — titles must match the entries above
+// FILM ORDER — titles must match the entries above
 const ORDER = [
   'Breaking Bad Wolf',
   'Reaping Divine Justice',
@@ -984,36 +866,9 @@ const ORDER = [
 const FILM_BY_TITLE = {};
 [...FILMS_START, ...FILMS_REST, ...IMPRISONED].forEach(f => FILM_BY_TITLE[f.title] = f);
 
-let dividerAdded = false;
-ORDER.forEach((title, i) => {
-  const f = FILM_BY_TITLE[title];
-  if (!f) { console.warn('Film not found for carousel:', title); return; }
-  if (f.ep && !dividerAdded) {
-    const divider = document.createElement('div');
-    divider.className = 'imprisoned-divider';
-    divider.innerHTML = `<div class="imprisoned-divider-inner"><span class="imprisoned-divider-label">◼ Imprisoned</span><span class="imprisoned-divider-sub">Mini Series · 3 Episodes</span></div>`;
-    timeline.appendChild(divider);
-    dividerAdded = true;
-  }
-  const card = makeCard(f, i);
-  if (f.ep) {
-    card.classList.add('imprisoned');
-    const b = document.createElement('div');
-    b.style.cssText = 'position:absolute;top:8px;left:8px;z-index:5;font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:#e8001a;text-transform:uppercase;';
-    b.textContent = f.ep;
-    card.appendChild(b);
-  }
-  timeline.appendChild(card);
-});
-
 // FLAGSHIP
 document.getElementById('flagshipPlay').addEventListener('click', () => openModal('1233130230','24 Snow'));
 document.getElementById('flagship24').addEventListener('click', e => { if(!e.target.closest('button')) openModal('1233130230','24 Snow'); });
-
-// ARROW SCROLL
-const SCROLL_AMT = 660;
-document.getElementById('tlRight').addEventListener('click', () => tlGoTo((tlAnim?tlTarget:tl.scrollLeft)+SCROLL_AMT));
-document.getElementById('tlLeft').addEventListener('click',  () => tlGoTo((tlAnim?tlTarget:tl.scrollLeft)-SCROLL_AMT));
 
 // HERO VIDEO — lighter file on phones; skipped for reduced-motion / data-saver (poster stays)
 (function(){
@@ -1345,7 +1200,7 @@ document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(!mouseSee
 })();
 
 // film cards — big ring + WATCH
-document.querySelectorAll('.film-card, .flagship').forEach(el=>{
+document.querySelectorAll('.flagship').forEach(el=>{
   el.addEventListener('mouseenter',()=>{
     curR.style.width='64px'; curR.style.height='64px';
     curR.style.borderColor='rgba(245,196,0,.8)';
@@ -1379,76 +1234,23 @@ document.querySelectorAll('.press-item').forEach(el=>{
 // other interactive — medium ring
 document.querySelectorAll('a,button').forEach(el=>{
   el.addEventListener('mouseenter',()=>{
-    if(el.closest('.film-card')||el.closest('.flagship')||el.closest('.press-item')) return;
+    if(el.closest('.flagship')||el.closest('.press-item')) return;
     curR.style.width='44px'; curR.style.height='44px';
     cur.style.width='4px'; cur.style.height='4px';
   });
   el.addEventListener('mouseleave',()=>{
-    if(el.closest('.film-card')||el.closest('.flagship')||el.closest('.press-item')) return;
+    if(el.closest('.flagship')||el.closest('.press-item')) return;
     curR.style.width='28px'; curR.style.height='28px';
     cur.style.width='6px'; cur.style.height='6px';
   });
 });
 
-// CAROUSEL SCROLL — one smooth engine for drag (mouse), wheel and arrows; touch stays native
-const tl=document.getElementById('timeline');
-let tlTarget=tl.scrollLeft,tlAnim=false;
-const tlMax=()=>tl.scrollWidth-tl.clientWidth;
-const tlClamp=v=>Math.max(0,Math.min(tlMax(),v));
-function tlStep(){
-  const d=tlTarget-tl.scrollLeft;
-  if(Math.abs(d)<0.5){tl.scrollLeft=tlTarget;tlAnim=false;return;}
-  tl.scrollLeft+=d*0.14;
-  requestAnimationFrame(tlStep);
-}
-function tlGoTo(v){tlTarget=tlClamp(v);if(!tlAnim){tlAnim=true;requestAnimationFrame(tlStep);}}
-// keep target in sync when scroll comes from elsewhere (touch, scrollbar, keyboard)
-tl.addEventListener('scroll',()=>{if(!tlAnim&&!tlDrag)tlTarget=tl.scrollLeft;},{passive:true});
-
-// mouse drag with inertia
-let tlDrag=false,tlMoved=0,tlStartX=0,tlStartSL=0,tlLastX=0,tlLastT=0,tlVel=0;
-tl.addEventListener('mousedown',e=>{
-  if(e.button!==0)return;
-  tlDrag=true;tlAnim=false;tlMoved=0;tlVel=0;
-  tlStartX=tlLastX=e.clientX;tlStartSL=tl.scrollLeft;tlLastT=performance.now();
-  e.preventDefault(); // no text selection / native image drag
-});
-window.addEventListener('mousemove',e=>{
-  if(!tlDrag)return;
-  const dx=e.clientX-tlStartX;
-  tlMoved=Math.max(tlMoved,Math.abs(dx));
-  if(tlMoved>5)tl.classList.add('dragging');
-  tl.scrollLeft=tlStartSL-dx;
-  const now=performance.now(),dt=now-tlLastT;
-  if(dt>0){tlVel=0.8*tlVel+0.2*((tlLastX-e.clientX)/dt);tlLastX=e.clientX;tlLastT=now;}
-});
-window.addEventListener('mouseup',()=>{
-  if(!tlDrag)return;
-  tlDrag=false;tl.classList.remove('dragging');
-  if(tlMoved>5){tlTarget=tl.scrollLeft;tlGoTo(tl.scrollLeft+tlVel*260);} // glide out
-});
-// a drag must never count as a click on a film
-tl.addEventListener('click',e=>{if(tlMoved>5){e.stopPropagation();e.preventDefault();tlMoved=0;}},true);
-
-// mouse wheel over the row scrolls it sideways; at either end the page scrolls as usual
-tl.addEventListener('wheel',e=>{
-  if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return; // native horizontal trackpad swipe
-  let dy=e.deltaY;
-  if(e.deltaMode===1)dy*=32;else if(e.deltaMode===2)dy*=tl.clientWidth;
-  const base=tlAnim?tlTarget:tl.scrollLeft;
-  if((dy<0&&base<=0)||(dy>0&&base>=tlMax()-1))return;
-  e.preventDefault();
-  tlGoTo(base+dy);
-},{passive:false});
-
-// FILM RIBBON — prototype (add ?ribbon to the address). Endless single row of posters, ported from the North Documentary gallery engine.
+// FILM RIBBON — endless single row of posters, ported from the North Documentary gallery engine.
 // The ribbon is a loop: the row is laid out three times, u is the place within one round (0..P). It drifts slowly, glides after a drag,
 // stretches a little like a rubber band while it moves, and the films towards the edges fade and shrink a little (no blur: the titles stay readable).
 (function(){
-  if(!/[?&]ribbon(&|=|$)/.test(location.search)) return;
-  const sec=document.getElementById('ribSection'), old=document.querySelector('.timeline-wrap');
-  if(!sec||!old) return;
-  old.hidden=true; sec.hidden=false;
+  const sec=document.getElementById('ribSection');
+  if(!sec) return;
   const field=document.getElementById('ribField'), row=document.getElementById('ribRow'), rib=document.getElementById('filmRib');
   const ruler=document.getElementById('ribRuler'), mark=ruler.querySelector('.rib-mark');
   const cap=document.getElementById('ribCap'), eDesc=document.getElementById('ribDesc');
@@ -1579,7 +1381,7 @@ tl.addEventListener('wheel',e=>{
     if(!down) return;
     const dx=e.clientX-sx;
     if(!moved&&Math.abs(dx)<5) return;
-    if(!moved){ moved=true; dragging=true; sx=e.clientX; field.setPointerCapture(e.pointerId); field.classList.add('drag'); go(); return; }
+    if(!moved){ moved=true; dragging=true; sx=e.clientX; try{ field.setPointerCapture(e.pointerId); }catch(_){} field.classList.add('drag'); go(); return; }
     uT=u0-dx*GAIN;
   });
   const up=()=>{ if(!down) return; down=false; dragging=false; field.classList.remove('drag'); if(!moved||calm) vel=0; go(); };
@@ -1596,7 +1398,7 @@ tl.addEventListener('wheel',e=>{
 
   // the ruler: click or drag, arrows with the keyboard
   const seek=e=>{ const b=ruler.getBoundingClientRect(); uT=P*Math.min(1,Math.max(0,(e.clientX-b.left)/b.width)); vel=0; go(); };
-  ruler.addEventListener('pointerdown',e=>{ ruler.setPointerCapture(e.pointerId); seek(e); ruler.onpointermove=seek; });
+  ruler.addEventListener('pointerdown',e=>{ try{ ruler.setPointerCapture(e.pointerId); }catch(_){} seek(e); ruler.onpointermove=seek; });
   ruler.addEventListener('pointerup',()=>{ ruler.onpointermove=null; });
   ruler.addEventListener('keydown',e=>{
     if(e.key==='ArrowRight'){ e.preventDefault(); goTo(centerIdx+1); }
@@ -1621,38 +1423,6 @@ tl.addEventListener('wheel',e=>{
   addEventListener('resize',measure);
   if(document.fonts) document.fonts.ready.then(measure);
   if(document.readyState!=='complete') addEventListener('load',measure);
-})();
-
-// SCROLL HINT — once, when the film row first comes into view: nudge forward and back
-(function(){
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window)) return;
-  const DIST=Math.min(150,Math.max(0,tlMax()-1)), OUT=750, PAUSE=180, BACK=850;
-  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-  let cancelled=false;
-  const cancel=()=>{cancelled=true;};
-  ['wheel','mousedown','touchstart','keydown'].forEach(ev=>tl.addEventListener(ev,cancel,{passive:true,once:true}));
-  function play(){
-    if(cancelled||tl.scrollLeft>5||DIST<20) return;
-    const t0=performance.now();
-    (function frame(now){
-      if(cancelled) return;
-      const t=now-t0;
-      let x;
-      if(t<OUT) x=DIST*ease(t/OUT);
-      else if(t<OUT+PAUSE) x=DIST;
-      else if(t<OUT+PAUSE+BACK) x=DIST*(1-ease((t-OUT-PAUSE)/BACK));
-      else { tl.scrollLeft=0; return; }
-      tl.scrollLeft=x;
-      requestAnimationFrame(frame);
-    })(t0);
-  }
-  const io=new IntersectionObserver(entries=>{
-    if(entries.some(e=>e.isIntersecting)){
-      io.disconnect();
-      setTimeout(play,450);
-    }
-  },{threshold:0.6});
-  io.observe(tl);
 })();
 
 // SCROLL EFFECTS — nav auto-hide + backdrop, film-strip progress, About parallax (one throttled handler)
@@ -1700,57 +1470,6 @@ tl.addEventListener('wheel',e=>{
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.06});
 document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${i*0.04}s`;obs.observe(el);});
 
-// FILM GRAIN on card hover — single shared RAF loop
-const activeCanvases = new Set();
-
-function drawGrain(canvas) {
-  const ctx = canvas.getContext('2d');
-  const w = canvas.width, h = canvas.height;
-  const imgData = ctx.createImageData(w, h);
-  const data = imgData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    const v = Math.random() < 0.5 ? 0 : 255;
-    const a = Math.floor(Math.random() * 18); // barely visible
-    data[i]   = v;
-    data[i+1] = v;
-    data[i+2] = v;
-    data[i+3] = a;
-  }
-  ctx.putImageData(imgData, 0, 0);
-}
-
-function grainLoop() {
-  if (!tlDrag) activeCanvases.forEach(c => {
-    if (c.width > 0 && c.height > 0) drawGrain(c);
-  });
-  requestAnimationFrame(grainLoop);
-}
-grainLoop();
-
-// Init canvases after grid is built
-function initGrainCanvases() {
-  document.querySelectorAll('.film-grain-canvas').forEach(canvas => {
-    const thumb = canvas.closest('.film-thumb');
-    if (!thumb) return;
-    // Size canvas to actual pixel dimensions
-    const rect = thumb.getBoundingClientRect();
-    canvas.width  = Math.round(rect.width  || 300);
-    canvas.height = Math.round(rect.height || 170);
-
-    const card = canvas.closest('.film-card');
-    card.addEventListener('mouseenter', () => activeCanvases.add(canvas));
-    card.addEventListener('mouseleave', () => {
-      activeCanvases.delete(canvas);
-      // clear on leave
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    });
-  });
-}
-// Wait for images to load so getBoundingClientRect is accurate
-window.addEventListener('load', initGrainCanvases);
-// Fallback if already loaded
-if (document.readyState === 'complete') initGrainCanvases();
 </script>
 </body>
 </html>
