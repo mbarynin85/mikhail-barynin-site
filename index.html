@@ -311,6 +311,36 @@ nav.hide{transform:translateY(-110%);}
   .map-film{cursor:pointer;}
 }
 
+/* FILM RIBBON (prototype, add ?ribbon to the address): endless single row of posters, titles under each film */
+.rib-section{position:relative;overflow:hidden;background:var(--black);padding:34px 0 8px;}
+.rib-section[hidden]{display:none;}
+.rib{--cw:clamp(230px,29vw,400px);--ch:calc(var(--cw) * 9 / 16);--gap:18px;position:relative;}
+.rib-field{position:relative;display:flex;align-items:center;height:calc(var(--ch) + 112px);overflow:hidden;cursor:none;touch-action:pan-y;overscroll-behavior-x:contain;user-select:none;-webkit-user-select:none;}
+.rib-field.drag{cursor:none;}
+.rib-row{display:flex;align-items:flex-start;gap:var(--gap);width:max-content;will-change:transform;}
+.rib-tile{flex:none;display:block;width:var(--cw);margin:0;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:inherit;will-change:transform,opacity;-webkit-tap-highlight-color:transparent;}
+.rib-poster{position:relative;display:block;width:100%;height:var(--ch);overflow:hidden;background:var(--dark);}
+.rib-poster img{display:block;width:100%;height:100%;object-fit:cover;filter:brightness(.88) saturate(.82);pointer-events:none;transition:filter .3s;}
+.rib-tile.is-center .rib-poster img{filter:brightness(1) saturate(1);}
+.rib-tile.imp .rib-poster{box-shadow:inset 0 2px 0 var(--red);}
+.rib-ep{position:absolute;top:8px;left:8px;font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;}
+.rib-label{display:block;padding:14px 2px 0;}
+.rib-title{display:inline-block;max-width:100%;background:var(--tape);color:#111;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;padding:5px 12px 4px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:top;box-shadow:1px 1px 0 rgba(0,0,0,.35),2px 2px 5px rgba(0,0,0,.3);}
+.rib-sub{display:block;margin-top:8px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--yellow);opacity:.85;text-transform:uppercase;}
+.rib-tick{position:absolute;left:50%;width:1px;height:18px;background:var(--yellow);opacity:.55;pointer-events:none;z-index:2;}
+.rib-tick.t{top:0;} .rib-tick.b{bottom:0;}
+.rib-ruler{position:relative;width:min(300px,64%);height:34px;margin:2px auto 0;cursor:none;touch-action:none;}
+.rib-ticks{position:absolute;inset:9px 0;background:repeating-linear-gradient(to right,var(--yellow) 0 1px,transparent 1px 10px);opacity:.5;-webkit-mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent);}
+.rib-mark{position:absolute;top:0;bottom:0;width:24px;margin-left:-12px;border:1px solid var(--yellow);border-radius:5px;background:var(--black);}
+.rib-mark::after{content:'';position:absolute;left:50%;top:5px;bottom:5px;width:1px;background:var(--yellow);}
+.rib-ruler:focus-visible{outline:1px solid var(--yellow);outline-offset:6px;}
+.rib-cap{max-width:640px;margin:10px auto 0;padding:0 24px 40px;text-align:center;}
+.rib-cap-desc{min-height:3.4em;font-size:13px;font-weight:300;line-height:1.7;color:var(--light);}
+.rib-cap.swap .rib-cap-desc{animation:ribCapIn .4s ease-out;}
+@keyframes ribCapIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.rib-cap-actions{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px;}
+@media(max-width:768px){.rib-field,.rib-ruler,.rib-tile{cursor:auto;}.rib-field.drag{cursor:auto;}.rib{--cw:min(72vw,300px);}.rib-label{padding-top:12px;}}
+
 /* QUOTE BLOCK */
 .quote-block{position:relative;overflow:hidden;border-top:1px solid #1a1a1a;}
 .quote-bg{position:absolute;inset:0;z-index:0;}
@@ -513,6 +543,22 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
       <button class="tl-arrow" id="tlRight" aria-label="Scroll right">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.5"><polyline points="9,8 13,12 9,16"/><line x1="13" y1="12" x2="3" y2="12"/><line x1="21" y1="5" x2="21" y2="19" stroke-width="1" opacity=".5"/></svg>
       </button>
+    </div>
+  </div>
+
+  <!-- FILM RIBBON (prototype: open the page with ?ribbon) -->
+  <div class="rib-section" id="ribSection" hidden>
+    <div class="rib" id="filmRib">
+      <div class="rib-field" id="ribField"><div class="rib-row" id="ribRow"></div><span class="rib-tick t" aria-hidden="true"></span><span class="rib-tick b" aria-hidden="true"></span></div>
+      <div class="rib-ruler" id="ribRuler" role="slider" tabindex="0" aria-label="Scrub through the films" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="rib-ticks" aria-hidden="true"></span><span class="rib-mark" aria-hidden="true"></span></div>
+      <div class="rib-cap" id="ribCap" aria-live="polite">
+        <p class="rib-cap-desc" id="ribDesc"></p>
+        <div class="rib-cap-actions">
+          <button class="tl-arrow" id="ribPrev" type="button" aria-label="Previous film"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.5"><polyline points="15,8 11,12 15,16"/><line x1="11" y1="12" x2="21" y2="12"/><line x1="3" y1="5" x2="3" y2="19" stroke-width="1" opacity=".5"/></svg></button>
+          <button class="flagship-play" id="ribWatch" type="button"><svg width="12" height="14" viewBox="0 0 12 14" fill="currentColor"><path d="M1 1.5L11 7L1 12.5V1.5Z"/></svg>Watch film</button>
+          <button class="tl-arrow" id="ribNext" type="button" aria-label="Next film"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="1.5"><polyline points="9,8 13,12 9,16"/><line x1="13" y1="12" x2="3" y2="12"/><line x1="21" y1="5" x2="21" y2="19" stroke-width="1" opacity=".5"/></svg></button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1394,6 +1440,162 @@ tl.addEventListener('wheel',e=>{
   e.preventDefault();
   tlGoTo(base+dy);
 },{passive:false});
+
+// FILM RIBBON — prototype (add ?ribbon to the address). Endless single row of posters, ported from the North Documentary gallery engine.
+// The ribbon is a loop: the row is laid out three times, u is the place within one round (0..P). It drifts slowly, glides after a drag,
+// stretches a little like a rubber band while it moves, and the films towards the edges fade and shrink a little (no blur: the titles stay readable).
+(function(){
+  if(!/[?&]ribbon(&|=|$)/.test(location.search)) return;
+  const sec=document.getElementById('ribSection'), old=document.querySelector('.timeline-wrap');
+  if(!sec||!old) return;
+  old.hidden=true; sec.hidden=false;
+  const field=document.getElementById('ribField'), row=document.getElementById('ribRow'), rib=document.getElementById('filmRib');
+  const ruler=document.getElementById('ribRuler'), mark=ruler.querySelector('.rib-mark');
+  const cap=document.getElementById('ribCap'), eDesc=document.getElementById('ribDesc');
+  const films=ORDER.map(t=>FILM_BY_TITLE[t]).filter(Boolean), N=films.length;
+  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const small=matchMedia('(max-width: 860px)').matches;
+
+  // tiles: poster + title + country/year, three copies of the row
+  for(let c=0;c<3;c++) films.forEach((f,i)=>{
+    const info=FILM_INFO[f.title]||{};
+    const b=document.createElement('button');
+    b.type='button'; b.className='rib-tile'+(f.ep?' imp':''); b.dataset.i=i;
+    b.setAttribute('aria-label','Watch '+f.title);
+    if(c){ b.tabIndex=-1; b.setAttribute('aria-hidden','true'); }
+    const poster=document.createElement('span'); poster.className='rib-poster';
+    const im=new Image(); im.src=f.img; im.alt=''; im.draggable=false; im.decoding='async';
+    poster.appendChild(im);
+    if(f.ep){ const ep=document.createElement('span'); ep.className='rib-ep'; ep.textContent=f.ep; poster.appendChild(ep); }
+    const label=document.createElement('span'); label.className='rib-label';
+    const ti=document.createElement('span'); ti.className='rib-title'; ti.textContent=f.title;
+    const su=document.createElement('span'); su.className='rib-sub'; su.textContent=[info.country,info.year].filter(Boolean).join(' · ');
+    label.append(ti,su);
+    b.append(poster,label);
+    row.appendChild(b);
+  });
+  const tiles=Array.from(row.children);
+
+  let u=0,uT=0,vel=0,P=0,half=0,cx=[],sigma=0,speed=0,prevU=0,running=false,dragging=false,lastTs=0,lastPct=-1,hovering=false,onScreen=false,capIdx=-1,placed=false;
+  const DRIFT=small?14:8;                                   // px per second; it stops while a hand or the pointer is on the ribbon
+  const opaque=[];
+  const wrapTo=v=>P?((v%P)+P)%P:v;
+  const ease=(dt,tau)=>1-Math.exp(-dt/tau);
+
+  function setCaption(i){
+    capIdx=i; const f=films[i];
+    eDesc.textContent=f.desc;
+    cap.classList.remove('swap'); void cap.offsetWidth; cap.classList.add('swap');
+    tiles.forEach((t,k)=>t.classList.toggle('is-center',k%N===i));
+  }
+  function paint(){
+    const shift=wrapTo(u)-u; if(shift){u+=shift;uT+=shift;prevU+=shift;}
+    const tx=-P-u;
+    row.style.transform='translate3d('+tx.toFixed(2)+'px,0,0)';
+    const pct=P?Math.round(u/P*100):0;
+    if(pct!==lastPct){lastPct=pct;mark.style.left=pct+'%';ruler.setAttribute('aria-valuenow',String(pct));}
+    let best=1e9,bi=0;
+    for(let i=0;i<tiles.length;i++){
+      const rel=cx[i]+tx-half, ar=Math.abs(rel);
+      if(ar<best){best=ar;bi=i;}
+      const d=ar*(1+sigma)/half, el=tiles[i];
+      if(d>1.6){ if(opaque[i]!=='h'){el.style.visibility='hidden';opaque[i]='h';} continue; }
+      if(opaque[i]==='h'){el.style.visibility='';opaque[i]='';}
+      const f=Math.min(1,Math.max(0,(d-0.3)/0.75));          // 0 at the middle, 1 at the edges
+      el.style.transform='translate3d('+(rel*sigma).toFixed(2)+'px,0,0) scale('+(1-f*0.08).toFixed(3)+')';
+      const op=(1-f*0.5).toFixed(2);
+      if(opaque[i]!==op){opaque[i]=op;el.style.opacity=op;}
+    }
+    const idx=bi%N; if(idx!==capIdx) setCaption(idx);
+  }
+  function tick(ts){
+    const dt=Math.min(0.05,Math.max(0.001,(ts-lastTs)/1000)); lastTs=ts;
+    if(dragging){ u+=(uT-u)*ease(dt,0.17); }                         // the ribbon is heavy: it trails the hand
+    else if(Math.abs(vel)>12){ u+=vel*dt; vel*=Math.exp(-dt/0.6); uT=u; }   // glide after the hand lets go
+    else if(Math.abs(uT-u)>0.05){ u+=(uT-u)*ease(dt,0.14); }
+    else { vel=0; if(!calm&&!hovering&&!down&&onScreen) u+=DRIFT*dt; uT=u; }
+    const v=(u-prevU)/dt; prevU=u;
+    if(dragging) vel+=(v-vel)*ease(dt,0.06);
+    speed+=(Math.abs(v)-speed)*ease(dt,0.1);
+    const target=calm?0:Math.min(0.6,speed*0.00045);
+    sigma+=(target-sigma)*ease(dt,target>sigma?0.12:0.7);            // stretches, then draws back like a rubber band
+    paint();
+    if(dragging||Math.abs(uT-u)>0.05||Math.abs(vel)>12||sigma>0.002||speed>3||(!calm&&onScreen&&!hovering)) requestAnimationFrame(tick);
+    else { running=false; sigma=0; speed=0; paint(); }
+  }
+  function go(){ if(!running){ running=true; prevU=u; lastTs=performance.now(); requestAnimationFrame(tick); } }
+  function measure(){
+    half=field.clientWidth/2;
+    const phase=P?u/P:0;
+    P=tiles[N].offsetLeft-tiles[0].offsetLeft;
+    cx=tiles.map(t=>t.offsetLeft+t.offsetWidth/2);
+    if(!placed){ placed=true; u=uT=prevU=wrapTo(cx[0]-half-P); }       // the first film starts in the middle
+    else u=uT=prevU=phase*P;
+    opaque.length=0;
+    paint(); go();
+  }
+  // bring film i (0..N-1) to the middle by the shortest way round
+  function goTo(i){
+    i=((i%N)+N)%N;
+    let dd=wrapTo(cx[i]-half-P)-wrapTo(u);
+    if(dd>P/2) dd-=P; if(dd<-P/2) dd+=P;
+    uT=u+dd; vel=0; go();
+  }
+
+  // pull with a mouse or a finger (vertical movement stays with the page: touch-action pan-y on the field)
+  const GAIN=1.15;
+  let down=false,moved=false,sx=0,u0=0;
+  field.addEventListener('pointerdown',e=>{ if(e.pointerType==='mouse'&&e.button!==0) return; down=true; moved=false; sx=e.clientX; uT=u; u0=u; vel=0; });
+  field.addEventListener('pointermove',e=>{
+    if(!down) return;
+    const dx=e.clientX-sx;
+    if(!moved&&Math.abs(dx)<5) return;
+    if(!moved){ moved=true; dragging=true; sx=e.clientX; field.setPointerCapture(e.pointerId); field.classList.add('drag'); go(); return; }
+    uT=u0-dx*GAIN;
+  });
+  const up=()=>{ if(!down) return; down=false; dragging=false; field.classList.remove('drag'); if(!moved||calm) vel=0; go(); };
+  field.addEventListener('pointerup',up); field.addEventListener('pointercancel',up);
+  field.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse') hovering=true; });
+  field.addEventListener('pointerleave',()=>{ hovering=false; go(); });
+  field.addEventListener('click',e=>{ if(moved){ e.stopPropagation(); e.preventDefault(); moved=false; } },true);
+  // trackpad sideways swipe, or Shift + wheel; the ordinary up-and-down wheel stays with the page
+  field.addEventListener('wheel',e=>{
+    const dx=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:(e.shiftKey?e.deltaY:0);
+    if(!dx) return;
+    e.preventDefault(); uT+=dx*GAIN; vel=0; go();
+  },{passive:false});
+
+  // the ruler: click or drag, arrows with the keyboard
+  const seek=e=>{ const b=ruler.getBoundingClientRect(); uT=P*Math.min(1,Math.max(0,(e.clientX-b.left)/b.width)); vel=0; go(); };
+  ruler.addEventListener('pointerdown',e=>{ ruler.setPointerCapture(e.pointerId); seek(e); ruler.onpointermove=seek; });
+  ruler.addEventListener('pointerup',()=>{ ruler.onpointermove=null; });
+  ruler.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'){ e.preventDefault(); goTo(capIdx+1); }
+    if(e.key==='ArrowLeft'){ e.preventDefault(); goTo(capIdx-1); }
+  });
+
+  // click: a film off the middle is brought to the middle first; the one in the middle opens its card
+  row.addEventListener('click',e=>{
+    const t=e.target.closest('.rib-tile'); if(!t) return;
+    const i=Number(t.dataset.i);
+    if(i!==capIdx) goTo(i); else openModal(films[i].vimeo,films[i].title);
+  });
+  row.addEventListener('focusin',e=>{ const t=e.target.closest('.rib-tile'); if(t) goTo(Number(t.dataset.i)); });
+  document.getElementById('ribPrev').addEventListener('click',()=>goTo(capIdx-1));
+  document.getElementById('ribNext').addEventListener('click',()=>goTo(capIdx+1));
+  document.getElementById('ribWatch').addEventListener('click',()=>{ const f=films[capIdx]; if(f) openModal(f.vimeo,f.title); });
+  field.addEventListener('scroll',()=>{ field.scrollLeft=0; });
+
+  // same big ring + WATCH as on the film cards
+  field.addEventListener('mouseenter',()=>{ curR.style.width='64px'; curR.style.height='64px'; curR.style.borderColor='rgba(245,196,0,.8)'; curWatch.style.opacity='1'; cur.style.width='4px'; cur.style.height='4px'; });
+  field.addEventListener('mouseleave',()=>{ curR.style.width='28px'; curR.style.height='28px'; curR.style.borderColor='rgba(245,196,0,.6)'; curWatch.style.opacity='0'; cur.style.width='6px'; cur.style.height='6px'; });
+
+  measure();
+  new IntersectionObserver(([e])=>{ onScreen=e.isIntersecting; if(onScreen) go(); }).observe(rib);
+  addEventListener('resize',measure);
+  if(document.fonts) document.fonts.ready.then(measure);
+  if(document.readyState!=='complete') addEventListener('load',measure);
+})();
 
 // SCROLL HINT — once, when the film row first comes into view: nudge forward and back
 (function(){
