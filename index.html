@@ -1471,7 +1471,7 @@ tl.addEventListener('wheel',e=>{
   });
   const tiles=Array.from(row.children);
 
-  let u=0,uT=0,vel=0,P=0,half=0,cx=[],sigma=0,speed=0,prevU=0,running=false,dragging=false,lastTs=0,lastPct=-1,hovering=false,onScreen=false,capIdx=-1,placed=false;
+  let u=0,uT=0,vel=0,P=0,half=0,cx=[],sigma=0,speed=0,prevU=0,running=false,dragging=false,lastTs=0,lastPct=-1,hovering=false,onScreen=false,capIdx=-1,placed=false,lastWheel=-1e9;
   const DRIFT=small?14:8;                                   // px per second; it stops while a hand or the pointer is on the ribbon
   const opaque=[];
   const wrapTo=v=>P?((v%P)+P)%P:v;
@@ -1512,8 +1512,11 @@ tl.addEventListener('wheel',e=>{
     const v=(u-prevU)/dt; prevU=u;
     if(dragging) vel+=(v-vel)*ease(dt,0.06);
     speed+=(Math.abs(v)-speed)*ease(dt,0.1);
-    const target=calm?0:Math.min(0.12,speed*0.0001);
-    sigma+=(target-sigma)*ease(dt,target>sigma?0.1:0.2);             // a slight stretch that draws back quickly
+    // the stretch belongs to the hand: it grows while the ribbon is being pulled (mouse, finger, trackpad) and snaps back soon after
+    // the hand lets go, however long the ribbon keeps gliding
+    const pulling=dragging||(performance.now()-lastWheel<140);
+    const target=(calm||!pulling)?0:Math.min(0.28,speed*0.00026);
+    sigma+=(target-sigma)*ease(dt,target>sigma?0.09:0.1);
     paint();
     if(dragging||Math.abs(uT-u)>0.05||Math.abs(vel)>12||sigma>0.002||speed>3||(!calm&&onScreen&&!hovering)) requestAnimationFrame(tick);
     else { running=false; sigma=0; speed=0; paint(); }
@@ -1557,7 +1560,7 @@ tl.addEventListener('wheel',e=>{
   field.addEventListener('wheel',e=>{
     const dx=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:(e.shiftKey?e.deltaY:0);
     if(!dx) return;
-    e.preventDefault(); uT+=dx*GAIN; vel=0; go();
+    e.preventDefault(); uT+=dx*GAIN; vel=0; lastWheel=performance.now(); go();
   },{passive:false});
 
   // the ruler: click or drag, arrows with the keyboard
