@@ -370,6 +370,11 @@ html.intro-pending #filmProgress{display:none;}
 .about-bg img{position:absolute;left:0;top:-48px;height:calc(100% + 96px);will-change:transform;}
 @media(max-width:600px){.about-bg img{top:-32px;height:calc(100% + 64px);}}
 
+/* IMAGE PROTECTION (a deterrent, not a lock; the script part is at the end of the page) */
+img,video,canvas{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;}
+img{-webkit-user-select:none;user-select:none;}
+.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player{-webkit-touch-callout:none;}
+
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
@@ -451,7 +456,7 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
 <!-- HERO -->
 <section class="hero">
   <div class="hero-video-wrap">
-    <video id="heroVideo" muted loop playsinline preload="metadata" poster="img/hero-poster.jpg" aria-hidden="true"></video>
+    <video id="heroVideo" muted loop playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback" preload="metadata" poster="img/hero-poster.jpg" aria-hidden="true"></video>
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-leak"></div>
@@ -1514,6 +1519,16 @@ document.querySelectorAll('a,button').forEach(el=>{
   addEventListener('resize',measure);
   if(document.fonts) document.fonts.ready.then(measure);
   if(document.readyState!=='complete') addEventListener('load',measure);
+})();
+
+// IMAGE PROTECTION — makes saving a picture harder: no "Save image as" menu over pictures and video, nothing can be dragged out of the page,
+// no long-press "save" on phones. It cannot stop screenshots or the browser's developer tools; it only removes the easy ways.
+(function(){
+  const MEDIA='img,video,canvas,.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player';
+  const onMedia=e=>{ const t=e.target; return !!(t&&t.closest&&t.closest(MEDIA)); };
+  document.addEventListener('contextmenu',e=>{ if(onMedia(e)) e.preventDefault(); });
+  document.addEventListener('dragstart',e=>{ if(onMedia(e)) e.preventDefault(); });
+  document.querySelectorAll('img').forEach(i=>{ i.draggable=false; });
 })();
 
 // SCROLL EFFECTS — nav auto-hide + backdrop, film-strip progress, About parallax (one throttled handler)
