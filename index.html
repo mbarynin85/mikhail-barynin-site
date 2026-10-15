@@ -205,8 +205,8 @@ nav.hide{transform:translateY(-110%);}
 .prod-teaser .fc{position:absolute;width:26px;height:26px;pointer-events:none;border:0 solid var(--acc);}
 .prod-teaser .fc.tl{top:-10px;left:-10px;border-top-width:1px;border-left-width:1px;} .prod-teaser .fc.tr{top:-10px;right:-10px;border-top-width:1px;border-right-width:1px;}
 .prod-teaser .fc.bl{bottom:-10px;left:-10px;border-bottom-width:1px;border-left-width:1px;} .prod-teaser .fc.br{bottom:-10px;right:-10px;border-bottom-width:1px;border-right-width:1px;}
-.prod-play{position:absolute;left:50%;top:50%;width:86px;height:86px;margin:-43px 0 0 -43px;border:1px solid var(--acc);border-radius:50%;display:grid;place-items:center;background:rgba(8,8,8,.28);backdrop-filter:blur(2px);transition:transform .3s,background .3s;}
-.prod-play svg{width:22px;height:22px;margin-left:4px;fill:var(--acc);}
+.prod-play{position:absolute;right:22px;bottom:22px;width:66px;height:66px;border:1px solid var(--acc);border-radius:50%;display:grid;place-items:center;background:rgba(8,8,8,.28);backdrop-filter:blur(2px);transition:transform .3s,background .3s;}
+.prod-play svg{width:18px;height:18px;margin-left:3px;fill:var(--acc);}
 .prod-teaser:hover .prod-play,.prod-teaser:focus-visible .prod-play{transform:scale(1.08);background:var(--acc);}
 .prod-teaser:hover .prod-play svg,.prod-teaser:focus-visible .prod-play svg{fill:var(--bg);}
 .prod-teaser:focus-visible{outline:2px solid var(--acc);outline-offset:6px;}
@@ -567,6 +567,7 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
   <div class="sec-head reveal"><h2 class="sec-title" id="prod-heading">In Production</h2></div>
   <div class="prod-grid reveal">
     <button class="prod-teaser" id="prodTeaser" type="button" aria-label="Watch the teaser of The Cold">
+      <img src="img/the-cold-teaser.jpg" alt="" loading="lazy" draggable="false">
       <span class="prod-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M1 1.5L11 7L1 12.5V1.5Z"/></svg></span>
       <span class="prod-chip" aria-hidden="true">Teaser · 2:57</span>
       <span class="fc tl"></span><span class="fc tr"></span><span class="fc bl"></span><span class="fc br"></span>
