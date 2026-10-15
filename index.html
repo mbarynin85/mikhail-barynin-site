@@ -194,7 +194,7 @@ nav.hide{transform:translateY(-110%);}
 @media(max-width:960px){.about-bg-grad{background:linear-gradient(to bottom,rgba(8,8,8,.5) 0%,rgba(8,8,8,.95) 60%);}.about-ghost-name{display:none;}.about-content{max-width:100%;}}
 @media(max-width:600px){.about-section{min-height:auto;}.about-content{padding:50px 20px;}}
 
-/* IN PRODUCTION: the next film (teaser, facts, photos). Hidden unless the page is opened with ?production */
+/* IN PRODUCTION: the next film (teaser, facts, photos) */
 .prod{--bg:var(--black);--ink:var(--white);--sub:var(--silver);--soft:var(--light);--rule:rgba(242,237,224,.18);--acc:var(--yellow);--ph:#141414;--ph2:#1d1d1d;position:relative;background:var(--bg);color:var(--ink);padding-bottom:90px;}
 .prod[hidden]{display:none;}
 .prod .sec-title{color:var(--ink);}
@@ -508,7 +508,7 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
   <a href="#" class="nav-logo">MB</a>
   <ul class="nav-links">
     <li><a href="#films"   class="sc" data-text="FILMS">FILMS</a></li>
-    <li id="navProduction" hidden><a href="#production" class="sc" data-text="IN PRODUCTION">IN PRODUCTION</a></li>
+    <li id="navProduction"><a href="#production" class="sc" data-text="IN PRODUCTION">IN PRODUCTION</a></li>
     <li><a href="#about"   class="sc" data-text="ABOUT">ABOUT</a></li>
     <li><a href="#press"   class="sc" data-text="PRESS">PRESS</a></li>
     <li><a href="#contact" class="sc" data-text="CONTACT">CONTACT</a></li>
@@ -575,8 +575,8 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
   </div>
 </section>
 
-<!-- IN PRODUCTION (hidden unless ?production) -->
-<section class="prod" id="production" hidden aria-labelledby="prod-heading">
+<!-- IN PRODUCTION -->
+<section class="prod" id="production" aria-labelledby="prod-heading">
   <div class="sec-head reveal"><h2 class="sec-title" id="prod-heading">In Production</h2></div>
   <div class="prod-grid reveal">
     <button class="prod-teaser" id="prodTeaser" type="button" aria-label="Watch the teaser of The Cold">
@@ -1231,9 +1231,9 @@ document.querySelectorAll('.sc').forEach(a=>{a.addEventListener('mouseenter',()=
   const layer=document.getElementById('mapMarkers');
   const scroller=document.getElementById('mapScroll');
   const FILMS=Object.assign({'24 Snow':{img:'img/24-snow.jpg',title:'24 Snow',vimeo:'1233130230'},'The Cold':{img:'img/the-cold-teaser.jpg',title:'The Cold · in production',custom:()=>openTeaser()}},FILM_BY_TITLE);
-  // the film in production appears on the map together with its block (the ?production page, or once the block is shown to everyone)
+  // the film in production appears on the map together with its block
   const prodSec=document.getElementById('production');
-  const prodOn=/[?&]production/.test(location.search)||(prodSec&&!prodSec.hasAttribute('hidden'));
+  const prodOn=!!prodSec&&!prodSec.hasAttribute('hidden');
   const PTS=[
     {name:'Arctic Siberia',x:75.67,y:8.25,films:['24 Snow','Bonfire on the Snow']},
     {name:'Laptev Sea',x:72.15,y:4.02,films:['The Cold'],prod:true},
@@ -1650,14 +1650,13 @@ document.querySelectorAll('a,button').forEach(el=>{
   if(document.readyState!=='complete') addEventListener('load',measure);
 })();
 
-// IN PRODUCTION — shown only when the page is opened with ?production
+// IN PRODUCTION — the timeline, the teaser and the short menu label
 (function(){
-  const m=/[?&]production(?:=(\w+))?/.exec(location.search), sec=document.getElementById('production');
-  if(!sec||!m) return;
-  sec.hidden=false;
+  const sec=document.getElementById('production');
+  if(!sec) return;
   const navLi=document.getElementById('navProduction'), navA=navLi.querySelector('a'), narrow=matchMedia('(max-width: 900px)');
   const label=()=>{ navA.dataset.text=narrow.matches?'NEXT':'IN PRODUCTION'; navA.textContent=navA.dataset.text; };
-  navLi.hidden=false; label(); narrow.addEventListener('change',label);
+  label(); narrow.addEventListener('change',label);
   // the line from the start of shooting to the planned completion, with a marker for today
   const A=Date.UTC(2025,0,1), Z=Date.UTC(2027,6,1), p=Math.min(1,Math.max(0,(Date.now()-A)/(Z-A)));
   sec.querySelector('.prod-tl-fill').style.width=(p*100).toFixed(1)+'%';
