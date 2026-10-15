@@ -271,6 +271,15 @@ nav.hide{transform:translateY(-110%);}
 .rib-cursor{position:absolute;left:50%;top:0;width:1px;height:calc(44px + var(--ch) + 30px);background:var(--yellow);opacity:.9;box-shadow:0 0 6px rgba(245,196,0,.5);pointer-events:none;z-index:5;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%);}
 .rib-ruler{position:relative;width:min(300px,64%);height:34px;margin:2px auto 0;cursor:none;touch-action:none;}
 /* like an adjustment layer in an editing program: a thin red bar over the three Imprisoned episodes, as one block (it stretches with the ribbon) */
+.drag-hint{position:fixed;left:0;top:0;z-index:9996;width:0;height:0;pointer-events:none;opacity:0;transition:opacity .16s ease;will-change:transform;}
+.drag-hint.on{opacity:1;}
+.drag-hint svg{position:absolute;top:-15px;width:30px;height:30px;fill:none;stroke:var(--yellow);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(245,196,0,.55));}
+.drag-hint .l{left:-78px;animation:hintL 1.1s ease-in-out infinite;}
+.drag-hint .r{left:48px;animation:hintR 1.1s ease-in-out infinite;}
+@keyframes hintL{0%,100%{transform:translateX(0);}50%{transform:translateX(-7px);}}
+@keyframes hintR{0%,100%{transform:translateX(0);}50%{transform:translateX(7px);}}
+@media(prefers-reduced-motion:reduce){.drag-hint .l,.drag-hint .r{animation:none;}}
+@media(hover:none){.drag-hint{display:none;}}
 .rib-adj{position:absolute;left:0;top:30px;width:0;height:8px;z-index:3;pointer-events:none;visibility:hidden;will-change:transform,width;background:linear-gradient(var(--red),var(--red)) 0 0/100% 1px no-repeat,linear-gradient(var(--red),var(--red)) 0 0/1px 8px no-repeat,linear-gradient(var(--red),var(--red)) 100% 0/1px 8px no-repeat;}
 .rib-ticks{position:absolute;inset:9px 0;background:repeating-linear-gradient(to right,var(--yellow) 0 1px,transparent 1px 10px);opacity:.5;-webkit-mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(to right,transparent,#000 18%,#000 82%,transparent);}
 .rib-mark{position:absolute;top:0;bottom:0;width:24px;margin-left:-12px;border:1px solid var(--yellow);border-radius:5px;background:var(--black);}
@@ -1303,6 +1312,42 @@ document.querySelectorAll('a,button').forEach(el=>{
 
   let u=0,uT=0,vel=0,P=0,half=0,cx=[],sigma=0,speed=0,prevU=0,running=false,dragging=false,lastTs=0,lastPct=-1,hovering=false,onScreen=false,centerIdx=-1,placed=false,lastWheel=-1e9;
   const STRETCH_FROM=520;                                    // px per second: below this speed the ribbon does not stretch
+  // two arrows at the sides of the pointer while the ribbon is held: it can be pulled left and right
+  const hint=document.createElement('div'); hint.className='drag-hint'; hint.setAttribute('aria-hidden','true');
+  hint.innerHTML='<svg class="l" viewBox="0 0 24 24"><polyline points="14,6 8,12 14,18"/><line x1="8" y1="12" x2="21" y2="12"/></svg><svg class="r" viewBox="0 0 24 24"><polyline points="10,6 16,12 10,18"/><line x1="3" y1="12" x2="16" y2="12"/></svg>';
+  document.body.appendChild(hint);
+  let hintTimer=0;
+  const placeHint=e=>{ hint.style.transform='translate3d('+e.clientX+'px,'+e.clientY+'px,0)'; };
+  const showHint=e=>{ placeHint(e); clearTimeout(hintTimer); hintTimer=setTimeout(()=>{ hint.classList.add('on'); curWatch.style.opacity='0'; },90); };
+  const hideHint=()=>{ clearTimeout(hintTimer); if(hint.classList.contains('on')&&hovering) curWatch.style.opacity='1'; hint.classList.remove('on'); };
+
+  // the counter: a short mechanical tick every STEP pixels while the ribbon is moved by hand (drag, wheel, the ruler, the buttons).
+  // Made with the Web Audio API, so there is no sound file; it starts only after the first press (browsers need that).
+  const STEP=small?64:76;
+  let actx=null,acc=0,userMove=false,lastTickT=0;
+  const unlockAudio=()=>{
+    try{
+      if(!actx){ const AC=window.AudioContext||window.webkitAudioContext; if(AC) actx=new AC(); }
+      if(actx&&actx.state==='suspended') actx.resume();
+    }catch(_){}
+  };
+  function counterTick(){
+    if(!actx||actx.state!=='running') return;
+    const now=performance.now(); if(now-lastTickT<30) return; lastTickT=now;
+    const t=actx.currentTime;
+    // a dry click (a burst of noise) ...
+    const len=Math.floor(actx.sampleRate*0.012), buf=actx.createBuffer(1,len,actx.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
+    const src=actx.createBufferSource(); src.buffer=buf;
+    const bp=actx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=2300+Math.random()*500; bp.Q.value=1.3;
+    const g=actx.createGain(); g.gain.value=0.16;
+    src.connect(bp); bp.connect(g); g.connect(actx.destination); src.start(t);
+    // ... and a small low knock under it, like a wheel of a mechanical counter turning over
+    const o=actx.createOscillator(), og=actx.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(190,t); o.frequency.exponentialRampToValueAtTime(85,t+0.03);
+    og.gain.setValueAtTime(0.10,t); og.gain.exponentialRampToValueAtTime(0.0001,t+0.04);
+    o.connect(og); og.connect(actx.destination); o.start(t); o.stop(t+0.05);
+  }
   const DRIFT=small?14:8;                                   // px per second; it stops while a hand or the pointer is on the ribbon
   const opaque=[];
   const wrapTo=v=>P?((v%P)+P)%P:v;
@@ -1361,8 +1406,9 @@ document.querySelectorAll('a,button').forEach(el=>{
     if(dragging){ u+=(uT-u)*ease(dt,0.17); }                         // the ribbon is heavy: it trails the hand
     else if(Math.abs(vel)>12){ u+=vel*dt; vel*=Math.exp(-dt/0.6); uT=u; }   // glide after the hand lets go
     else if(Math.abs(uT-u)>0.05){ u+=(uT-u)*ease(dt,0.14); }
-    else { vel=0; if(!calm&&!hovering&&!down&&onScreen) u+=DRIFT*dt; uT=u; }
-    const v=(u-prevU)/dt; prevU=u;
+    else { vel=0; userMove=false; if(!calm&&!hovering&&!down&&onScreen) u+=DRIFT*dt; uT=u; }
+    const dU=u-prevU, v=dU/dt; prevU=u;
+    if(userMove){ acc+=Math.abs(dU); let n=0; while(acc>=STEP&&n<2){ acc-=STEP; n++; counterTick(); } if(acc>=STEP) acc=0; }
     if(dragging) vel+=(v-vel)*ease(dt,0.06);
     speed+=(Math.abs(v)-speed)*ease(dt,0.1);
     // the stretch belongs to the hand: it grows while the ribbon is being pulled (mouse, finger, trackpad) and snaps back soon after
@@ -1390,21 +1436,22 @@ document.querySelectorAll('a,button').forEach(el=>{
     i=((i%N)+N)%N;
     let dd=wrapTo(cx[i]-half-P)-wrapTo(u);
     if(dd>P/2) dd-=P; if(dd<-P/2) dd+=P;
-    uT=u+dd; vel=0; go();
+    uT=u+dd; vel=0; userMove=true; go();
   }
 
   // pull with a mouse or a finger (vertical movement stays with the page: touch-action pan-y on the field)
   const GAIN=1.15;
   let down=false,moved=false,sx=0,u0=0;
-  field.addEventListener('pointerdown',e=>{ if(e.pointerType==='mouse'&&e.button!==0) return; down=true; moved=false; sx=e.clientX; uT=u; u0=u; vel=0; speed=0; sigma=0; });
+  field.addEventListener('pointerdown',e=>{ if(e.pointerType==='mouse'&&e.button!==0) return; down=true; moved=false; sx=e.clientX; uT=u; u0=u; vel=0; speed=0; sigma=0; acc=0; unlockAudio(); if(e.pointerType==='mouse') showHint(e); });
   field.addEventListener('pointermove',e=>{
     if(!down) return;
+    if(e.pointerType==='mouse') placeHint(e);
     const dx=e.clientX-sx;
     if(!moved&&Math.abs(dx)<5) return;
-    if(!moved){ moved=true; dragging=true; sx=e.clientX; try{ field.setPointerCapture(e.pointerId); }catch(_){} field.classList.add('drag'); go(); return; }
+    if(!moved){ moved=true; dragging=true; userMove=true; sx=e.clientX; try{ field.setPointerCapture(e.pointerId); }catch(_){} field.classList.add('drag'); go(); return; }
     uT=u0-dx*GAIN;
   });
-  const up=()=>{ if(!down) return; down=false; dragging=false; field.classList.remove('drag'); if(!moved||calm) vel=0; go(); };
+  const up=()=>{ hideHint(); if(!down) return; down=false; dragging=false; field.classList.remove('drag'); if(!moved||calm) vel=0; go(); };
   field.addEventListener('pointerup',up); field.addEventListener('pointercancel',up);
   field.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse') hovering=true; });
   field.addEventListener('pointerleave',()=>{ hovering=false; go(); });
@@ -1413,12 +1460,12 @@ document.querySelectorAll('a,button').forEach(el=>{
   field.addEventListener('wheel',e=>{
     const dx=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:(e.shiftKey?e.deltaY:0);
     if(!dx) return;
-    e.preventDefault(); uT+=dx*GAIN; vel=0; lastWheel=performance.now(); go();
+    e.preventDefault(); unlockAudio(); userMove=true; uT+=dx*GAIN; vel=0; lastWheel=performance.now(); go();
   },{passive:false});
 
   // the ruler: click or drag, arrows with the keyboard
-  const seek=e=>{ const b=ruler.getBoundingClientRect(); uT=P*Math.min(1,Math.max(0,(e.clientX-b.left)/b.width)); vel=0; go(); };
-  ruler.addEventListener('pointerdown',e=>{ try{ ruler.setPointerCapture(e.pointerId); }catch(_){} seek(e); ruler.onpointermove=seek; });
+  const seek=e=>{ const b=ruler.getBoundingClientRect(); uT=P*Math.min(1,Math.max(0,(e.clientX-b.left)/b.width)); vel=0; userMove=true; go(); };
+  ruler.addEventListener('pointerdown',e=>{ unlockAudio(); try{ ruler.setPointerCapture(e.pointerId); }catch(_){} seek(e); ruler.onpointermove=seek; });
   ruler.addEventListener('pointerup',()=>{ ruler.onpointermove=null; });
   ruler.addEventListener('keydown',e=>{
     if(e.key==='ArrowRight'){ e.preventDefault(); goTo(centerIdx+1); }
