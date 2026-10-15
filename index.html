@@ -1669,18 +1669,24 @@ document.querySelectorAll('a,button').forEach(el=>{
   const PH=[
     ['01','Aerial view of thawing permafrost: rounded mounds of ground covered with moss'],
     ['02','A boy in a hood and mittens carrying a block of ice'],
+    ['20','Two tiny figures and a dark pole in a vast white snowfield'],
     ['03','Looking up an ice shaft to a circle of daylight'],
     ['04','A man with a backpack standing at the edge of a permafrost crater'],
+    ['15','Aerial view of a low cliff above a brown river bank in the tundra'],
     ['05','A figure walking across a snow field in low sun and mist'],
     ['06','A man holding up a glass flask by a window'],
-    ['07','Aerial view of the edge of a crater cut into the tundra'],
+    ['17','Aerial view of a huge crater in the forest, its far wall a dark ridge'],
     ['08','A runner with a frosted face and a race bib in a winter marathon'],
-    ['09','Dark ice with rippled, glassy walls'],
+    ['19','Dark ice carved into sharp, glassy ridges'],
     ['10','A village among rounded mounds of thawing ground, beside a dark lake'],
     ['11','A man sitting with his arms crossed against a log wall'],
+    ['16','A steep eroded bank of layered earth and ice above brown water'],
     ['12','Two people walking through snow beside a fence'],
     ['13','A man in a blue jacket at the wheel of a boat on a river'],
-    ['14','A man on a frozen river with a long line of ice behind him']
+    ['18','A person in a blue jacket at the foot of a layered permafrost wall'],
+    ['14','A man on a frozen river with a long line of ice behind him'],
+    ['07','Aerial view of the edge of a crater cut into the tundra'],
+    ['09','Dark ice with rippled, glassy walls']
   ].map(([n,alt])=>({t:'img/the-cold-p'+n+'.jpg',l:'img/the-cold-p'+n+'-l.jpg',alt}));
   const N=PH.length, calm=matchMedia('(prefers-reduced-motion: reduce)').matches, small=matchMedia('(max-width: 860px)').matches;
   for(let c=0;c<3;c++) PH.forEach((p,i)=>{
