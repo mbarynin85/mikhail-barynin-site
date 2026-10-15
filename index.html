@@ -229,18 +229,30 @@ nav.hide{transform:translateY(-110%);}
 .prod-cta{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:13px 22px;border:1px solid var(--acc);color:var(--ink);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;cursor:none;transition:background .25s,color .25s;}
 .prod-cta:hover{background:var(--acc);color:var(--bg);}
 .prod-ask{margin:14px 0 0;font-size:12px;font-weight:300;line-height:1.7;color:var(--sub);}
-.prod-photos{display:flex;align-items:flex-end;gap:10px;padding:56px 48px 0;}
-.prod-photo{position:relative;flex:var(--r) 1 0;min-width:0;aspect-ratio:var(--r);margin:0;overflow:hidden;background:linear-gradient(135deg,var(--ph),var(--ph2));display:grid;place-items:center;font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--sub);}
-.prod-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 @media(max-width:860px){
   .prod-grid{grid-template-columns:minmax(0,1fr);padding:0 20px;gap:34px;}
   .prod-teaser,.prod-cta{cursor:pointer;}
+  .prod-ribbon{--cw:min(64vw,300px);}
+  .prod-ribbon .rib-field{cursor:auto;}
   .prod-teaser .fc.tl,.prod-teaser .fc.bl{left:-6px;} .prod-teaser .fc.tr,.prod-teaser .fc.br{right:-6px;}
-  .prod-photos{flex-wrap:wrap;padding:36px 20px 0;}
-  .prod-photo{flex:1 1 calc(50% - 5px);aspect-ratio:var(--r);}
   .prod{padding-bottom:60px;}
 }
 @media(prefers-reduced-motion:reduce){.prod-status i{animation:none;}}
+
+/* PHOTOGRAPHS OF THE FILM: the same endless ribbon as the films (the look comes from the .rib-* rules), without titles */
+.prod-ribbon{--cw:clamp(220px,25vw,390px);--ch:calc(var(--cw) * 9 / 16);--gap:14px;position:relative;margin-top:64px;}
+.prod-ribbon .rib-field{height:calc(var(--ch) + 100px);}
+.prod-ribbon .rib-ruler{margin-top:0;}
+.prod-count{margin:6px 0 0;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--sub);}
+.pbox{position:fixed;inset:0;z-index:2100;display:grid;place-items:center;background:rgba(0,0,0,.96);}
+.pbox[hidden]{display:none;}
+.pbox img{max-width:92vw;max-height:84vh;width:auto;height:auto;object-fit:contain;display:block;}
+.pbox-close{position:absolute;top:16px;right:20px;padding:12px 4px 12px 14px;background:none;border:0;color:var(--silver);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;cursor:none;}
+.pbox-close:hover{color:var(--white);}
+.pbox-nav{position:absolute;top:50%;transform:translateY(-50%);padding:18px;background:none;border:0;color:var(--white);font:300 30px/1 var(--display);cursor:none;}
+.pbox-nav.prev{left:8px;} .pbox-nav.next{right:8px;} .pbox-nav:hover{color:var(--yellow);}
+.pbox-count{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);margin:0;font-family:var(--mono);font-size:10px;letter-spacing:.25em;color:var(--silver);}
+@media(max-width:860px){.pbox-close,.pbox-nav{cursor:pointer;}}
 
 /* LOCATIONS MAP */
 .map-wrap{padding:0 48px 80px;overflow-x:clip;}
@@ -422,7 +434,7 @@ html.intro-pending #filmProgress{display:none;}
 /* IMAGE PROTECTION (a deterrent, not a lock; the script part is at the end of the page) */
 img,video,canvas{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;}
 img{-webkit-user-select:none;user-select:none;}
-.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player,.prod-teaser,.prod-photo{-webkit-touch-callout:none;}
+.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player,.prod-teaser,.prod-ribbon,.pbox{-webkit-touch-callout:none;}
 
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease;}
@@ -496,6 +508,7 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
   <a href="#" class="nav-logo">MB</a>
   <ul class="nav-links">
     <li><a href="#films"   class="sc" data-text="FILMS">FILMS</a></li>
+    <li id="navProduction" hidden><a href="#production" class="sc" data-text="IN PRODUCTION">IN PRODUCTION</a></li>
     <li><a href="#about"   class="sc" data-text="ABOUT">ABOUT</a></li>
     <li><a href="#press"   class="sc" data-text="PRESS">PRESS</a></li>
     <li><a href="#contact" class="sc" data-text="CONTACT">CONTACT</a></li>
@@ -591,12 +604,10 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
       <p class="prod-ask">Looking for co-producers, broadcasters and festival partners.</p>
     </div>
   </div>
-  <div class="prod-photos reveal" aria-label="Photographs from the shoot">
-    <figure class="prod-photo" style="--r:1.5"><span>Photo 01</span></figure>
-    <figure class="prod-photo" style="--r:.8"><span>Photo 02</span></figure>
-    <figure class="prod-photo" style="--r:1.78"><span>Photo 03</span></figure>
-    <figure class="prod-photo" style="--r:1.5"><span>Photo 04</span></figure>
-    <figure class="prod-photo" style="--r:1"><span>Photo 05</span></figure>
+  <div class="prod-ribbon reveal" id="phRib" aria-label="Photographs from the shoot">
+    <div class="rib-field" id="phField"><div class="rib-row" id="phRow"></div><span class="rib-cursor" aria-hidden="true"></span></div>
+    <div class="rib-ruler" id="phRuler" role="slider" tabindex="0" aria-label="Scrub through the photographs" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="rib-ticks" aria-hidden="true"></span><span class="rib-mark" aria-hidden="true"></span></div>
+    <p class="prod-count" id="phCount" aria-live="polite"></p>
   </div>
 </section>
 
@@ -778,6 +789,15 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
   <span class="footer-copy">© <span id="year">2026</span> Mikhail Barynin</span>
   <span class="footer-kd">KD&nbsp;◼&nbsp;MB-FILM-35&nbsp;◼&nbsp;PARIS&nbsp;◼&nbsp;ECN-2</span>
 </footer>
+
+<!-- LARGE VIEW OF A PHOTOGRAPH -->
+<div class="pbox" id="pbox" role="dialog" aria-modal="true" aria-label="Photograph" hidden>
+  <button class="pbox-close" id="pboxClose" type="button">✕ &nbsp;Close</button>
+  <button class="pbox-nav prev" id="pboxPrev" type="button" aria-label="Previous photograph">←</button>
+  <img id="pboxImg" alt="" draggable="false">
+  <button class="pbox-nav next" id="pboxNext" type="button" aria-label="Next photograph">→</button>
+  <p class="pbox-count" id="pboxCount"></p>
+</div>
 
 <!-- FILM MODAL -->
 <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -1202,7 +1222,7 @@ document.addEventListener('keydown',e=>{
 // SCRAMBLE
 const SC='0123456789ABCDEF◼▪◻KD+-';
 function scramble(el,text,ms=550){let f=0,tot=Math.ceil(ms/28);const iv=setInterval(()=>{f++;const p=f/tot;el.textContent=[...text].map((c,i)=>c===' '?' ':i<text.length*p?c:SC[Math.floor(Math.random()*SC.length)]).join('');if(f>=tot){clearInterval(iv);el.textContent=text;}},28);}
-document.querySelectorAll('.sc').forEach(a=>{const o=a.dataset.text;a.addEventListener('mouseenter',()=>scramble(a,o));a.addEventListener('mouseleave',()=>{a.textContent=o;});});
+document.querySelectorAll('.sc').forEach(a=>{a.addEventListener('mouseenter',()=>scramble(a,a.dataset.text));a.addEventListener('mouseleave',()=>{a.textContent=a.dataset.text;});});
 
 // LOCATIONS MAP
 (function(){
@@ -1480,6 +1500,7 @@ document.querySelectorAll('a,button').forEach(el=>{
     og.gain.setValueAtTime(0.10,t); og.gain.exponentialRampToValueAtTime(0.0001,t+0.04);
     o.connect(og); og.connect(actx.destination); o.start(t); o.stop(t+0.05);
   }
+  window.__rf={unlockAudio,counterTick};   // the photographs ribbon uses the same sound
   const DRIFT=small?14:8;                                   // px per second; it stops while a hand or the pointer is on the ribbon
   const opaque=[];
   const wrapTo=v=>P?((v%P)+P)%P:v;
@@ -1629,6 +1650,9 @@ document.querySelectorAll('a,button').forEach(el=>{
   const m=/[?&]production(?:=(\w+))?/.exec(location.search), sec=document.getElementById('production');
   if(!sec||!m) return;
   sec.hidden=false;
+  const navLi=document.getElementById('navProduction'), navA=navLi.querySelector('a'), narrow=matchMedia('(max-width: 900px)');
+  const label=()=>{ navA.dataset.text=narrow.matches?'NEXT':'IN PRODUCTION'; navA.textContent=navA.dataset.text; };
+  navLi.hidden=false; label(); narrow.addEventListener('change',label);
   // the line from the start of shooting to the planned completion, with a marker for today
   const A=Date.UTC(2025,0,1), Z=Date.UTC(2027,6,1), p=Math.min(1,Math.max(0,(Date.now()-A)/(Z-A)));
   sec.querySelector('.prod-tl-fill').style.width=(p*100).toFixed(1)+'%';
@@ -1636,10 +1660,158 @@ document.querySelectorAll('a,button').forEach(el=>{
   document.getElementById('prodTeaser').addEventListener('click',openTeaser);
 })();
 
+// PHOTOGRAPHS OF THE FILM — the same endless ribbon as the films, without titles; a click opens the photograph large
+(function(){
+  const sec=document.getElementById('production');
+  if(!sec||sec.hidden) return;
+  const field=document.getElementById('phField'), row=document.getElementById('phRow'), ruler=document.getElementById('phRuler'), count=document.getElementById('phCount');
+  const mark=ruler.querySelector('.rib-mark');
+  const PH=[
+    ['01','Aerial view of thawing permafrost: rounded mounds of ground covered with moss'],
+    ['02','A boy in a hood and mittens carrying a block of ice'],
+    ['03','Looking up an ice shaft to a circle of daylight'],
+    ['04','A man with a backpack standing at the edge of a permafrost crater'],
+    ['05','A figure walking across a snow field in low sun and mist'],
+    ['06','A man holding up a glass flask by a window'],
+    ['07','Aerial view of the edge of a crater cut into the tundra'],
+    ['08','A runner with a frosted face and a race bib in a winter marathon'],
+    ['09','Dark ice with rippled, glassy walls'],
+    ['10','A village among rounded mounds of thawing ground, beside a dark lake'],
+    ['11','A man sitting with his arms crossed against a log wall'],
+    ['12','Two people walking through snow beside a fence'],
+    ['13','A man in a blue jacket at the wheel of a boat on a river'],
+    ['14','A man on a frozen river with a long line of ice behind him']
+  ].map(([n,alt])=>({t:'img/the-cold-p'+n+'.jpg',l:'img/the-cold-p'+n+'-l.jpg',alt}));
+  const N=PH.length, calm=matchMedia('(prefers-reduced-motion: reduce)').matches, small=matchMedia('(max-width: 860px)').matches;
+  for(let c=0;c<3;c++) PH.forEach((p,i)=>{
+    const b=document.createElement('button'); b.type='button'; b.className='rib-tile'; b.dataset.i=i;
+    b.setAttribute('aria-label','Open photograph '+(i+1)+' of '+N);
+    if(c){ b.tabIndex=-1; b.setAttribute('aria-hidden','true'); }
+    const po=document.createElement('span'); po.className='rib-poster';
+    const im=new Image(); im.src=p.t; im.alt=c?'':p.alt; im.draggable=false; im.decoding='async'; po.appendChild(im);
+    b.appendChild(po); row.appendChild(b);
+  });
+  const tiles=Array.from(row.children);
+  let u=0,uT=0,vel=0,P=0,half=0,cx=[],sigma=0,speed=0,prevU=0,running=false,dragging=false,lastTs=0,lastPct=-1,hovering=false,onScreen=false,centerIdx=-1,placed=false,lastWheel=-1e9;
+  const STRETCH_FROM=520, DRIFT=small?14:8, opaque=[];
+  const wrapTo=v=>P?((v%P)+P)%P:v, ease=(dt,tau)=>1-Math.exp(-dt/tau);
+  // the counter tick (the sound is shared with the films ribbon) and the two arrows around the cursor ring while the ribbon is held
+  const fx=window.__rf||{}, STEP=small?64:76; let acc=0,userMove=false;
+  const hint=document.createElement('div'); hint.className='drag-hint'; hint.setAttribute('aria-hidden','true');
+  hint.innerHTML='<svg class="l" viewBox="0 0 24 24"><polyline points="14,6 8,12 14,18"/><line x1="8" y1="12" x2="21" y2="12"/></svg><svg class="r" viewBox="0 0 24 24"><polyline points="10,6 16,12 10,18"/><line x1="3" y1="12" x2="16" y2="12"/></svg>';
+  document.body.appendChild(hint);
+  let hintTimer=0,hintRaf=0;
+  const followRing=()=>{ hint.style.setProperty('--r',(curR.offsetWidth/2)+'px'); hint.style.transform='translate3d('+(parseFloat(curR.style.left)||0)+'px,'+(parseFloat(curR.style.top)||0)+'px,0)'; hintRaf=requestAnimationFrame(followRing); };
+  const showHint=()=>{ clearTimeout(hintTimer); hintTimer=setTimeout(()=>{ followRing(); hint.classList.add('on'); curWatch.style.opacity='0'; },90); };
+  const hideHint=()=>{ clearTimeout(hintTimer); cancelAnimationFrame(hintRaf); hintRaf=0; if(hint.classList.contains('on')&&hovering) curWatch.style.opacity='1'; hint.classList.remove('on'); };
+
+  function paint(){
+    const shift=wrapTo(u)-u; if(shift){u+=shift;uT+=shift;prevU+=shift;}
+    const tx=-P-u;
+    row.style.transform='translate3d('+tx.toFixed(2)+'px,0,0)';
+    const pct=P?Math.round(u/P*100):0;
+    if(pct!==lastPct){ lastPct=pct; mark.style.left=pct+'%'; ruler.setAttribute('aria-valuenow',String(pct)); }
+    let best=1e9,bi=0;
+    for(let i=0;i<tiles.length;i++){
+      const rel=cx[i]+tx-half, ar=Math.abs(rel);
+      if(ar<best){best=ar;bi=i;}
+      const d=ar*(1+sigma)/half, el=tiles[i];
+      if(d>1.6){ if(opaque[i]!=='h'){el.style.visibility='hidden';opaque[i]='h';} continue; }
+      if(opaque[i]==='h'){el.style.visibility='';opaque[i]='';}
+      const f=Math.min(1,Math.max(0,(d-0.3)/0.75));
+      el.style.transform='translate3d('+(rel*sigma).toFixed(2)+'px,0,0) scale('+(1-f*0.08).toFixed(3)+')';
+      const op=(1-f*0.5).toFixed(2); if(opaque[i]!==op){opaque[i]=op;el.style.opacity=op;}
+    }
+    const idx=bi%N;
+    if(idx!==centerIdx){ centerIdx=idx; tiles.forEach((t,k)=>t.classList.toggle('is-center',k%N===idx)); count.textContent=String(idx+1).padStart(2,'0')+' / '+String(N).padStart(2,'0'); }
+  }
+  function tick(ts){
+    const dt=Math.min(0.05,Math.max(0.001,(ts-lastTs)/1000)); lastTs=ts;
+    if(dragging){ u+=(uT-u)*ease(dt,0.17); }
+    else if(Math.abs(vel)>12){ u+=vel*dt; vel*=Math.exp(-dt/0.6); uT=u; }
+    else if(Math.abs(uT-u)>0.05){ u+=(uT-u)*ease(dt,0.14); }
+    else { vel=0; userMove=false; if(!calm&&!hovering&&!down&&onScreen) u+=DRIFT*dt; uT=u; }
+    const dU=u-prevU, v=dU/dt; prevU=u;
+    if(userMove&&fx.counterTick){ acc+=Math.abs(dU); let n=0; while(acc>=STEP&&n<2){ acc-=STEP; n++; fx.counterTick(); } if(acc>=STEP) acc=0; }
+    if(dragging) vel+=(v-vel)*ease(dt,0.06);
+    speed+=(Math.abs(v)-speed)*ease(dt,0.1);
+    const pulling=dragging||(performance.now()-lastWheel<140);
+    const target=(calm||!pulling)?0:Math.min(0.28,Math.max(0,speed-STRETCH_FROM)*0.0003);
+    sigma+=(target-sigma)*ease(dt,target>sigma?0.09:0.1);
+    paint();
+    if(dragging||Math.abs(uT-u)>0.05||Math.abs(vel)>12||sigma>0.002||speed>3||(!calm&&onScreen&&!hovering)) requestAnimationFrame(tick);
+    else { running=false; sigma=0; speed=0; paint(); }
+  }
+  function go(){ if(!running){ running=true; prevU=u; lastTs=performance.now(); requestAnimationFrame(tick); } }
+  function measure(){
+    half=field.clientWidth/2;
+    const phase=P?u/P:0;
+    P=tiles[N].offsetLeft-tiles[0].offsetLeft;
+    cx=tiles.map(t=>t.offsetLeft+t.offsetWidth/2);
+    if(!placed){ placed=true; u=uT=prevU=wrapTo(cx[0]-half-P); } else u=uT=prevU=phase*P;
+    opaque.length=0; paint(); go();
+  }
+  function goTo(i){
+    i=((i%N)+N)%N;
+    let dd=wrapTo(cx[i]-half-P)-wrapTo(u);
+    if(dd>P/2) dd-=P; if(dd<-P/2) dd+=P;
+    uT=u+dd; vel=0; userMove=true; go();
+  }
+
+  // pull with the mouse or a finger; the wheel only sideways or with Shift; the ruler; the keyboard
+  const GAIN=1.15; let down=false,moved=false,sx=0,u0=0;
+  field.addEventListener('pointerdown',e=>{ if(e.pointerType==='mouse'&&e.button!==0) return; down=true; moved=false; sx=e.clientX; uT=u; u0=u; vel=0; speed=0; sigma=0; acc=0; if(fx.unlockAudio) fx.unlockAudio(); if(e.pointerType==='mouse') showHint(); });
+  field.addEventListener('pointermove',e=>{
+    if(!down) return;
+    const dx=e.clientX-sx;
+    if(!moved&&Math.abs(dx)<5) return;
+    if(!moved){ moved=true; dragging=true; userMove=true; sx=e.clientX; try{ field.setPointerCapture(e.pointerId); }catch(_){} field.classList.add('drag'); go(); return; }
+    uT=u0-dx*GAIN;
+  });
+  const up=()=>{ hideHint(); if(!down) return; down=false; dragging=false; field.classList.remove('drag'); if(!moved||calm) vel=0; go(); };
+  field.addEventListener('pointerup',up); field.addEventListener('pointercancel',up);
+  field.addEventListener('pointerenter',e=>{ if(e.pointerType==='mouse') hovering=true; });
+  field.addEventListener('pointerleave',()=>{ hovering=false; go(); });
+  field.addEventListener('click',e=>{ if(moved){ e.stopPropagation(); e.preventDefault(); moved=false; } },true);
+  field.addEventListener('wheel',e=>{
+    const dx=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:(e.shiftKey?e.deltaY:0);
+    if(!dx) return;
+    e.preventDefault(); if(fx.unlockAudio) fx.unlockAudio(); userMove=true; uT+=dx*GAIN; vel=0; lastWheel=performance.now(); go();
+  },{passive:false});
+  const seek=e=>{ const b=ruler.getBoundingClientRect(); uT=P*Math.min(1,Math.max(0,(e.clientX-b.left)/b.width)); vel=0; userMove=true; go(); };
+  ruler.addEventListener('pointerdown',e=>{ if(fx.unlockAudio) fx.unlockAudio(); try{ ruler.setPointerCapture(e.pointerId); }catch(_){} seek(e); ruler.onpointermove=seek; });
+  ruler.addEventListener('pointerup',()=>{ ruler.onpointermove=null; });
+  ruler.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){ e.preventDefault(); goTo(centerIdx+1); } if(e.key==='ArrowLeft'){ e.preventDefault(); goTo(centerIdx-1); } });
+  row.addEventListener('focusin',e=>{ const t=e.target.closest('.rib-tile'); if(t&&t.matches(':focus-visible')) goTo(Number(t.dataset.i)); });
+  field.addEventListener('scroll',()=>{ field.scrollLeft=0; });
+  // the cursor ring: VIEW on the photographs
+  field.addEventListener('mouseenter',()=>{ curR.style.width='64px'; curR.style.height='64px'; curR.style.borderColor='rgba(245,196,0,.8)'; curWatch.textContent='VIEW'; curWatch.style.opacity='1'; cur.style.width='4px'; cur.style.height='4px'; });
+  field.addEventListener('mouseleave',()=>{ curR.style.width='28px'; curR.style.height='28px'; curR.style.borderColor='rgba(245,196,0,.6)'; curWatch.style.opacity='0'; setTimeout(()=>{ curWatch.textContent='WATCH'; },220); cur.style.width='6px'; cur.style.height='6px'; });
+
+  // the large view
+  const box=document.getElementById('pbox'), bImg=document.getElementById('pboxImg'), bCount=document.getElementById('pboxCount');
+  let at=0, last=null;
+  const showBox=k=>{ at=((k%N)+N)%N; bImg.src=PH[at].l; bImg.alt=PH[at].alt; bCount.textContent=String(at+1).padStart(2,'0')+' / '+String(N).padStart(2,'0'); };
+  const openBox=k=>{ last=document.activeElement; showBox(k); box.hidden=false; document.body.style.overflow='hidden'; document.getElementById('pboxClose').focus({preventScroll:true}); };
+  const closeBox=()=>{ if(box.hidden) return; box.hidden=true; bImg.removeAttribute('src'); document.body.style.overflow=''; if(last&&last.focus) last.focus({preventScroll:true}); };
+  row.addEventListener('click',e=>{ const t=e.target.closest('.rib-tile'); if(t) openBox(Number(t.dataset.i)); });
+  document.getElementById('pboxClose').addEventListener('click',closeBox);
+  document.getElementById('pboxPrev').addEventListener('click',()=>showBox(at-1));
+  document.getElementById('pboxNext').addEventListener('click',()=>showBox(at+1));
+  box.addEventListener('click',e=>{ if(e.target===box) closeBox(); });
+  document.addEventListener('keydown',e=>{ if(box.hidden) return; if(e.key==='Escape'){ e.stopPropagation(); closeBox(); } else if(e.key==='ArrowLeft') showBox(at-1); else if(e.key==='ArrowRight') showBox(at+1); },true);
+
+  measure();
+  new IntersectionObserver(([e])=>{ onScreen=e.isIntersecting; if(onScreen) go(); }).observe(field);
+  addEventListener('resize',measure);
+  addEventListener('load',measure);
+  if(document.fonts) document.fonts.ready.then(measure);
+})();
+
 // IMAGE PROTECTION — makes saving a picture harder: no "Save image as" menu over pictures and video, nothing can be dragged out of the page,
 // no long-press "save" on phones. It cannot stop screenshots or the browser's developer tools; it only removes the easy ways.
 (function(){
-  const MEDIA='img,video,canvas,.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player,.prod-teaser,.prod-photo';
+  const MEDIA='img,video,canvas,.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player,.prod-teaser,.prod-ribbon,.pbox';
   const onMedia=e=>{ const t=e.target; return !!(t&&t.closest&&t.closest(MEDIA)); };
   document.addEventListener('contextmenu',e=>{ if(onMedia(e)) e.preventDefault(); });
   document.addEventListener('dragstart',e=>{ if(onMedia(e)) e.preventDefault(); });
