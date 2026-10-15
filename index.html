@@ -1425,13 +1425,13 @@ document.querySelectorAll('a,button').forEach(el=>{
     if(e.key==='ArrowLeft'){ e.preventDefault(); goTo(centerIdx-1); }
   });
 
-  // click: a film off the middle is brought to the middle first; the one in the middle opens its card
+  // click: any film opens its card; the ribbon itself never jumps on a click
   row.addEventListener('click',e=>{
     const t=e.target.closest('.rib-tile'); if(!t) return;
     const i=Number(t.dataset.i);
-    if(i!==centerIdx) goTo(i); else openModal(films[i].vimeo,films[i].title);
+    openModal(films[i].vimeo,films[i].title);
   });
-  row.addEventListener('focusin',e=>{ const t=e.target.closest('.rib-tile'); if(t) goTo(Number(t.dataset.i)); });
+  row.addEventListener('focusin',e=>{ const t=e.target.closest('.rib-tile'); if(t&&t.matches(':focus-visible')) goTo(Number(t.dataset.i)); });   // keyboard only
   field.addEventListener('scroll',()=>{ field.scrollLeft=0; });
 
   // same big ring + WATCH as on the film cards
