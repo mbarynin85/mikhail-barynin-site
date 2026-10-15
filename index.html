@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mikhail Barynin — Documentary Filmmaker</title>
-<meta name="description" content="Documentary filmmaker. Films built on observation, trust, and real experience.">
+<title>Mikhail Barynin — Documentary Filmmaker &amp; Editor</title>
+<meta name="description" content="Documentary filmmaker and editor. Films built on observation, trust, and real experience.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -12,8 +12,8 @@
 <link rel="canonical" href="https://mikhailbarynin.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Mikhail Barynin">
-<meta property="og:title" content="Mikhail Barynin — Documentary Filmmaker">
-<meta property="og:description" content="Documentary filmmaker. Films built on observation, trust, and real experience.">
+<meta property="og:title" content="Mikhail Barynin — Documentary Filmmaker &amp; Editor">
+<meta property="og:description" content="Documentary filmmaker and editor. Films built on observation, trust, and real experience.">
 <meta property="og:url" content="https://mikhailbarynin.com/">
 <meta property="og:image" content="https://mikhailbarynin.com/img/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -70,6 +70,8 @@ nav.hide{transform:translateY(-110%);}
 /* Name — small, secondary */
 .hero-name{font-family:var(--mono);font-size:clamp(11px,1.4vw,14px);font-weight:400;letter-spacing:.3em;color:var(--silver);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
 .hero-name::before{content:'';width:20px;height:1px;background:var(--silver);flex-shrink:0;}
+.hero-name .hero-role{display:inline-block;margin-left:14px;padding-left:14px;border-left:1px solid rgba(245,196,0,.55);color:var(--yellow);}
+@media(max-width:600px){.hero-name{align-items:flex-start;}.hero-name::before{margin-top:.55em;}.hero-name .hero-role{display:block;margin:7px 0 0;padding:0;border:0;}}
 /* Tagline — big, dominant */
 .hero-tagline{font-family:var(--display);font-size:clamp(28px,5vw,72px);font-weight:700;line-height:1.05;letter-spacing:-.01em;color:var(--white);margin-bottom:0;}
 .hero-tagline .dim{color:rgba(232,228,216,.45);font-weight:300;}
@@ -326,6 +328,7 @@ nav.hide{transform:translateY(-110%);}
 /* CONTACT */
 .contact-section{border-top:1px solid #1c1c1c;padding:64px 48px 48px;display:flex;flex-direction:column;align-items:center;gap:40px;}
 .contact-title{font-family:var(--display);font-size:clamp(44px,9vw,130px);font-weight:900;line-height:1;color:var(--white);text-transform:uppercase;letter-spacing:-.01em;text-align:center;}
+.contact-sub{margin-top:-22px;font-family:var(--mono);font-size:10px;letter-spacing:.25em;color:var(--yellow);text-transform:uppercase;text-align:center;opacity:.85;}
 .contact-icons{display:flex;gap:28px;align-items:center;flex-wrap:wrap;justify-content:center;}
 .c-icon{display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:var(--silver);transition:color .2s;cursor:none;}
 .c-icon:hover{color:var(--yellow);}
@@ -446,7 +449,7 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
   <div class="fc bl"></div><div class="fc br"></div>
   <div class="hero-frame-idx" aria-hidden="true">◼ <span id="heroTc">00:00:00:00</span></div>
   <div class="hero-content">
-    <h1 class="hero-name">Mikhail <span class="line2">Barynin</span></h1>
+    <h1 class="hero-name"><span>Mikhail Barynin<span class="hero-role">Director &amp; Editor</span></span></h1>
     <p class="hero-tagline">Documentary filmmaker<br><span class="dim">focused on human stories.</span><br>Working across diverse environments.<br><span class="dim">Built on trust, and real experience.</span></p>
   </div>
 </section>
@@ -538,7 +541,7 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
       <div class="about-statement">
         <div class="about-stmt">
           <span class="about-stmt-num">01</span>
-          <p class="about-stmt-text">I make documentary films about <em>people and the worlds they live in.</em> My work grows out of observation, trust, and time spent with my subjects.</p>
+          <p class="about-stmt-text">I make documentary films about <em>people and the worlds they live in.</em> My work grows out of observation, trust, and time spent with my subjects. I also <em>edit</em> most of my films myself, so the story is shaped from the first shot to the final cut.</p>
         </div>
         <div class="about-stmt">
           <span class="about-stmt-num">02</span>
@@ -550,6 +553,10 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
         </div>
       </div>
       <div class="about-meta">
+        <div class="about-meta-row">
+          <span class="about-meta-key">Role</span>
+          <span class="about-meta-val"><span>Director</span> &amp; Editor</span>
+        </div>
         <div class="about-meta-row">
           <span class="about-meta-key">Based</span>
           <span class="about-meta-val"><span>Paris</span>, France</span>
@@ -626,6 +633,7 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
 <section id="contact">
   <div class="contact-section">
     <h2 class="contact-title reveal">Contact</h2>
+    <p class="contact-sub reveal">Directing &amp; editing documentary films · worldwide</p>
     <div class="contact-icons reveal">
 
       <!-- Email — custom clean icon -->
