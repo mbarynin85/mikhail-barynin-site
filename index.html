@@ -85,9 +85,19 @@ nav.hide{transform:translateY(-110%);}
 @media(max-width:600px){.hero{padding:0 20px 40px;}.hero .fc.tr,.hero .fc.bl{display:none;}.hero-tagline{font-size:clamp(24px,7vw,40px);}}
 
 /* FESTIVALS — blends into films section */
-.festivals{background:var(--black);padding:32px 48px 0;display:flex;align-items:center;justify-content:center;}
-.festivals-img img{max-height:60px;max-width:100%;width:auto;height:auto;opacity:.75;display:block;}
-@media(max-width:600px){.festivals{padding:20px 20px 0;}.festivals-img img{max-height:50px;}}
+.festivals{background:var(--black);padding:40px 48px 0;display:flex;justify-content:center;}
+.festivals-img{width:100%;max-width:1560px;}
+.festivals-img img{display:block;width:100%;height:auto;opacity:.92;}
+.festivals-img img + img{display:none;}   /* the second copy is only for the endless strip on small screens */
+@keyframes festMarquee{to{transform:translateX(-50%);}}
+@media(max-width:900px){
+  /* the strip is too long to read at the width of a phone, so it runs slowly past at a readable size */
+  .festivals{padding:26px 0 0;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);}
+  .festivals-img{width:max-content;max-width:none;display:flex;animation:festMarquee 80s linear infinite;}
+  .festivals-img img{width:auto;height:64px;flex:none;}
+  .festivals-img img + img{display:block;}
+}
+@media(max-width:900px) and (prefers-reduced-motion:reduce){.festivals{overflow-x:auto;}.festivals-img{animation:none;}.festivals-img img + img{display:none;}}
 
 /* SEC HEAD */
 .sec-head{padding:80px 48px 36px;display:flex;align-items:baseline;gap:20px;position:relative;}
@@ -457,7 +467,8 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
 <!-- FESTIVALS -->
 <div class="festivals">
   <div class="festivals-img">
-    <img src="img/FESTIVALS.png" alt="Film festival laurels">
+    <img src="img/FESTIVALS.png" alt="Festival laurels: Berlinale, Flahertiana, Golden Eagle, Moscow IFF, Environmental Film Festival, GFN Awards, Busan IFF, NIKA, HumanDOC, Art Doc Fest, Sputnik">
+    <img src="img/FESTIVALS.png" alt="" aria-hidden="true">
   </div>
 </div>
 
