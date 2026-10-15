@@ -136,6 +136,7 @@ nav.hide{transform:translateY(-110%);}
 .film-meta::before{content:'';width:22px;height:1px;background:var(--yellow);}
 .film-meta .sep{color:var(--mid);}
 .film-meta .ep{color:var(--red);}
+.film-meta .tag{color:var(--white);border:1px solid rgba(242,237,224,.4);padding:3px 7px 2px;letter-spacing:.2em;}
 .film-title{font-family:var(--display);font-size:clamp(22px,2.6vw,38px);font-weight:900;line-height:1.05;letter-spacing:-.01em;text-transform:uppercase;color:var(--white);margin:0 0 16px;}
 .film-tagline{font-size:14px;font-style:italic;font-weight:300;line-height:1.6;color:rgba(232,228,216,.85);padding-left:14px;border-left:2px solid var(--yellow);margin:0 0 18px;}
 .film-text p{font-size:13.5px;font-weight:300;line-height:1.8;letter-spacing:.01em;color:var(--light);margin:0 0 14px;}
@@ -261,6 +262,7 @@ nav.hide{transform:translateY(-110%);}
 .rib-poster::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;box-shadow:0 0 0 1px var(--yellow);opacity:0;transition:opacity .18s ease;}
 .rib-tile.is-center .rib-poster{overflow:visible;}
 .rib-tile.is-center .rib-poster::before{opacity:1;inset:-5px;box-shadow:inset 0 0 0 1px var(--yellow);}
+.rib-tag{position:absolute;top:8px;left:8px;padding:3px 7px 2px;background:rgba(8,8,8,.72);border:1px solid rgba(245,196,0,.55);font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--yellow);text-transform:uppercase;}
 .rib-ep{position:absolute;top:8px;left:8px;font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;}
 .rib-label{display:block;height:80px;padding:32px 2px 0;overflow:hidden;}
 .rib-title{display:inline-block;max-width:100%;background:var(--tape);color:#111;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;padding:5px 12px 4px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:top;box-shadow:1px 1px 0 rgba(0,0,0,.35),2px 2px 5px rgba(0,0,0,.3);}
@@ -685,6 +687,7 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
 
 <script>
 const FILMS_START = [
+  { img:'img/Bonfire-on-the-Snow.jpg', title:'Bonfire on the Snow', desc:'A gravedigger in the Yakutian permafrost longs for a family, warmth and a new life.', vimeo:'1233751611', tag:'Trailer' },
   { img:'img/Tuva.Independent-People.jpg', title:'Tuva. Independent People', desc:'People living outside the system choose freedom over modern civilization.', vimeo:'1232958943' },
   { img:'img/GANDHI.jpg', title:"Gandhi's Footsteps", desc:"A journey across India to meet people who still live by Mahatma Gandhi's ideals.", vimeo:'1232959412' },
   { img:'img/Dragon-of-Afghanistan.jpg', title:'Dragon of Afghanistan', desc:'An Afghan Bruce Lee lookalike becomes a national icon in turbulent times.', vimeo:'1232959808' },
@@ -707,6 +710,16 @@ const IMPRISONED = [
   { img:'img/The-Man-at-the-Party.jpg', title:'The Man at the Party', desc:'A teenager wrongfully imprisoned after a party shooting.', vimeo:'1232956661', ep:'Ep. 3' },
 ];
 const FILM_INFO = {
+ "Bonfire on the Snow": {
+  "country": "Arctic Siberia",
+  "year": 2026,
+  "text": [
+   "Afanasy has spent his life digging graves in the Yakutian permafrost, turning labor into a spiritual mission. Solitude, fear and a constant dialogue with death have become his reality.",
+   "He longs for a family, but people believe he is tied to the world of the dead and avoid him. No one wants to share a life with a man who lives among graves.",
+   "Since 2022, he has been burying more and more young men from the front, feeling himself drift further from the living.",
+   "Seeking purification, he undergoes a shamanic ritual, hoping for a new life, a home, warmth. But fate is stronger. Just as hope becomes reality, Afanasy dies."
+  ]
+ },
  "24 Snow": {
   "country": "Arctic Siberia",
   "year": 2016,
@@ -846,6 +859,7 @@ const FILM_INFO = {
 
 // FILM ORDER — titles must match the entries above
 const ORDER = [
+  'Bonfire on the Snow',
   'Breaking Bad Wolf',
   'Reaping Divine Justice',
   'Dragon of Afghanistan',
@@ -1013,6 +1027,11 @@ function showFilm(i){
     if(k){const sep=document.createElement('span');sep.className='sep';sep.textContent='◼';mMeta.appendChild(sep);}
     mMeta.append(String(v));
   });
+  if(f&&f.tag){
+    const sep=document.createElement('span');sep.className='sep';sep.textContent='◼';
+    const tg=document.createElement('span');tg.className='tag';tg.textContent=f.tag;
+    mMeta.append(sep,tg);
+  }
   if(f&&f.ep){
     const sep=document.createElement('span');sep.className='sep';sep.textContent='◼';
     const ep=document.createElement('span');ep.className='ep';ep.textContent='Mini-series · '+f.ep;
@@ -1057,7 +1076,7 @@ document.querySelectorAll('.sc').forEach(a=>{const o=a.dataset.text;a.addEventLi
   const scroller=document.getElementById('mapScroll');
   const FILMS=Object.assign({'24 Snow':{img:'img/24-snow.jpg',title:'24 Snow',vimeo:'1233130230'}},FILM_BY_TITLE);
   const PTS=[
-    {name:'Arctic Siberia',x:75.67,y:8.25,films:['24 Snow']},
+    {name:'Arctic Siberia',x:75.67,y:8.25,films:['24 Snow','Bonfire on the Snow']},
     {name:'USA',x:25.76,y:24.65,films:['Breaking Bad Wolf','The Man with a Cigarette','The Man in a Tan Jacket','The Man at the Party','Trans Sport','I Want My Sex Back']},
     {name:'South Africa',x:56.53,y:78.72,films:['Reaping Divine Justice']},
     {name:'Afghanistan',x:67.18,y:27.96,films:['Dragon of Afghanistan']},
@@ -1269,6 +1288,7 @@ document.querySelectorAll('a,button').forEach(el=>{
     const im=new Image(); im.src=f.img; im.alt=''; im.draggable=false; im.decoding='async';
     poster.appendChild(im);
     if(f.ep){ const ep=document.createElement('span'); ep.className='rib-ep'; ep.textContent=f.ep; poster.appendChild(ep); }
+    if(f.tag){ const tg=document.createElement('span'); tg.className='rib-tag'; tg.textContent=f.tag; poster.appendChild(tg); }
     const label=document.createElement('span'); label.className='rib-label';
     const ti=document.createElement('span'); ti.className='rib-title'; ti.textContent=f.title;
     const su=document.createElement('span'); su.className='rib-sub'; su.textContent=[info.country,info.year].filter(Boolean).join(' · ');
