@@ -153,6 +153,7 @@ nav.hide{transform:translateY(-110%);}
 .film-tagline{font-size:14px;font-style:italic;font-weight:300;line-height:1.6;color:rgba(232,228,216,.85);padding-left:14px;border-left:2px solid var(--yellow);margin:0 0 18px;}
 .film-text p{font-size:13.5px;font-weight:300;line-height:1.8;letter-spacing:.01em;color:var(--light);margin:0 0 14px;}
 .film-nav{display:flex;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid #222;}
+.film-nav.off{display:none;}
 .film-nav button{flex:1;min-width:0;background:none;border:1px solid rgba(245,196,0,.25);padding:12px 14px;text-align:left;color:var(--white);cursor:none;transition:border-color .2s,background .2s;}
 .film-nav button:last-child{text-align:right;}
 .film-nav button:hover{border-color:var(--yellow);background:rgba(245,196,0,.06);}
@@ -192,6 +193,54 @@ nav.hide{transform:translateY(-110%);}
 .about-meta-val span{color:var(--yellow);}
 @media(max-width:960px){.about-bg-grad{background:linear-gradient(to bottom,rgba(8,8,8,.5) 0%,rgba(8,8,8,.95) 60%);}.about-ghost-name{display:none;}.about-content{max-width:100%;}}
 @media(max-width:600px){.about-section{min-height:auto;}.about-content{padding:50px 20px;}}
+
+/* IN PRODUCTION: the next film (teaser, facts, photos). Hidden unless the page is opened with ?production */
+.prod{--bg:var(--black);--ink:var(--white);--sub:var(--silver);--soft:var(--light);--rule:rgba(242,237,224,.18);--acc:var(--yellow);--ph:#141414;--ph2:#1d1d1d;position:relative;background:var(--bg);color:var(--ink);padding-bottom:90px;}
+.prod[hidden]{display:none;}
+.prod .sec-title{color:var(--ink);}
+.prod-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:clamp(28px,4.5vw,72px);align-items:center;padding:6px 48px 0;}
+.prod-teaser{position:relative;display:block;width:100%;aspect-ratio:16/9;margin:0;padding:0;border:0;background:radial-gradient(ellipse 80% 90% at 70% 60%,#1d272d 0%,#10161a 55%,#0b0e10 100%);cursor:none;color:inherit;-webkit-tap-highlight-color:transparent;}
+.prod-teaser img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .4s;}
+.prod-teaser:hover img{transform:scale(1.02);}
+.prod-teaser .fc{position:absolute;width:26px;height:26px;pointer-events:none;border:0 solid var(--acc);}
+.prod-teaser .fc.tl{top:-10px;left:-10px;border-top-width:1px;border-left-width:1px;} .prod-teaser .fc.tr{top:-10px;right:-10px;border-top-width:1px;border-right-width:1px;}
+.prod-teaser .fc.bl{bottom:-10px;left:-10px;border-bottom-width:1px;border-left-width:1px;} .prod-teaser .fc.br{bottom:-10px;right:-10px;border-bottom-width:1px;border-right-width:1px;}
+.prod-play{position:absolute;left:50%;top:50%;width:86px;height:86px;margin:-43px 0 0 -43px;border:1px solid var(--acc);border-radius:50%;display:grid;place-items:center;background:rgba(8,8,8,.28);backdrop-filter:blur(2px);transition:transform .3s,background .3s;}
+.prod-play svg{width:22px;height:22px;margin-left:4px;fill:var(--acc);}
+.prod-teaser:hover .prod-play,.prod-teaser:focus-visible .prod-play{transform:scale(1.08);background:var(--acc);}
+.prod-teaser:hover .prod-play svg,.prod-teaser:focus-visible .prod-play svg{fill:var(--bg);}
+.prod-teaser:focus-visible{outline:2px solid var(--acc);outline-offset:6px;}
+.prod-chip{position:absolute;left:14px;bottom:12px;font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#f2ede0;background:rgba(8,8,8,.6);padding:5px 9px 4px;}
+.prod-status{display:inline-flex;align-items:center;gap:10px;margin-bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--acc);}
+.prod-status i{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 10px rgba(232,0,26,.75);animation:recBlink 1.6s ease-in-out infinite;}
+@keyframes recBlink{0%,100%{opacity:1;}50%{opacity:.25;}}
+.prod-title{margin:0 0 20px;font-family:var(--display);font-size:clamp(44px,6.2vw,96px);font-weight:900;line-height:.9;letter-spacing:-.01em;text-transform:uppercase;color:var(--ink);}
+.prod-logline{max-width:520px;margin:0;padding-left:16px;border-left:2px solid var(--acc);font-size:clamp(14px,1.25vw,16.5px);font-weight:300;line-height:1.75;color:var(--soft);}
+.prod-facts{display:grid;grid-template-columns:auto 1fr;gap:9px 20px;margin:26px 0 0;padding-top:22px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;}
+.prod-facts dt{color:var(--sub);} .prod-facts dd{margin:0;color:var(--ink);}
+.prod-tl{margin-top:26px;}
+.prod-tl-bar{position:relative;height:1px;background:var(--rule);}
+.prod-tl-fill{position:absolute;left:0;top:0;height:1px;width:0;background:var(--acc);}
+.prod-tl-now{position:absolute;top:-4px;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:var(--red);box-shadow:0 0 10px rgba(232,0,26,.7);}
+.prod-tl-now b{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font:400 8px/1 var(--mono);letter-spacing:.25em;text-transform:uppercase;color:var(--red);}
+.prod-tl-labels{display:flex;justify-content:space-between;margin-top:12px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--sub);}
+.prod-credits{margin:22px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;line-height:1.9;color:var(--sub);}
+.prod-credits b{font-weight:700;color:var(--ink);}
+.prod-cta{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:13px 22px;border:1px solid var(--acc);color:var(--ink);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;cursor:none;transition:background .25s,color .25s;}
+.prod-cta:hover{background:var(--acc);color:var(--bg);}
+.prod-ask{margin:14px 0 0;font-size:12px;font-weight:300;line-height:1.7;color:var(--sub);}
+.prod-photos{display:flex;align-items:flex-end;gap:10px;padding:56px 48px 0;}
+.prod-photo{position:relative;flex:var(--r) 1 0;min-width:0;aspect-ratio:var(--r);margin:0;overflow:hidden;background:linear-gradient(135deg,var(--ph),var(--ph2));display:grid;place-items:center;font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--sub);}
+.prod-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+@media(max-width:860px){
+  .prod-grid{grid-template-columns:minmax(0,1fr);padding:0 20px;gap:34px;}
+  .prod-teaser,.prod-cta{cursor:pointer;}
+  .prod-teaser .fc.tl,.prod-teaser .fc.bl{left:-6px;} .prod-teaser .fc.tr,.prod-teaser .fc.br{right:-6px;}
+  .prod-photos{flex-wrap:wrap;padding:36px 20px 0;}
+  .prod-photo{flex:1 1 calc(50% - 5px);aspect-ratio:var(--r);}
+  .prod{padding-bottom:60px;}
+}
+@media(prefers-reduced-motion:reduce){.prod-status i{animation:none;}}
 
 /* LOCATIONS MAP */
 .map-wrap{padding:0 48px 80px;overflow-x:clip;}
@@ -373,7 +422,7 @@ html.intro-pending #filmProgress{display:none;}
 /* IMAGE PROTECTION (a deterrent, not a lock; the script part is at the end of the page) */
 img,video,canvas{-webkit-user-drag:none;user-drag:none;-webkit-touch-callout:none;}
 img{-webkit-user-select:none;user-select:none;}
-.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player{-webkit-touch-callout:none;}
+.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player,.prod-teaser,.prod-photo{-webkit-touch-callout:none;}
 
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease;}
@@ -510,6 +559,43 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
         <p class="rib-cap-desc" id="ribDesc"></p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- IN PRODUCTION (hidden unless ?production) -->
+<section class="prod" id="production" hidden aria-labelledby="prod-heading">
+  <div class="sec-head reveal"><h2 class="sec-title" id="prod-heading">In Production</h2></div>
+  <div class="prod-grid reveal">
+    <button class="prod-teaser" id="prodTeaser" type="button" aria-label="Watch the teaser of The Cold">
+      <span class="prod-play" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M1 1.5L11 7L1 12.5V1.5Z"/></svg></span>
+      <span class="prod-chip" aria-hidden="true">Teaser · 2:57</span>
+      <span class="fc tl"></span><span class="fc tr"></span><span class="fc bl"></span><span class="fc br"></span>
+    </button>
+    <div class="prod-info">
+      <p class="prod-status"><i aria-hidden="true"></i>In production now</p>
+      <h3 class="prod-title">The Cold</h3>
+      <p class="prod-logline">In the coldest place on Earth where people live permanently, cold is not weather — it is the foundation of everything. But the foundation is thawing.</p>
+      <dl class="prod-facts">
+        <dt>Format</dt><dd>Feature documentary · 90 min · 4K</dd>
+        <dt>Location</dt><dd>Arctic Siberia, Yakutia</dd>
+        <dt>Language</dt><dd>Sakha · English subtitles</dd>
+        <dt>Co-production</dt><dd>France · Hong Kong</dd>
+      </dl>
+      <div class="prod-tl" aria-hidden="true">
+        <div class="prod-tl-bar"><span class="prod-tl-fill"></span><span class="prod-tl-now"><b>Now</b></span></div>
+        <div class="prod-tl-labels"><span>2025 · Shooting</span><span>Spring–summer 2027 · Completion</span></div>
+      </div>
+      <p class="prod-credits">Director <b>Mikhail Barynin</b><br>Producers <b>Max Stern</b>, <b>Semyon Amanatov</b></p>
+      <a class="prod-cta" href="#contact">Get in touch →</a>
+      <p class="prod-ask">Looking for co-producers, broadcasters and festival partners.</p>
+    </div>
+  </div>
+  <div class="prod-photos reveal" aria-label="Photographs from the shoot">
+    <figure class="prod-photo" style="--r:1.5"><span>Photo 01</span></figure>
+    <figure class="prod-photo" style="--r:.8"><span>Photo 02</span></figure>
+    <figure class="prod-photo" style="--r:1.78"><span>Photo 03</span></figure>
+    <figure class="prod-photo" style="--r:1.5"><span>Photo 04</span></figure>
+    <figure class="prod-photo" style="--r:1"><span>Photo 05</span></figure>
   </div>
 </section>
 
@@ -1044,12 +1130,13 @@ document.getElementById('year').textContent=new Date().getFullYear();
 // FILM MODAL — player + details + previous / next
 const modal=document.getElementById('modal'),mFrame=document.getElementById('modalFrame'),mTitle=document.getElementById('modalTitle'),mClose=document.getElementById('modalClose');
 const mMeta=document.getElementById('filmMeta'),mTag=document.getElementById('filmTagline'),mText=document.getElementById('filmText'),mPanel=document.getElementById('filmPanel');
-const mPrev=document.getElementById('filmPrev'),mNext=document.getElementById('filmNext');
+const mPrev=document.getElementById('filmPrev'),mNext=document.getElementById('filmNext'),mNav=document.querySelector('.film-nav');
 const FILM_SEQ=['24 Snow',...ORDER];
 const vimeoOf=t=>t==='24 Snow'?'1233130230':(FILM_BY_TITLE[t]||{}).vimeo;
 let lastFocus=null,curFilm=-1;
 function playerSrc(id){return `https://player.vimeo.com/video/${id}?autoplay=1&color=f5c400&title=0&byline=0&portrait=0`;}
 function showFilm(i){
+  mNav.classList.remove('off');
   const n=FILM_SEQ.length;
   curFilm=(i+n)%n;
   const title=FILM_SEQ[curFilm], info=FILM_INFO[title]||{}, f=FILM_BY_TITLE[title];
@@ -1085,6 +1172,21 @@ function openModal(id,title){
   modal.classList.add('open');document.body.style.overflow='hidden';mClose.focus({preventScroll:true});
 }
 function closeModal(){modal.classList.remove('open');mFrame.src='';document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});}
+// the teaser of the film in production: the same card, without previous / next
+function openTeaser(){
+  lastFocus=document.activeElement; curFilm=-1;
+  mFrame.src=playerSrc('1232950791');
+  mTitle.textContent='The Cold — Teaser';
+  mMeta.textContent='';
+  ['Arctic Siberia','In production','Teaser'].forEach((v,k)=>{
+    if(k){const sep=document.createElement('span');sep.className='sep';sep.textContent='◼';mMeta.appendChild(sep);}
+    if(k===2){const tg=document.createElement('span');tg.className='tag';tg.textContent=v;mMeta.appendChild(tg);} else mMeta.append(v);
+  });
+  mTag.hidden=true; mText.textContent='';
+  ['In the coldest place on Earth where people live permanently, cold is not weather — it is the foundation of everything. But the foundation is thawing.','A feature documentary, 90 min. Completion: spring–summer 2027.'].forEach(t=>{const p=document.createElement('p');p.textContent=t;mText.appendChild(p);});
+  mNav.classList.add('off');
+  modal.classList.add('open');document.body.style.overflow='hidden';mClose.focus({preventScroll:true});
+}
 mClose.addEventListener('click',closeModal);
 mPrev.addEventListener('click',()=>showFilm(curFilm-1));
 mNext.addEventListener('click',()=>showFilm(curFilm+1));
@@ -1092,8 +1194,8 @@ modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
 document.addEventListener('keydown',e=>{
   if(!modal.classList.contains('open')) return;
   if(e.key==='Escape') closeModal();
-  else if(e.key==='ArrowLeft') showFilm(curFilm-1);
-  else if(e.key==='ArrowRight') showFilm(curFilm+1);
+  else if(e.key==='ArrowLeft'&&!mNav.classList.contains('off')) showFilm(curFilm-1);
+  else if(e.key==='ArrowRight'&&!mNav.classList.contains('off')) showFilm(curFilm+1);
 });
 
 // SCRAMBLE
@@ -1521,10 +1623,22 @@ document.querySelectorAll('a,button').forEach(el=>{
   if(document.readyState!=='complete') addEventListener('load',measure);
 })();
 
+// IN PRODUCTION — shown only when the page is opened with ?production
+(function(){
+  const m=/[?&]production(?:=(\w+))?/.exec(location.search), sec=document.getElementById('production');
+  if(!sec||!m) return;
+  sec.hidden=false;
+  // the line from the start of shooting to the planned completion, with a marker for today
+  const A=Date.UTC(2025,0,1), Z=Date.UTC(2027,6,1), p=Math.min(1,Math.max(0,(Date.now()-A)/(Z-A)));
+  sec.querySelector('.prod-tl-fill').style.width=(p*100).toFixed(1)+'%';
+  sec.querySelector('.prod-tl-now').style.left=(p*100).toFixed(1)+'%';
+  document.getElementById('prodTeaser').addEventListener('click',openTeaser);
+})();
+
 // IMAGE PROTECTION — makes saving a picture harder: no "Save image as" menu over pictures and video, nothing can be dragged out of the page,
 // no long-press "save" on phones. It cannot stop screenshots or the browser's developer tools; it only removes the easy ways.
 (function(){
-  const MEDIA='img,video,canvas,.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player';
+  const MEDIA='img,video,canvas,.rib-tile,.map-film,.flagship,.about-bg,.quote-bg,.festivals,.hero,.film-player,.prod-teaser,.prod-photo';
   const onMedia=e=>{ const t=e.target; return !!(t&&t.closest&&t.closest(MEDIA)); };
   document.addEventListener('contextmenu',e=>{ if(onMedia(e)) e.preventDefault(); });
   document.addEventListener('dragstart',e=>{ if(onMedia(e)) e.preventDefault(); });
