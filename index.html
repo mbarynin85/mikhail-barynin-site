@@ -1230,9 +1230,13 @@ document.querySelectorAll('.sc').forEach(a=>{a.addEventListener('mouseenter',()=
   if(!stage) return;
   const layer=document.getElementById('mapMarkers');
   const scroller=document.getElementById('mapScroll');
-  const FILMS=Object.assign({'24 Snow':{img:'img/24-snow.jpg',title:'24 Snow',vimeo:'1233130230'}},FILM_BY_TITLE);
+  const FILMS=Object.assign({'24 Snow':{img:'img/24-snow.jpg',title:'24 Snow',vimeo:'1233130230'},'The Cold':{img:'img/the-cold-teaser.jpg',title:'The Cold · in production',custom:()=>openTeaser()}},FILM_BY_TITLE);
+  // the film in production appears on the map together with its block (the ?production page, or once the block is shown to everyone)
+  const prodSec=document.getElementById('production');
+  const prodOn=/[?&]production/.test(location.search)||(prodSec&&!prodSec.hasAttribute('hidden'));
   const PTS=[
     {name:'Arctic Siberia',x:75.67,y:8.25,films:['24 Snow','Bonfire on the Snow']},
+    {name:'Laptev Sea',x:72.15,y:4.02,films:['The Cold'],prod:true},
     {name:'USA',x:25.76,y:24.65,films:['Breaking Bad Wolf','The Man with a Cigarette','The Man in a Tan Jacket','The Man at the Party','Trans Sport','I Want My Sex Back']},
     {name:'South Africa',x:56.53,y:78.72,films:['Reaping Divine Justice']},
     {name:'Afghanistan',x:67.18,y:27.96,films:['Dragon of Afghanistan']},
@@ -1253,6 +1257,7 @@ document.querySelectorAll('.sc').forEach(a=>{a.addEventListener('mouseenter',()=
     {name:'Mali',x:49.05,y:41.23,films:[]},
     {name:'Canada',x:28.28,y:13.38,films:[]}
   ];
+  if(!prodOn){ for(let i=PTS.length-1;i>=0;i--) if(PTS[i].prod) PTS.splice(i,1); }
   const mobileMQ=matchMedia('(max-width:700px)');
   const hoverMQ=matchMedia('(hover:hover)');
   const pop=document.createElement('div');
@@ -1300,7 +1305,7 @@ document.querySelectorAll('.sc').forEach(a=>{a.addEventListener('mouseenter',()=
       th.appendChild(im);
       const tt=document.createElement('span');tt.className='map-film-title';tt.textContent=f.title;
       b.append(th,tt);
-      b.addEventListener('click',()=>{closePop();openModal(f.vimeo,f.title);});
+      b.addEventListener('click',()=>{closePop();if(f.custom) f.custom(); else openModal(f.vimeo,f.title);});
       // same big-ring + WATCH cursor as the film cards
       b.addEventListener('mouseenter',()=>{curR.style.width='64px';curR.style.height='64px';curR.style.borderColor='rgba(245,196,0,.8)';curWatch.style.opacity='1';cur.style.width='4px';cur.style.height='4px';});
       b.addEventListener('mouseleave',()=>{curR.style.width='28px';curR.style.height='28px';curR.style.borderColor='rgba(245,196,0,.6)';curWatch.style.opacity='0';cur.style.width='6px';cur.style.height='6px';});
