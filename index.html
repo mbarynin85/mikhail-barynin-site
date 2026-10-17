@@ -320,7 +320,7 @@ nav.hide{transform:translateY(-110%);}
 }
 
 /* FILM RIBBON: endless single row of posters, titles under each film */
-.rib-section{position:relative;overflow:hidden;background:var(--black);padding:34px 0 8px;}
+.rib-section{position:relative;overflow:hidden;background:var(--black);padding:34px 0 48px;}
 .rib-section[hidden]{display:none;}
 .rib{--cw:clamp(230px,29vw,400px);--ch:calc(var(--cw) * 9 / 16);--gap:18px;position:relative;}
 .rib-field{position:relative;display:flex;align-items:flex-start;box-sizing:border-box;padding-top:44px;height:calc(var(--ch) + 144px);overflow:hidden;cursor:none;touch-action:pan-y;overscroll-behavior-x:contain;user-select:none;-webkit-user-select:none;}
@@ -342,7 +342,7 @@ nav.hide{transform:translateY(-110%);}
 .rib-sub{display:block;margin-top:8px;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--yellow);opacity:.85;text-transform:uppercase;}
 /* the centre line (the "cursor" of the ribbon): from the top edge down across the poster of the film in the middle, above the frame */
 .rib-cursor{position:absolute;left:50%;top:0;width:1px;height:calc(44px + var(--ch) + 30px);background:var(--yellow);opacity:.9;box-shadow:0 0 6px rgba(245,196,0,.5);pointer-events:none;z-index:5;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%);}
-.rib-ruler{position:relative;width:min(300px,64%);height:34px;margin:2px auto 0;cursor:none;touch-action:none;}
+.rib-ruler{position:relative;width:min(300px,64%);height:34px;margin:8px auto 0;cursor:none;touch-action:none;}
 /* like an adjustment layer in an editing program: a thin red bar over the three Imprisoned episodes, as one block (it stretches with the ribbon) */
 .drag-hint{position:fixed;left:0;top:0;z-index:9996;width:0;height:0;pointer-events:none;opacity:0;transition:opacity .16s ease;will-change:transform;}
 .drag-hint.on{opacity:1;}
@@ -358,7 +358,7 @@ nav.hide{transform:translateY(-110%);}
 .rib-mark{position:absolute;top:0;bottom:0;width:24px;margin-left:-12px;border:1px solid var(--yellow);border-radius:5px;background:var(--black);}
 .rib-mark::after{content:'';position:absolute;left:50%;top:5px;bottom:5px;width:1px;background:var(--yellow);}
 .rib-ruler:focus-visible{outline:1px solid var(--yellow);outline-offset:6px;}
-.rib-cap{max-width:640px;margin:10px auto 0;padding:0 24px 40px;text-align:center;}
+.rib-cap{max-width:640px;margin:0 auto;padding:0 24px;text-align:center;}
 .rib-cap-desc{min-height:3.4em;font-size:13px;font-weight:300;line-height:1.7;color:var(--light);}
 .rib-cap.swap .rib-cap-desc{animation:ribCapIn .4s ease-out;}
 @keyframes ribCapIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
@@ -567,10 +567,10 @@ html.intro-pending #intro{display:flex;animation:introFailsafe .01s linear 6s fo
   <div class="rib-section" id="ribSection">
     <div class="rib" id="filmRib">
       <div class="rib-field" id="ribField"><div class="rib-row" id="ribRow"></div><span class="rib-cursor" aria-hidden="true"></span></div>
-      <div class="rib-ruler" id="ribRuler" role="slider" tabindex="0" aria-label="Scrub through the films" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="rib-ticks" aria-hidden="true"></span><span class="rib-mark" aria-hidden="true"></span></div>
       <div class="rib-cap" id="ribCap" aria-live="polite">
         <p class="rib-cap-desc" id="ribDesc"></p>
       </div>
+      <div class="rib-ruler" id="ribRuler" role="slider" tabindex="0" aria-label="Scrub through the films" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="rib-ticks" aria-hidden="true"></span><span class="rib-mark" aria-hidden="true"></span></div>
     </div>
   </div>
 </section>
